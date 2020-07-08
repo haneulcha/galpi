@@ -14,6 +14,11 @@ const commentSchema = new Schema({
     type: String,
     required: true,
   },
+  post: {
+    type: ObjectId,
+    required: true,
+    ref: "Post",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

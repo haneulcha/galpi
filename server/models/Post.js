@@ -1,14 +1,21 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
+const {
+  Type: { ObjectId },
+} = Schema;
 
-const postSchema = mongoose.Schema({
-  commenter: {
-    type: mongoose.isValidObjectId,
+const postSchema = new Schema({
+  author: {
+    type: ObjectId,
     required: true,
     ref: "User",
   },
-  comment: {
+  content: {
     type: String,
     required: true,
+  },
+  image: {
+    type: String,
   },
   createdAt: {
     type: Date,

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const pageRouter = require("./routes/page");
+const userRouter = require("./routes/user");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -22,6 +23,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/", pageRouter);
+app.use("/user", userRouter);
 
 app.listen(port, () =>
   console.log(`This App listening at http://localhost:${port}`)
