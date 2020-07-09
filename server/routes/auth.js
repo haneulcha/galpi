@@ -36,7 +36,6 @@ router.post("/login", (req, res) => {
   // 이메일 있는지 확인
   // 비밀번호 확인
   // 토큰 부여
-  console.log("로그인");
 
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -45,7 +44,7 @@ router.post("/login", (req, res) => {
         message: "해당하는 유저가 없습니다.",
       });
     }
-    console.log("이메일 확인");
+
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
         return res.json({
@@ -53,7 +52,7 @@ router.post("/login", (req, res) => {
           massage: "비밀번호가 틀렸습니다.",
         });
     });
-    console.log("비번 확인");
+
     user.generateToken((err, user) => {
       console.log(user.token);
       if (err) return res.status(400).send(err);

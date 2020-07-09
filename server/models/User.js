@@ -44,7 +44,7 @@ userSchema.pre("save", function (next) {
         next();
       });
     });
-  }
+  } else next();
 });
 
 userSchema.methods.comparePassword = function (plainPassword, cb) {
@@ -60,8 +60,9 @@ userSchema.methods.generateToken = function (cb) {
   user.token = token;
   console.log(user.token);
   user.save(function (err, user) {
+    console.log("저장 완료");
     if (err) return cb(err);
-    console.log(user);
+
     cb(null, user);
   });
 };
