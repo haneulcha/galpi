@@ -58,8 +58,10 @@ userSchema.methods.generateToken = function (cb) {
   var token = jwt.sign(user._id.toHexString(), process.env.JWT_TOKEN);
 
   user.token = token;
+  console.log(user.token);
   user.save(function (err, user) {
     if (err) return cb(err);
+    console.log(user);
     cb(null, user);
   });
 };

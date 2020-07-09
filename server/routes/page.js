@@ -1,19 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../models/User");
+
+router.get("/", (req, res) => {
+  res.send("메인 페이지");
+});
 
 router.get("/profile", (req, res) => {
-  console.log("프로필");
+  res.send("프로필 화면");
 });
 
-router.post("/join", (req, res) => {
-  //필요한 정보 가져오기 -> DB에 넣기
-  const user = new User(req.body);
-
-  user.save((err, userInfo) => {
-    if (err) return res.json({ success: false, err });
-    return res.status(200).json({
-      success: true,
-    });
-  });
+router.get("/join", (req, res) => {
+  res.send("회원가입");
 });
+
+module.exports = router;

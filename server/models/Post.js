@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const {
-  Type: { ObjectId },
-} = Schema;
 
 const postSchema = new Schema({
-  author: {
-    type: ObjectId,
+  user: {
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
