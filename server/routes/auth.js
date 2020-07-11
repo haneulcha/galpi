@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 
+// 토큰 유무로 로그인 여부 확인하기
 let auth = (req, res, next) => {
+  // 로그인 할 때 쿠키에 저장했던 토큰 가져오기
   let token = req.cookies.x_auth;
-
+  // 토큰으로 유저 찾기 => req에 토큰과 user 저장
   User.findByToken(token, (err, user) => {
     if (err) throw err;
     if (!user) return res.json({ isAuth: false, error: true });
@@ -15,10 +17,19 @@ let auth = (req, res, next) => {
   });
 };
 
-router.get("/", (req, res) => {
-  console.log("뭐농");
-  res.send("auth");
+router.get("/", auth, (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
+  });
 });
+
 //회원가입
 router.post("/join", (req, res) => {
   const user = new User(req.body);
@@ -34,9 +45,6 @@ router.post("/join", (req, res) => {
 // 로그인
 router.post("/login", (req, res) => {
   // 이메일 있는지 확인
-  // 비밀번호 확인
-  // 토큰 부여
-
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
       return res.json({
@@ -44,7 +52,7 @@ router.post("/login", (req, res) => {
         message: "해당하는 유저가 없습니다.",
       });
     }
-
+    // 있으면 비밀번호 확인
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
         return res.json({
@@ -52,7 +60,7 @@ router.post("/login", (req, res) => {
           massage: "비밀번호가 틀렸습니다.",
         });
     });
-
+    // 토큰 생성해서 쿠키에 저장
     user.generateToken((err, user) => {
       console.log(user.token);
       if (err) return res.status(400).send(err);
@@ -64,8 +72,9 @@ router.post("/login", (req, res) => {
   });
 });
 
-//로그아웃
+//로그아웃 - 로그인을 해야 로그아웃이 가능
 router.get("/logout", auth, (req, res) => {
+  console.log(req);
   User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({

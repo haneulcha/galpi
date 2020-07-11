@@ -58,9 +58,7 @@ userSchema.methods.generateToken = function (cb) {
   var token = jwt.sign(user._id.toHexString(), process.env.JWT_TOKEN);
 
   user.token = token;
-  console.log(user.token);
   user.save(function (err, user) {
-    console.log("저장 완료");
     if (err) return cb(err);
 
     cb(null, user);

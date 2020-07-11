@@ -25,7 +25,7 @@ mongoose
 
 app.use("/", pageRouter);
 app.use("/auth", authRouter);
-app.use("api/post", postRouter);
+app.use("/post", postRouter);
 
 // app.use((req, res, next) => {
 //   const err = new Error("Not Found");

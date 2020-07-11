@@ -16,7 +16,7 @@ fs.readdir("galpi", (error) => {
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, "galpi/");
+      cb(null, "galpi/"); //
     },
     filename(req, file, cb) {
       const ext = path.extname(file.originalname);
@@ -26,23 +26,22 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-//이미지 업로드 처리하는 라우터
+//이미지 업로드 처리하는 라우터; 하나의 이미지 -> req.file, 나머지 -> req.body
 router.post("/img", upload.single("img"), (req, res) => {
   console.log(req.file);
   res.json({ url: `/img/${req.file.filename}` });
 });
 
-//게시글 업로드를 처리하는 라우터
+//게시글 업로드를 처리하는 라우터; 데이터만 multipart 형식으로 -> req.body
 const upload2 = multer();
 router.post("/", upload2.none(), async (req, res, next) => {
   try {
     const post = new Post({
       content: req.body.content,
       img: req.body.url,
-      user: req.user.id, // 다시 확인
+      user: req.user._id, // 다시 확인
     });
     post = await post.save();
-
     res.redirect("/");
   } catch (error) {
     console.error(error);
