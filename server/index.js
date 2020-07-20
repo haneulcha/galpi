@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 5000;
+const path = require("path");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
@@ -8,6 +9,7 @@ const pageRouter = require("./routes/page");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
 
+app.use("/api/img", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -23,9 +25,9 @@ mongoose
   .then(() => console.log("MongoDB Connected ..."))
   .catch((err) => console.log(err));
 
-app.use("/", pageRouter);
-app.use("/auth", authRouter);
-app.use("/post", postRouter);
+app.use("/api", pageRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/post", postRouter);
 
 // app.use((req, res, next) => {
 //   const err = new Error("Not Found");
