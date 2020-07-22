@@ -6,46 +6,57 @@ class Canvas extends Component {
     this.canvasRef = createRef();
   }
 
-  setFont = (canvas, text, args) => {
+  addTextarea = () => {};
+  drawText = (text) => {
+    const canvas = this.canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const { color, size, font } = args;
-    ctx.font = `${size}px ${font}`;
-    ctx.fillStyle = color;
-    ctx.fillText(text, 30, 30, 400);
+    ctx.font = `15px serif`;
+    ctx.fillStyle = this.props.fontcolor;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2, 400);
   };
 
   componentDidMount() {
     const canvas = this.canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const { color } = this.props;
-
-    ctx.fillRect(0, 0, 400, 400);
+    const { color, text } = this.props;
     ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 400, 400);
+    this.drawText(text);
   }
 
   componentDidUpdate() {
     const canvas = this.canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const { url, color, opt } = this.props;
-
+    const { url, color, text, opt } = this.props;
+    const drawText = this.drawText;
     if (opt) {
       const imgObj = new Image();
       imgObj.onload = function () {
         ctx.drawImage(imgObj, 0, 0);
+        drawText(text);
       };
       imgObj.src = url;
     } else {
       console.log("in canvas", color);
-      ctx.fillRect(0, 0, 400, 400);
       ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 400, 400);
+      this.drawText(text);
     }
   }
 
   render() {
     return (
-      <canvas id="canvas" width="400" height="400" ref={this.canvasRef}>
-        <input type="text" />
-      </canvas>
+      <div>
+        <canvas
+          id="canvas"
+          width="400"
+          height="400"
+          ref={this.canvasRef}
+          //   onClick={}
+        ></canvas>
+      </div>
     );
   }
 }
