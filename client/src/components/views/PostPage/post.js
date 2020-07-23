@@ -5,6 +5,7 @@ import Canvas from "./canvas";
 const Post = () => {
   const [imgUrl, setImgurl] = useState();
   const [color, setColor] = useState("#e79797");
+  const [fontsize, setFontsize] = useState(15);
   const [fontcolor, setFontcolor] = useState("white");
   const [backgroundOpt, setbackgroundOpt] = useState(false);
   const [text, setText] = useState("인용 한 구절");
@@ -39,7 +40,20 @@ const Post = () => {
         src={imgUrl}
         onClick={() => setbackgroundOpt(true)}
       />
+      <label for="canvas-color">배경 색상</label>
       <input type="color" id="canvas-color" onChange={colorPick} />
+
+      <label for="font-size">글씨 크기</label>
+      <input
+        type="range"
+        id="font-size"
+        min={10}
+        max={30}
+        onChange={setFontsize}
+      />
+
+      <label for="font-color">글씨 색상</label>
+      <input type="color" id="font-color" onChange={setFontcolor} />
 
       <form method="post" action="/post" encType="multipart/form-data">
         <input type="file" accept="image/*" onChange={imgUpload} />
@@ -47,12 +61,14 @@ const Post = () => {
         {/* <textarea name="content" maxLength={1000}></textarea> */}
         <button type="submit">올리기</button>
       </form>
+
       <Canvas
         url={imgUrl}
         color={color}
         opt={backgroundOpt}
         text={text}
         fontcolor={fontcolor}
+        fontsize={fontsize}
       />
       <textarea
         value={text}

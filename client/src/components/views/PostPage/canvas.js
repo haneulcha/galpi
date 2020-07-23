@@ -1,64 +1,48 @@
-import React, { Component, createRef } from "react";
+import React, { useRef } from "react";
+import domtoimage from "dom-to-image";
 
-class Canvas extends Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = createRef();
-  }
+function Canvas() {
+  const canvasRef = useRef();
 
-  addTextarea = () => {};
-  drawText = (text) => {
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.font = `15px serif`;
-    ctx.fillStyle = this.props.fontcolor;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, canvas.width / 2, canvas.height / 2, 400);
+  completeImgUpload = () => {
+    const canvasDiv = canvasRef.current;
+    domtoimage.toPng(canvasDiv).then((dataUrl) => {});
   };
 
-  componentDidMount() {
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const { color, text } = this.props;
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, 400, 400);
-    this.drawText(text);
-  }
+  const { url, color, opt, text, fontcolor, fontsize } = this.props;
+  const textStyleObj = {
+    color: fontcolor,
+    fontSize: fontsize,
+  };
+  const bgrStyleObj = {
+    width: 400,
+    height: 400,
+    backgroundColor: color,
+  };
 
-  componentDidUpdate() {
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const { url, color, text, opt } = this.props;
-    const drawText = this.drawText;
-    if (opt) {
-      const imgObj = new Image();
-      imgObj.onload = function () {
-        ctx.drawImage(imgObj, 0, 0);
-        drawText(text);
-      };
-      imgObj.src = url;
-    } else {
-      console.log("in canvas", color);
-      ctx.fillStyle = color;
-      ctx.fillRect(0, 0, 400, 400);
-      this.drawText(text);
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <canvas
-          id="canvas"
-          width="400"
-          height="400"
-          ref={this.canvasRef}
-          //   onClick={}
-        ></canvas>
+  return (
+    <div>
+      <div id="canvas" width="400" height="400" ref={canvasRef}>
+        {opt ? (
+          <img src={url} style={bgrStyleObj} />
+        ) : (
+          <div style={bgrStyleObj} />
+        )}
+        <textarea value={text} style={textStyleObj} />
       </div>
-    );
-  }
+      <button onClick={completeImgUpload}></button>
+    </div>
+  );
 }
+
+//   [ img, text, bgropt]
+//   맨 위에 div
+//   그 아래에 img(img)/color(div) - 각각 hidden, textarea
+//   - img 비율 조정, 위치 조정/color
+//   - textarea 크기 조정, 폰트/크기/굵게/
+//   => 저장을 domtoimage => 파일은 Submit => 다시 프리뷰 + 코멘트 저장
+//   => 첫 이미지는?
+
+// textAlign
 
 export default Canvas;
