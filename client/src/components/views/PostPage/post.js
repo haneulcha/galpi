@@ -10,11 +10,11 @@ const Post = () => {
   const [backgroundOpt, setbackgroundOpt] = useState(false);
   const [text, setText] = useState("인용 한 구절");
 
-  function imgUpload(e) {
+  function firstImgUpload(e) {
     const img = e.target.files[0];
     const formData = new FormData();
-    formData.append("img", img);
-    axios.post("/api/post/img", formData).then((res) => {
+    formData.append("bgr-img", img);
+    axios.post("/api/post/bgr-img", formData).then((res) => {
       console.log(res);
       setImgurl(res.data.url);
     });
@@ -40,23 +40,29 @@ const Post = () => {
         src={imgUrl}
         onClick={() => setbackgroundOpt(true)}
       />
-      <label for="canvas-color">배경 색상</label>
+      <label htmlFor="canvas-color">배경 색상</label>
       <input type="color" id="canvas-color" onChange={colorPick} />
 
-      <label for="font-size">글씨 크기</label>
+      <label htmlFor="font-size">글씨 크기</label>
       <input
         type="range"
         id="font-size"
         min={10}
         max={30}
-        onChange={setFontsize}
+        step={1}
+        value={fontsize}
+        onChange={(e) => setFontsize(e.target.value)}
       />
 
-      <label for="font-color">글씨 색상</label>
-      <input type="color" id="font-color" onChange={setFontcolor} />
+      <label htmlFor="font-color">글씨 색상</label>
+      <input
+        type="color"
+        id="font-color"
+        onChange={(e) => setFontcolor(e.target.value)}
+      />
 
       <form method="post" action="/post" encType="multipart/form-data">
-        <input type="file" accept="image/*" onChange={imgUpload} />
+        <input type="file" accept="image/*" onChange={firstImgUpload} />
         <input type="hidden" name="url" value={imgUrl} />
         {/* <textarea name="content" maxLength={1000}></textarea> */}
         <button type="submit">올리기</button>
@@ -69,11 +75,12 @@ const Post = () => {
         text={text}
         fontcolor={fontcolor}
         fontsize={fontsize}
+        setText={setText}
       />
-      <textarea
+      {/* <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-      ></textarea>
+      ></textarea> */}
     </div>
   );
 };

@@ -9,6 +9,9 @@ const pageRouter = require("./routes/page");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
 
+// 배경
+app.use("/api/bgr-img", express.static(path.join(__dirname, "bgrImg")));
+// 글 + 배경
 app.use("/api/img", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

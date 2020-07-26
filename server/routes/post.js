@@ -12,8 +12,34 @@ fs.readdir("uploads", (error) => {
   }
 });
 
+fs.readdir("bgrImg", (error) => {
+  if (error) {
+    console.error("bgrImg 폴더가 없어 bgrImg 폴더를 생성합니다");
+    fs.mkdirSync("bgrImg");
+  }
+});
+
 // 미들웨어를 만드는 객체
 const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, "bgrImg/"); //
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+//배경 이미지 업로드
+router.post("/bgr-img", upload.single("bgr-img"), (req, res) => {
+  console.log(req.file);
+  res.json({ url: `/api/bgr-img/${req.file.filename}` });
+});
+
+const upload2 = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
       cb(null, "uploads/"); //
@@ -27,14 +53,14 @@ const upload = multer({
 });
 
 //이미지 업로드 처리하는 라우터; 하나의 이미지 -> req.file, 나머지 -> req.body
-router.post("/img", upload.single("img"), (req, res) => {
+router.post("/img", upload2.single("img"), (req, res) => {
   console.log(req.file);
   res.json({ url: `/api/img/${req.file.filename}` });
 });
 
 //게시글 업로드를 처리하는 라우터; 데이터만 multipart 형식으로 -> req.body
-const upload2 = multer();
-router.post("/", upload2.none(), async (req, res, next) => {
+const upload3 = multer();
+router.post("/", upload3.none(), async (req, res, next) => {
   try {
     const post = new Post({
       content: req.body.content,

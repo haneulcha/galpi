@@ -4,3 +4,5 @@ dist/
 coverage/
 .vscode/
 .env
+uploads/
+bgrImg/
