@@ -9,9 +9,9 @@ const postSchema = new Schema({
   },
   content: {
     type: String,
-    required: true,
   },
   image: {
+    required: true,
     type: String,
   },
   createdAt: {
