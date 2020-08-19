@@ -5,7 +5,22 @@ import axios from "axios";
 const Canvas = (props) => {
   const canvasRef = useRef();
 
-  function secondUpload(blob) {
+  const postContent = (url) => {
+    console.log("we're in postContent", url);
+    let data = {
+      content,
+      url,
+    };
+    console.log("data is", data);
+    axios
+      .post("/api/post", data)
+      .then((res) => {
+        console.log("posting finished", res.data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const postImage = (blob) => {
     const img = blob;
     const formData = new FormData();
     formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
@@ -17,20 +32,31 @@ const Canvas = (props) => {
     axios
       .post("/api/post/img", formData, config)
       .then((res) => {
-        console.log(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
+        console.log("after image posting", res.data.url);
+        postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
       })
       .catch((err) => console.error(err));
-  }
+  };
 
-  const combinedImgUpload = () => {
+  const domToImage = () => {
     const canvasDiv = canvasRef.current;
     domtoimage.toBlob(canvasDiv).then((blob) => {
-      console.log(blob);
-      secondUpload(blob);
+      console.log("blob", blob);
+      postImage(blob);
     });
   };
 
-  const { url, color, opt, text, fontcolor, fontsize, setText } = props;
+  const {
+    url,
+    color,
+    opt,
+    quote,
+    fontcolor,
+    fontsize,
+    setQuote,
+    content,
+    setContent,
+  } = props;
 
   const canvasStyleObj = {
     width: 400,
@@ -54,6 +80,8 @@ const Canvas = (props) => {
     position: "absolute",
     top: "50%",
     left: "50%",
+    border: "none",
+    overflow: "auto",
     transform: "translate(-50%, -50%)",
   };
 
@@ -62,7 +90,7 @@ const Canvas = (props) => {
       <div id="canvas" style={canvasStyleObj} ref={canvasRef}>
         {opt ? (
           <div className="canvas-bgr" style={bgrStyleObj}>
-            <img src={url} />
+            <img src={url} alt="background for quote lines" />
           </div>
         ) : (
           <div className="canvas-bgr" style={bgrStyleObj} />
@@ -70,25 +98,18 @@ const Canvas = (props) => {
         <textarea
           id="canvas-text"
           position="absolute"
-          value={text}
+          value={quote}
           style={textStyleObj}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => setQuote(e.target.value)}
         />
       </div>
-
-      <button onClick={combinedImgUpload}>이미지 업로드</button>
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      ></textarea>
+      <button onClick={domToImage}>업로드</button>
     </div>
   );
 };
-
-//   [ img, text, bgropt]
-//   맨 위에 div
-//   그 아래에 img(img)/color(div) - 각각 hidden, textarea
-//   - img 비율 조정, 위치 조정/color
-//   - textarea 크기 조정, 폰트/크기/굵게/
-//   => 저장을 domtoimage => 파일은 Submit => 다시 프리뷰 + 코멘트 저장
-//   => 첫 이미지는?
-
-// textAlign
 
 export default Canvas;

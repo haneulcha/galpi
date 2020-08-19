@@ -1,29 +1,23 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Canvas from "./canvas";
 
 const Post = () => {
-  const [imgUrl, setImgurl] = useState();
+  const [imgUrl, setImgurl] = useState(); // preview
   const [color, setColor] = useState("#e79797");
   const [fontsize, setFontsize] = useState(15);
   const [fontcolor, setFontcolor] = useState("white");
   const [backgroundOpt, setbackgroundOpt] = useState(false);
-  const [text, setText] = useState("인용 한 구절");
+  const [quote, setQuote] = useState("인용 한 구절");
+  const [content, setContent] = useState();
 
   function previewUpload(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
     let url = reader.readAsDataURL(file); // 파읽을 읽어 버퍼에 저장
-
+    console.log("preview url", url);
     reader.onloadend = () => {
       setImgurl(reader.result);
     };
-    // const formData = new FormData();
-    // formData.append("bgr-img", img);
-    // axios.post("/api/post/bgr-img", formData).then((res) => {
-    //   console.log(res);
-    //   setImgurl(res.data.url);
-    // });
     setbackgroundOpt(true);
     setColor();
   }
@@ -45,6 +39,7 @@ const Post = () => {
         }
         src={imgUrl}
         onClick={() => setbackgroundOpt(true)}
+        alt="background for quote lines"
       />
       <label htmlFor="canvas-color">배경 색상</label>
       <input type="color" id="canvas-color" onChange={colorPick} />
@@ -64,23 +59,22 @@ const Post = () => {
         id="font-color"
         onChange={(e) => setFontcolor(e.target.value)}
       />
-      // 배경 이미지 업로드
+
       <form>
+        {"배경 이미지 업로드"}
         <input type="file" accept="image/*" onChange={previewUpload} />
       </form>
       <Canvas
         url={imgUrl}
         color={color}
         opt={backgroundOpt}
-        text={text}
         fontcolor={fontcolor}
         fontsize={fontsize}
-        setText={setText}
+        quote={quote}
+        setQuote={setQuote}
+        content={content}
+        setContent={setContent}
       />
-      {/* <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      ></textarea> */}
     </div>
   );
 };

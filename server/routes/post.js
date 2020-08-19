@@ -32,13 +32,14 @@ router.post("/img", upload.single("img"), (req, res) => {
 });
 
 //게시글 업로드를 처리하는 라우터; 데이터만 multipart 형식으로 -> req.body
-const upload3 = multer();
-router.post("/", upload3.none(), async (req, res, next) => {
+const upload2 = multer();
+router.post("/", upload2.none(), async (req, res, next) => {
+  console.log("who is user", req.user);
   try {
     const post = new Post({
       content: req.body.content,
       image: req.body.url,
-      user: req.user._id, // 다시 확인
+      user: req.user._id || "none", // 다시 확인 반드시 수정 ~ !!!
     });
     await post.save();
     res.redirect("/");
