@@ -5,8 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-const pageRouter = require("./routes/page");
-const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 const postRouter = require("./routes/post");
 
 // 배경
@@ -28,8 +27,7 @@ mongoose
   .then(() => console.log("MongoDB Connected ..."))
   .catch((err) => console.log(err));
 
-app.use("/api", pageRouter);
-app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 app.use("/api/post", postRouter);
 
 // app.use((req, res, next) => {

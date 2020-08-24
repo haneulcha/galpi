@@ -31,10 +31,11 @@ router.get("/", auth, (req, res) => {
 });
 
 //회원가입
-router.post("/join", (req, res) => {
+router.post("/register", (req, res) => {
   const user = new User(req.body);
 
   user.save((err, userInfo) => {
+    console.log(userInfo);
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
       success: true,

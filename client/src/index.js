@@ -12,8 +12,8 @@ ReactDOM.render(
     <Router>
       <Home path="/" />
       <Post path="/post" />
-      <Register path="/register" />
-      <Login path="/login" />
+      <Register path="/users/register" />
+      <Login path="/users/login" />
     </Router>
   </React.StrictMode>,
   document.getElementById("root")
