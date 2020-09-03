@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../../_actions/user_action";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
@@ -19,9 +21,15 @@ const Register = () => {
       username,
     };
 
-    axios
-      .post("/api/users/register", body)
-      .then((res) => console.log(res.data));
+    dispatch(registerUser(body)).then((res) => {
+      if (res.payload.success) {
+        console.log("register success");
+        console.log("res.payload", res.payload); // {success: true}
+        // props.history.push("/login");
+      } else {
+        alert("failed to register");
+      }
+    });
   };
 
   const setToEmail = (e) => {
