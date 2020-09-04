@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../_actions/user_action";
+
 const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,7 +15,7 @@ const Login = () => {
       password,
     };
 
-    axios.post("/api/users/login", body).then((res) => console.log(res));
+    dispatch(loginUser(body)).then((res) => console.log("after login", res));
   };
 
   const setToEmail = (e) => {

@@ -60,16 +60,19 @@ router.post("/login", (req, res) => {
           loginSuccess: false,
           massage: "비밀번호가 틀렸습니다.",
         });
+
+      user.generateToken((err, user) => {
+        if (err) {
+          return res.status(400).send(err);
+        } else {
+          return res
+            .cookie("x_auth", user.token)
+            .status(200)
+            .json({ loginSuccess: true, userId: user._id });
+        }
+      });
     });
     // 토큰 생성해서 쿠키에 저장
-    user.generateToken((err, user) => {
-      console.log(user.token);
-      if (err) return res.status(400).send(err);
-      res
-        .cookie("x_auth", user.token)
-        .status(200)
-        .json({ loginSuccess: true, userId: user._id });
-    });
   });
 });
 
