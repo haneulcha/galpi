@@ -24,6 +24,8 @@ export function loginUser(dataToSubmit) {
   };
 }
 
+//logout
+
 export function auth() {
   const request = axios.get("/api/users/auth").then((res) => res.data);
 

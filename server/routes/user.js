@@ -9,15 +9,16 @@ let auth = (req, res, next) => {
   // 토큰으로 유저 찾기 => req에 토큰과 user 저장
   User.findByToken(token, (err, user) => {
     if (err) throw err;
+    // 로그인하지 않은 상태
     if (!user) return res.json({ isAuth: false, error: true });
-    console.log(req.token, req.user);
+
     req.token = token;
     req.user = user;
     next();
   });
 };
 
-router.get("/", auth, (req, res) => {
+router.get("/auth", auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
     isAdmin: req.user.role === 0 ? false : true,
@@ -78,7 +79,6 @@ router.post("/login", (req, res) => {
 
 //로그아웃 - 로그인을 해야 로그아웃이 가능
 router.get("/logout", auth, (req, res) => {
-  console.log(req);
   User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
