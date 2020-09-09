@@ -12,9 +12,9 @@ code {
 }
 
 :root {
-  --bg: #242526;
-  --bg-accent: #484a4d;
-  --text-color: #dadce1;
+  --bg: #c8d4e0;
+  --bg-accent: #9db5d8;
+  --text-color: #000000;
   --nav-size: 60px;
   --border: 1px solid #474a4d;
   --border-radius: 8px;
@@ -37,6 +37,16 @@ a {
   background-color: var(--bg);
   padding: 0 1rem;
   border-bottom: var(--border);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nav-title-text {
+  max-width: 100%;
+  height: 100%;
+  font-size: 2.3rem;
+  color: var(--text-color);
 }
 
 /* <ul> */
@@ -44,24 +54,24 @@ a {
   max-width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* 오르쪽으로 몰림 */
 }
-
 /* <li> */
 .nav-item {
-  width: calc(var(--nav-size) * 0.8);
+  width: calc(var(--nav-size) * 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 3px;
 }
 
 /* Icon Button */
 .icon-button {
-  --button-size: calc(var(--nav-size) * 0.5);
+  --button-size: calc(var(--nav-size) * 0.6);
   width: var(--button-size);
   height: var(--button-size);
-  background-color: #484a4d;
-  border-radius: 50%;
+  /* background-color: #484a4d;
+  border-radius: 50%; */
   padding: 5px;
   margin: 2px;
   display: flex;
@@ -75,8 +85,8 @@ a {
 }
 
 .icon-button svg {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
 }
 
 /* Dropdown Menu */
