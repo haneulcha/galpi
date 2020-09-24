@@ -1,9 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const path = require("path");
-const fs = require("fs");
-const multer = require("multer");
-const { Post } = require("../models/Post");
+import express from "express";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import { Post } from "../models/index.js";
+import { auth, catchAsync } from "../middleware/index.js";
+
+import { validate, postSchema } from "../validation/index.js";
+
+const { Router } = express;
+const router = Router();
 
 fs.readdir("uploads", (error) => {
   if (error) {
@@ -26,27 +31,33 @@ const upload = multer({
 });
 
 //이미지 업로드 처리하는 라우터; 하나의 이미지 -> req.file, 나머지 -> req.body
-router.post("/img", upload.single("img"), (req, res) => {
+router.post("/api/img", auth, upload.single("img"), (req, res) => {
   console.log(req.file);
   res.json({ url: `/api/img/${req.file.filename}` });
 });
 
 //게시글 업로드를 처리하는 라우터; 데이터만 multipart 형식으로 -> req.body
 const upload2 = multer();
-router.post("/", upload2.none(), async (req, res, next) => {
-  console.log("who is user", req.user);
-  try {
-    const post = new Post({
-      content: req.body.content,
-      image: req.body.url,
-      user: req.user._id || "none", // 다시 확인 반드시 수정 ~ !!!
-    });
-    await post.save();
-    res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
+router.post(
+  "/api/post",
+  // auth,
+  upload2.none(),
+  catchAsync(async (req, res) => {
+    const { content, image } = req.body;
 
-module.exports = router;
+    const data = {
+      content,
+      image,
+      user: req.session.userId,
+    };
+    console.log(data);
+
+    await validate(postSchema, data);
+
+    await Post.create(data);
+
+    res.json({ message: "uploaded" });
+  })
+);
+
+export default router;

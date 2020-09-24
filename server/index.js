@@ -1,48 +1,14 @@
-const express = require("express");
-const app = express();
-const port = 5000;
-const path = require("path");
-const cookieParser = require("cookie-parser");
-require("dotenv").config();
+import mongoose from "mongoose";
+import { createApp } from "./app.js";
+import { APP_PORT, MONGO_OPTION } from "./config/index.js";
+import dotenv from "dotenv";
 
-const userRouter = require("./routes/user");
-const postRouter = require("./routes/post");
+(async () => {
+  dotenv.config();
 
-// 배경
-app.use("/api/bgr-img", express.static(path.join(__dirname, "bgrImg")));
-// 글 + 배경
-app.use("/api/img", express.static(path.join(__dirname, "uploads")));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cookieParser(process.env.COOKIE_SECRET));
+  await mongoose.connect(process.env.MONGO_URI, MONGO_OPTION);
 
-const mongoose = require("mongoose");
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
-  .then(() => console.log("MongoDB Connected ..."))
-  .catch((err) => console.log(err));
+  const app = createApp();
 
-app.use("/api/users", userRouter);
-app.use("/api/post", postRouter);
-
-app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-});
-
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-  res.status(err.status || 500);
-  res.send("error");
-});
-
-app.listen(port, () =>
-  console.log(`This App listening at http://localhost:${port}`)
-);
+  app.listen(APP_PORT, () => console.log(`http://localhost:${APP_PORT}`));
+})();

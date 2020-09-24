@@ -6,3 +6,4 @@ coverage/
 .env
 uploads/
 bgrImg/
+config
