@@ -3,6 +3,7 @@ import { logIn, logOut } from "../auth.js";
 import { User } from "../models/index.js";
 import { validate, loginSchema } from "../validation/index.js";
 import { auth, catchAsync, guest } from "../middleware/index.js";
+import { Unauthorized } from "../errors/index.js";
 
 const { Router } = express;
 const router = Router();
@@ -18,11 +19,14 @@ router.post(
     const user = await User.findOne({ email });
 
     if (!user || !(await user.matchesPassword(password))) {
-      throw new Unauthorized("Incorrect email or password");
+      return res.json({
+        message: "failed",
+      });
+      // throw new Unauthorized("Incorrect email or password");
     }
 
     logIn(req, user.id);
-
+    console.log(req.session);
     res.json({ message: "OK" });
   })
 );

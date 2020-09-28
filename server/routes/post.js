@@ -31,8 +31,7 @@ const upload = multer({
 });
 
 //이미지 업로드 처리하는 라우터; 하나의 이미지 -> req.file, 나머지 -> req.body
-router.post("/api/img", auth, upload.single("img"), (req, res) => {
-  console.log(req.file);
+router.post("/api/post/img", upload.single("img"), (req, res) => {
   res.json({ url: `/api/img/${req.file.filename}` });
 });
 
@@ -40,22 +39,19 @@ router.post("/api/img", auth, upload.single("img"), (req, res) => {
 const upload2 = multer();
 router.post(
   "/api/post",
-  // auth,
+  auth,
   upload2.none(),
   catchAsync(async (req, res) => {
-    const { content, image } = req.body;
+    const { content, url } = req.body;
 
     const data = {
       content,
-      image,
+      url,
       user: req.session.userId,
     };
-    console.log(data);
 
     await validate(postSchema, data);
-
     await Post.create(data);
-
     res.json({ message: "uploaded" });
   })
 );

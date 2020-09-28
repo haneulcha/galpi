@@ -27,7 +27,7 @@ const Login = () => {
 
   return (
     <div>
-      <h2>로그인</h2>
+      <h1>로그인</h1>
       <form>
         <label htmlFor="email">이메일</label>
         <input id="email" value={email} onChange={setToEmail} />

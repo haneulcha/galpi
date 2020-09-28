@@ -11,19 +11,17 @@ export default function (SpecificComponent, option, adminRoute = null) {
     const dispatch = useDispatch();
     useEffect(() => {
       dispatch(auth()).then((res) => {
-        if (!res.payload.isAuth) {
-          // 로그인 하지 않은 상태
+        if (!res.payload._id) {
           if (option) {
-            // props.history.push("/login");
+            props.history.push("/login");
           }
         } else {
-          //로그인 한 상태
           if (adminRoute && !res.payload.isAdmin) {
-            // props.history.push("/");
+            props.history.push("/");
           } else {
-            // if (option === false) {
-            //   props.history.push("/");
-            // }
+            if (option === false) {
+              props.history.push("/");
+            }
           }
         }
       });

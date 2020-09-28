@@ -1,13 +1,17 @@
 import express from "express";
 import session from "express-session"; // req.session 객체를 생성, 현재 세션의 아이디는 req.sessionID
+import cors from "cors";
+import path from "path";
 import { SESSION_OPTION } from "./config/index.js";
 import { catchAsync, notFound, serverError } from "./middleware/index.js";
 import { register, login, home, post } from "./routes/index.js";
 import { active } from "./middleware/index.js";
 
 export const createApp = () => {
+  const __dirname = path.resolve();
   const app = express();
 
+  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(
@@ -16,6 +20,8 @@ export const createApp = () => {
       // store
     })
   );
+
+  app.use("/api/img", express.static(path.join(__dirname, "uploads")));
 
   app.use(catchAsync(active));
 

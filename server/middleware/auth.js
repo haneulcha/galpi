@@ -11,9 +11,18 @@ export const guest = (req, res, next) => {
 
 export const auth = (req, res, next) => {
   if (!isLoggedIn(req)) {
-    return next(new Unauthorized("You must be logged in")); //401
+    res.json({ message: "You must be logged in" });
+    // return next(new Unauthorized("You must be logged in")); //401
   }
   next();
+};
+
+export const who = (req, res, next) => {
+  if (isLoggedIn(req)) {
+    next();
+  } else {
+    return res.json({ isAuth: false, error: true });
+  }
 };
 
 export const active = async (req, res, next) => {

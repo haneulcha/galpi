@@ -20,7 +20,8 @@ router.post(
     const found = await User.exists({ email });
 
     if (found) {
-      throw new BadRequest("Invalid Email");
+      res.json({ message: "Invalid Email" });
+      // throw new BadRequest("Invalid Email");
     }
 
     const user = await User.create({

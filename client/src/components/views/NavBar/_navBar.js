@@ -57,7 +57,7 @@ const DropdownMenu = () => {
   useEffect(() => {
     dispatch(auth()).then((res) => {
       console.log(res.payload);
-      if (!res.payload.isAuth) {
+      if (!res.payload._id) {
         // 로그인 하지 않은 상태
         setLoggedIn(false);
       } else {

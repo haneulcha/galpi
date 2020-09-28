@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Input } from "antd";
 import domtoimage from "dom-to-image";
 import axios from "axios";
 
@@ -13,7 +14,7 @@ const Canvas = (props) => {
     };
     console.log("data is", data);
     axios
-      .post("/api/post", data)
+      .post("http://localhost:5000/api/post", data)
       .then((res) => {
         console.log("posting finished", res.data);
       })
@@ -30,7 +31,7 @@ const Canvas = (props) => {
       },
     };
     axios
-      .post("/api/post/img", formData, config)
+      .post("http://localhost:5000/api/post/img", formData, config)
       .then((res) => {
         console.log("after image posting", res.data.url);
         postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
@@ -85,28 +86,43 @@ const Canvas = (props) => {
     transform: "translate(-50%, -50%)",
   };
 
+  const { TextArea } = Input;
+
   return (
     <div>
       <div id="canvas" style={canvasStyleObj} ref={canvasRef}>
         {opt ? (
           <div className="canvas-bgr" style={bgrStyleObj}>
-            <img src={url} alt="background for quote lines" />
+            <img
+              src={url}
+              alt="background for quote lines"
+              width="400"
+              height="400"
+            />
           </div>
         ) : (
           <div className="canvas-bgr" style={bgrStyleObj} />
         )}
-        <textarea
+        <TextArea
+          value={quote}
+          onChange={(e) => setQuote(e.target.value)}
+          autoSize={true}
+          defaultValue={`여기에 인용할 문구를 입력하세요`}
+          style={textStyleObj}
+        />
+        {/* <textarea
           id="canvas-text"
           position="absolute"
           value={quote}
           style={textStyleObj}
           onChange={(e) => setQuote(e.target.value)}
-        />
+        /> */}
       </div>
-      <textarea
+      <TextArea value={content} onChange={(e) => setContent(e.target.value)} />
+      {/* <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-      ></textarea>
+      ></textarea> */}
       <button onClick={domToImage}>업로드</button>
     </div>
   );

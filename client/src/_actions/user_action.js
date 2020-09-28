@@ -1,8 +1,9 @@
 import axios from "axios";
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "./types";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from "./types";
+const baseUrl = `http://localhost:5000`;
 
 export function registerUser(body) {
-  const request = axios.post("/api/users/register", body).then((res) => {
+  const request = axios.post(`${baseUrl}/api/register`, body).then((res) => {
     console.log(res.data); // { success: true/false }
     return res.data;
   });
@@ -15,7 +16,7 @@ export function registerUser(body) {
 
 export function loginUser(dataToSubmit) {
   const request = axios
-    .post("/api/users/login", dataToSubmit)
+    .post(`${baseUrl}/api/login`, dataToSubmit)
     .then((res) => res.data);
 
   return {
@@ -24,10 +25,17 @@ export function loginUser(dataToSubmit) {
   };
 }
 
-//logout
+export const logOutUser = () => {
+  const request = axios.post(`${baseUrl}/api/logout`).then((res) => res.data);
+
+  return {
+    type: LOGOUT_USER,
+    payload: request,
+  };
+};
 
 export function auth() {
-  const request = axios.get("/api/users/auth").then((res) => res.data);
+  const request = axios.get(`${baseUrl}/api/auth`).then((res) => res.data);
 
   return {
     type: AUTH_USER,

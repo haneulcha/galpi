@@ -1,4 +1,9 @@
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "../_actions/types";
+import {
+  LOGIN_USER,
+  REGISTER_USER,
+  AUTH_USER,
+  LOGOUT_USER,
+} from "../_actions/types";
 
 export default function (state = {}, action) {
   console.log("state", state);
@@ -11,6 +16,9 @@ export default function (state = {}, action) {
 
     case LOGIN_USER:
       return { ...state, loginSuccess: action.payload };
+
+    case LOGOUT_USER:
+      return { ...state, logoutSuccess: action.payload };
 
     case AUTH_USER:
       return { ...state, userData: action.payload };
