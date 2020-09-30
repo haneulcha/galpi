@@ -1,82 +1,118 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Canvas from "./canvas";
-import { Slider } from "antd";
+import { Slider, Button, Divider } from "antd";
 import { Preview } from "./preview";
 import { BgrColorPicker } from "./bgrColorpicker";
 import { FontColorPicker } from "./fontColorpicker";
+import domtoimage from "dom-to-image";
+import axios from "axios";
 
 const Post = () => {
   const [url, setUrl] = useState(); // preview
-  const [color, setColor] = useState("#e79797");
-  const [fontsize, setFontsize] = useState(16);
-  const [fontcolor, setFontcolor] = useState("white");
+  const [color, setColor] = useState("#f1f2f6");
+  const [fontsize, setFontsize] = useState(14);
+  const [fontcolor, setFontcolor] = useState("black");
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
   const [content, setContent] = useState();
 
-  // function previewUpload(e) {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   let url = reader.readAsDataURL(file); // 파읽을 읽어 버퍼에 저장
-  //   console.log("preview url", url);
-  //   reader.onloadend = () => {
-  //     setImgurl(reader.result);
-  //   };
-  //   setbackgroundOpt(true);
-  //   setColor();
-  // }
+  const canvasRef = useRef();
 
-  // function colorPick(e) {
-  //   console.log(e.target.value);
-  //   setColor(e.target.value);
-  //   setOpt(false);
-  // }
+  const postContent = (url) => {
+    console.log("we're in postContent", url);
+    let data = {
+      content,
+      url,
+    };
+    console.log("data is", data);
+    axios
+      .post("http://localhost:5000/api/post", data)
+      .then((res) => {
+        console.log("posting finished", res.data);
+      })
+      .catch((err) => console.error(err));
+  };
 
-  // const ref = React.createRef();
+  const postImage = (blob) => {
+    const img = blob;
+    const formData = new FormData();
+    formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
+    let config = {
+      header: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+    axios
+      .post("http://localhost:5000/api/post/img", formData, config)
+      .then((res) => {
+        console.log("after image posting", res.data.url);
+        postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
+      })
+      .catch((err) => console.error(err));
+  };
+  const domToImage = () => {
+    const canvasDiv = canvasRef.current;
+    domtoimage.toBlob(canvasDiv).then((blob) => {
+      console.log("blob", blob);
+      postImage(blob);
+    });
+  };
 
-  const sliderStyle = {
-    width: "300px",
-    heigh: "50px",
+  const labelStyle = {
+    display: "none",
   };
 
   useEffect(() => setOpt(true), [url]);
   useEffect(() => setOpt(false), [color]);
 
   return (
-    <div>
+    <div className="post paper">
       <h1>갈피 남기기</h1>
-
+      <Divider />
       <div className="canvas-opt">
         <div className="canvas-background">
-          {/* <label htmlFor="canvas-image">배경 이미지</label> */}
-          <Preview
-            url={url}
-            setUrl={setUrl}
-            setOpt={setOpt}
-            setColor={setColor}
-            id="canvas-image"
-          />
-          <label htmlFor="canvas-color">배경색</label>
-          <BgrColorPicker setColor={setColor} color={color} />
+          <div className="bgr-image">
+            <label htmlFor="canvas-image" style={labelStyle}>
+              배경 이미지
+            </label>
+            <Preview
+              url={url}
+              setUrl={setUrl}
+              setOpt={setOpt}
+              id="canvas-image"
+            />
+          </div>
+
+          <div className="bgr-color">
+            <label htmlFor="canvas-color">배경색</label>
+            <BgrColorPicker
+              setColor={setColor}
+              color={color}
+              id="canvas-color"
+            />
+          </div>
         </div>
 
         <div className="canvas-font">
-          <label htmlFor="font-size">글씨 크기</label>
+          <label htmlFor="font-size" style={labelStyle}>
+            글씨 크기
+          </label>
           <Slider
             id="font-size"
             min={5}
-            max={40}
+            max={50}
             step={1}
             defaultValue={16}
             onChange={(val) => setFontsize(val)}
-            style={sliderStyle}
+            className="font-slider"
           />
-          <label htmlFor="font-color">글씨 색상</label>
-
+          <label htmlFor="font-color" style={labelStyle}>
+            글씨 색상
+          </label>
           <FontColorPicker setColor={setFontcolor} color={fontcolor} />
         </div>
       </div>
-
+      <Divider />
       <Canvas
         url={url}
         color={color}
@@ -87,7 +123,26 @@ const Post = () => {
         setQuote={setQuote}
         content={content}
         setContent={setContent}
+        canvasRef={canvasRef}
       />
+      <Divider />
+      <div className="quote">
+        <label htmlFor="content" style={labelStyle}>
+          코멘트
+        </label>
+        <textarea
+          className="content-textarea"
+          name="content"
+          value={content}
+          rows="5"
+          // maxLength=
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="작가, 책 제목, 간단한 소감 등을 남겨주세요"
+        />
+      </div>
+      <div className="upload-btn">
+        <Button onClick={domToImage}>업로드</Button>
+      </div>
     </div>
   );
 };

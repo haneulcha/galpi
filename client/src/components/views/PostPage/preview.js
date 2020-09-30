@@ -24,7 +24,7 @@ const beforeUpload = (file) => {
 
 export const Preview = (props) => {
   const [loading, setLoading] = useState(false);
-  const { url, setUrl, setColor, setOpt } = props;
+  const { url, setUrl, setOpt } = props;
 
   const dummyRequest = ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -49,7 +49,7 @@ export const Preview = (props) => {
   const uploadBtn = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>배경 이미지</div>
+      <div style={{ marginTop: 8, fontSize: "0.75em" }}>배경 이미지</div>
     </div>
   );
 
@@ -57,14 +57,18 @@ export const Preview = (props) => {
     <Upload
       name="background-img"
       listType="picture-card"
-      className="img-uploader"
       showUploadList={false}
       beforeUpload={beforeUpload}
       onChange={handleChange}
       customRequest={dummyRequest}
+      className="preview-image"
     >
       {url ? (
-        <img src={url} alt="preview" style={{ width: "100%" }} />
+        <img
+          src={url}
+          alt="preview"
+          style={{ width: "100%", height: "100%" }}
+        />
       ) : (
         uploadBtn
       )}

@@ -10,14 +10,11 @@ export const BgrColorPicker = (props) => {
     console.log(color.hex);
   };
 
-  const style = {
-    width: "300px",
-    heigt: "50px",
-  };
-
   return (
-    <div style={style}>
-      <SliderPicker color={color} onChange={handleColor} />
-    </div>
+    <SliderPicker
+      color={color}
+      onChange={handleColor}
+      className="bgr-colorpicker"
+    />
   );
 };

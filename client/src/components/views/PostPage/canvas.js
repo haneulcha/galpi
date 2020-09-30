@@ -1,51 +1,18 @@
-import React, { useRef } from "react";
-import { Input } from "antd";
-import domtoimage from "dom-to-image";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const Canvas = (props) => {
-  const canvasRef = useRef();
+  const [resize, setResize] = useState("none");
+  const [quoteTop, setQuoteTop] = useState(200);
+  const [quoteLeft, setQuoteLeft] = useState(200);
+  const [quoteCursor, setQuoteCursor] = useState("grab");
+  const [imgTop, setImgTop] = useState(0);
+  const [imgLeft, setImgLeft] = useState(0);
+  const [imgCursor, setImgCursor] = useState("move");
+  const [imgFit, setImgFit] = useState(true);
+  const [curX, setCurX] = useState();
+  const [curY, setCurY] = useState();
 
-  const postContent = (url) => {
-    console.log("we're in postContent", url);
-    let data = {
-      content,
-      url,
-    };
-    console.log("data is", data);
-    axios
-      .post("http://localhost:5000/api/post", data)
-      .then((res) => {
-        console.log("posting finished", res.data);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const postImage = (blob) => {
-    const img = blob;
-    const formData = new FormData();
-    formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
-    let config = {
-      header: {
-        "Content-type": "multipart/form-data",
-      },
-    };
-    axios
-      .post("http://localhost:5000/api/post/img", formData, config)
-      .then((res) => {
-        console.log("after image posting", res.data.url);
-        postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const domToImage = () => {
-    const canvasDiv = canvasRef.current;
-    domtoimage.toBlob(canvasDiv).then((blob) => {
-      console.log("blob", blob);
-      postImage(blob);
-    });
-  };
+  // const [overflow, setOverflow] = useState();
 
   const {
     url,
@@ -55,75 +22,107 @@ const Canvas = (props) => {
     fontcolor,
     fontsize,
     setQuote,
-    content,
-    setContent,
+    canvasRef,
   } = props;
 
-  const canvasStyleObj = {
-    width: 400,
-    height: 400,
-    position: "relative",
-  };
   const bgrStyleObj = {
-    width: 400,
-    height: 400,
     backgroundColor: color,
-    overflow: "hidden",
+    cursor: imgCursor,
   };
+
   const textStyleObj = {
     color: fontcolor,
-    fontFamily:
-      "'Google Sans', Roboto, Arial, 'Apple SD Gothic Neo', sans-serif",
     fontSize: `${fontsize}px`,
-    fontWeight: "normal",
-    fontHeight: "1.2 em",
-    backgroundColor: "transparent",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    border: "none",
-    overflow: "auto",
-    transform: "translate(-50%, -50%)",
+    resize,
+    top: quoteTop,
+    left: quoteLeft,
+    cursor: quoteCursor,
   };
 
-  const { TextArea } = Input;
+  const imgPos = {
+    objectPosition: `${imgLeft}px ${imgTop}px`,
+    width: `${imgFit ? `100%` : `125%`}`,
+  };
+
+  const handleDragStartQuote = () => {
+    setQuoteCursor("grabbing");
+  };
+
+  const handleDragEndQuote = (e, cbtop, cbleft) => {
+    setQuoteCursor("grab");
+    let parent = e.target.parentElement.getBoundingClientRect();
+
+    const relativeX = e.clientX - parent.x;
+    const relativeY = e.clientY - parent.y;
+
+    cbtop(relativeY);
+    cbleft(relativeX);
+  };
+
+  const handleDragStartImg = (e, cbtop, cbleft) => {
+    setImgCursor("grabbing");
+    const x = e.clientX;
+    const y = e.clientY;
+
+    cbtop(y);
+    cbleft(x);
+  };
+
+  const handleDragEndImg = (e, cbtop, cbleft) => {
+    setImgCursor("move");
+    const x = e.clientX - curX;
+    const y = e.clientY - curY;
+
+    cbtop(imgTop + y);
+    cbleft(imgLeft + x);
+    console.log(imgTop + y, imgLeft + x);
+  };
+
+  useEffect(() => {
+    setImgLeft(0);
+    setImgTop(0);
+  }, [url]);
 
   return (
-    <div>
-      <div id="canvas" style={canvasStyleObj} ref={canvasRef}>
-        {opt ? (
-          <div className="canvas-bgr" style={bgrStyleObj}>
-            <img
-              src={url}
-              alt="background for quote lines"
-              width="400"
-              height="400"
-            />
-          </div>
-        ) : (
-          <div className="canvas-bgr" style={bgrStyleObj} />
-        )}
-        <TextArea
-          value={quote}
-          onChange={(e) => setQuote(e.target.value)}
-          autoSize={true}
-          defaultValue={`여기에 인용할 문구를 입력하세요`}
-          style={textStyleObj}
-        />
-        {/* <textarea
-          id="canvas-text"
-          position="absolute"
-          value={quote}
-          style={textStyleObj}
-          onChange={(e) => setQuote(e.target.value)}
-        /> */}
-      </div>
-      <TextArea value={content} onChange={(e) => setContent(e.target.value)} />
-      {/* <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea> */}
-      <button onClick={domToImage}>업로드</button>
+    <div id="canvas" className="canvas" ref={canvasRef}>
+      {opt ? (
+        <div className="canvas-bgr" style={bgrStyleObj}>
+          <img
+            src={url}
+            alt="background for quote lines"
+            // width="400"
+            // height="400"
+            draggable="true"
+            onDragStart={(e) => {
+              handleDragStartImg(e, setCurY, setCurX);
+            }}
+            onDragEnd={(e) => {
+              handleDragEndImg(e, setImgTop, setImgLeft);
+            }}
+            onDoubleClick={() => setImgFit(!imgFit)}
+            style={imgPos}
+          />
+        </div>
+      ) : (
+        <div className="canvas-bgr" style={bgrStyleObj} />
+      )}
+
+      <textarea
+        className="quote-textarea"
+        value={quote}
+        onChange={(e) => setQuote(e.target.value)}
+        defaultValue={`여기에 마음에 드는 문장을 적어보세요!`}
+        style={textStyleObj}
+        draggable="true"
+        onFocus={() => setResize("both")}
+        onBlur={() => setResize("none")}
+        onDragStart={() => {
+          handleDragStartQuote();
+        }}
+        onDragEnd={(e) => {
+          handleDragEndQuote(e, setQuoteTop, setQuoteLeft);
+        }}
+      />
     </div>
   );
 };

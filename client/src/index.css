@@ -123,14 +123,181 @@ a {
   background-color: #525357;
 }
 
-/* canvas-option */
+/* post - stacked paper */
 
-/* .canvas-opt {
-  display: flex;
-  flex-direction: column;
+.paper {
+  background-color: #fff;
+  /* Need position to allow stacking of pseudo-elements */
+  position: relative;
+  /* Padding for demo purposes */
 }
 
+.paper,
+.paper::before,
+.paper::after {
+  /* Add shadow to distinguish sheets from one another */
+  box-shadow: 2px 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.paper::before,
+.paper::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+}
+
+/* Second sheet of paper */
+.paper::before {
+  left: 7px;
+  top: 5px;
+  z-index: -1;
+}
+
+/* Third sheet of paper */
+.paper::after {
+  left: 12px;
+  top: 10px;
+  z-index: -2;
+}
+
+/* canvas-option */
+
+.post {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: flex-start;
+  width: 500px;
+  /* left: 50%; */
+  margin-left: auto;
+  margin: 0px auto;
+  padding: 1rem 3.125rem;
+}
+.canvas-opt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: flex-start;
+  width: 100%;
+}
+
+.canvas-background {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+}
+
+.bgr-image {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+  margin: 0;
+}
+
+.ant-upload.ant-upload-select-picture-card > .ant-upload {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgr-color {
+  width: 70%;
+  height: 100%;
+}
+
+.bgr-color > label {
+  font-size: 0.8rem;
+  /* margin-bottom: 8px; */
+}
+
+.font-slider {
+  width: 85%;
+  /* height: 50px; */
+}
 .canvas-font {
   display: flex;
-  flex-direction: row;
-} */
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+}
+
+.content {
+  padding: 0 10px;
+}
+.content-textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+}
+
+.upload-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* PostPage/canvas.js */
+
+.canvas {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.canvas-bgr {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas-bgr > img {
+  /* overflow: hidden; */
+  position: absolute;
+  width: 100%;
+  cursor: move;
+  object-fit: cover;
+}
+
+.quote-textarea {
+  font-family: "Google Sans", Roboto, Arial, "Apple SD Gothic Neo", sans-serif;
+  font-weight: normal;
+  line-height: 1.2em;
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: none;
+  resize: both;
+  width: 65%;
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+}
