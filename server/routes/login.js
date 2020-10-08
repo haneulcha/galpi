@@ -3,7 +3,7 @@ import { logIn, logOut } from "../auth.js";
 import { User } from "../models/index.js";
 import { validate, loginSchema } from "../validation/index.js";
 import { auth, catchAsync, guest } from "../middleware/index.js";
-import { Unauthorized } from "../errors/index.js";
+// import { Unauthorized } from "../errors/index.js";
 
 const { Router } = express;
 const router = Router();
@@ -27,7 +27,7 @@ router.post(
 
     logIn(req, user.id);
     console.log(req.session);
-    res.json({ message: "OK" });
+    res.json({ message: "OK", user: user.name });
   })
 );
 

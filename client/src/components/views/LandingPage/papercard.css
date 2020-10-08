@@ -1,0 +1,87 @@
+/* styling paper */
+@font-face {
+  font-family: "Handon3gyeopsal300g";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#paper {
+  width: 1200px;
+  /* height: 700px; */
+  position: relative;
+  margin: 20px auto;
+  padding: 40px 0;
+  background-color: white;
+  box-shadow: 0px 0px 5px 0px #888;
+}
+
+/* styling red vertical line */
+#paper::after {
+  content: "";
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 5%;
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  width: 100%;
+  margin-bottom: 0.1rem;
+  padding: 0 6%;
+}
+/* styling blue horizontal lines */
+#pattern {
+  /* height: 100%; */
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding: 0 0 0 5%;
+  background-origin: content-box;
+  background-image: repeating-linear-gradient(teal 0px, white 2px, white 32px);
+}
+
+.card-image-part {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-image-wrapper {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+.card-image-wrapper > img {
+  width: 100%;
+  height: 100%;
+}
+/* styling text content */
+#content {
+  position: relative;
+  padding: 0 15px;
+  line-height: 32px;
+  font-family: "Handon3gyeopsal300g", cursive;
+  font-size: 20px;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+}
+
+#content h1 {
+  font-size: 20px;
+  color: red;
+  margin: 0;
+}

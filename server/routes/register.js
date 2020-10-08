@@ -15,6 +15,8 @@ router.post(
   catchAsync(async (req, res) => {
     await validate(registerSchema, req.body);
 
+    console.log(req.body);
+
     const { email, username, name, password } = req.body;
 
     const found = await User.exists({ email });
@@ -29,11 +31,12 @@ router.post(
       username,
       name,
       password,
+      role: 1,
     });
 
     logIn(req, user.id);
 
-    res.json({ message: "OK" });
+    res.json({ message: "OK", user: name });
   })
 );
 

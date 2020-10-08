@@ -301,3 +301,47 @@ a {
   transform: translate(-50%, -50%);
   cursor: grab;
 }
+
+/* register page */
+
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.register > h1 {
+  padding: 0 40px 0 40px;
+}
+
+.register-form {
+  width: 400px;
+}
+
+#register > div:last-child {
+  margin-bottom: 0;
+}
+/* login page */
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.login > h1 {
+  padding: 0 40px 0 40px;
+}
+
+.login-form {
+  width: 300px;
+}
+
+#login > div:last-child {
+  margin-bottom: 0;
+}

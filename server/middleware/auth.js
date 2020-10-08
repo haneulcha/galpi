@@ -13,8 +13,7 @@ export const auth = (req, res, next) => {
   if (!isLoggedIn(req)) {
     res.json({ message: "You must be logged in" });
     // return next(new Unauthorized("You must be logged in")); //401
-  }
-  next();
+  } else next();
 };
 
 export const who = (req, res, next) => {

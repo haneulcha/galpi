@@ -12,13 +12,28 @@ export default function (state = {}, action) {
     action.type // key 자리에 type
   ) {
     case REGISTER_USER:
-      return { ...state, register: action.payload };
+      return {
+        ...state,
+        loggedIn: true,
+        user: action.payload.user,
+        register: action.payload.message,
+      };
 
     case LOGIN_USER:
-      return { ...state, loginSuccess: action.payload };
+      return {
+        ...state,
+        loggedIn: true,
+        user: action.payload.user,
+        login: action.payload.message,
+      };
 
     case LOGOUT_USER:
-      return { ...state, logoutSuccess: action.payload };
+      return {
+        ...state,
+        loggedIn: false,
+        user: {},
+        logout: action.payload.message,
+      };
 
     case AUTH_USER:
       return { ...state, userData: action.payload };

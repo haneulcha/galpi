@@ -9,7 +9,7 @@ const email = Joi.string()
   .trim()
   .required();
 const username = Joi.string().min(3).max(128).trim().required();
-const name = Joi.string().min(3).max(128).trim();
+const name = Joi.string().min(1).max(128).trim();
 const password = Joi.string()
   .min(8)
   .max(BCRYPT_MAX_BYTES, "utf8")

@@ -6,8 +6,6 @@ export const BgrColorPicker = (props) => {
 
   const handleColor = (color) => {
     setColor(color.hex);
-
-    console.log(color.hex);
   };
 
   return (

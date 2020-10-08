@@ -10,7 +10,6 @@
     "antd": "^4.6.6",
     "axios": "^0.19.2",
     "dom-to-image": "^2.6.0",
-    "http-proxy-middleware": "^1.0.5",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
