@@ -5,9 +5,11 @@ import { Preview } from "./preview";
 import { BgrColorPicker } from "./bgrColorpicker";
 import { FontColorPicker } from "./fontColorpicker";
 import domtoimage from "dom-to-image";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { contentPost, imgPost } from "../../../_actions/post_action";
 
 const Post = () => {
+  const dispatch = useDispatch();
   const [url, setUrl] = useState(); // preview
   const [color, setColor] = useState("#f1f2f6");
   const [fontsize, setFontsize] = useState(14);
@@ -25,35 +27,36 @@ const Post = () => {
       url,
     };
     console.log("data is", data);
-    axios
-      .post("http://localhost:5000/api/post", data)
-      .then((res) => {
-        console.log("posting finished", res.data);
-      })
+
+    dispatch(contentPost(data))
+      .then((res) => console.log("content", res))
       .catch((err) => console.error(err));
+    // axios
+    //   .post("http://localhost:5000/api/post", data)
+    //   .then((res) => {
+    //     console.log("posting finished", res.data);
+    //   })
   };
 
   const postImage = (blob) => {
     const img = blob;
     const formData = new FormData();
     formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
-    let config = {
-      header: {
-        "Content-type": "multipart/form-data",
-      },
-    };
-    axios
-      .post("http://localhost:5000/api/post/img", formData, config)
-      .then((res) => {
-        console.log("after image posting", res.data.url);
-        postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
-      })
+
+    dispatch(imgPost(formData))
+      .then((res) => postContent(res.payload.url))
       .catch((err) => console.error(err));
+    // axios
+    //   .post("http://localhost:5000/api/post/img", formData, config)
+    //   .then((res) => {
+    //     console.log("after image posting", res.data.url);
+    //     postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
+    //   })
   };
+
   const domToImage = () => {
     const canvasDiv = canvasRef.current;
     domtoimage.toBlob(canvasDiv).then((blob) => {
-      console.log("blob", blob);
       postImage(blob);
     });
   };
