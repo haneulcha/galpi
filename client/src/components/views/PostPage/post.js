@@ -1,152 +1,68 @@
-import React, { useState, useEffect, useRef } from "react";
-import Canvas from "./canvas";
-import { Slider, Button, Divider } from "antd";
-import { Preview } from "./preview";
-import { BgrColorPicker } from "./bgrColorpicker";
-import { FontColorPicker } from "./fontColorpicker";
-import domtoimage from "dom-to-image";
-import { useDispatch } from "react-redux";
-import { contentPost, imgPost } from "../../../_actions/post_action";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import CommentForm from "../../containers/comment-form";
+import { Link } from "react-router-dom";
 
 const Post = () => {
-  const dispatch = useDispatch();
-  const [url, setUrl] = useState(); // preview
-  const [color, setColor] = useState("#f1f2f6");
-  const [fontsize, setFontsize] = useState(14);
-  const [fontcolor, setFontcolor] = useState("black");
-  const [opt, setOpt] = useState(false);
-  const [quote, setQuote] = useState();
-  const [content, setContent] = useState();
+  const { uuid } = useParams();
+  const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
 
-  const canvasRef = useRef();
+  useEffect(() => {
+    async function fetchData() {
+      const postUrl = `http://localhost:5000/api/post/${uuid}`;
+      const commentsUrl = `http://localhost:5000/api/comment/${uuid}`;
+      try {
+        let { postRes } = await axios.get(postUrl);
+        let { commentsRes } = await axios.get(commentsUrl);
+        let { post } = postRes;
+        let { comments } = commentsRes;
 
-  const postContent = (url) => {
-    console.log("we're in postContent", url);
-    let data = {
-      content,
-      url,
-    };
-    console.log("data is", data);
-
-    dispatch(contentPost(data))
-      .then((res) => console.log("content", res))
-      .catch((err) => console.error(err));
-    // axios
-    //   .post("http://localhost:5000/api/post", data)
-    //   .then((res) => {
-    //     console.log("posting finished", res.data);
-    //   })
-  };
-
-  const postImage = (blob) => {
-    const img = blob;
-    const formData = new FormData();
-    formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
-
-    dispatch(imgPost(formData))
-      .then((res) => postContent(res.payload.url))
-      .catch((err) => console.error(err));
-    // axios
-    //   .post("http://localhost:5000/api/post/img", formData, config)
-    //   .then((res) => {
-    //     console.log("after image posting", res.data.url);
-    //     postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
-    //   })
-  };
-
-  const domToImage = () => {
-    const canvasDiv = canvasRef.current;
-    domtoimage.toBlob(canvasDiv).then((blob) => {
-      postImage(blob);
-    });
-  };
-
-  const labelStyle = {
-    display: "none",
-  };
-
-  useEffect(() => setOpt(true), [url]);
-  useEffect(() => setOpt(false), [color]);
+        setPost(post);
+        setComments(comments);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchData();
+  });
 
   return (
-    <div className="post paper">
-      <h1>갈피 남기기</h1>
-      <Divider />
-      <div className="canvas-opt">
-        <div className="canvas-background">
-          <div className="bgr-image">
-            <label htmlFor="canvas-image" style={labelStyle}>
-              배경 이미지
-            </label>
-            <Preview
-              url={url}
-              setUrl={setUrl}
-              setOpt={setOpt}
-              id="canvas-image"
-            />
+    <>
+      {post && (
+        <>
+          <div className="postcard-image">
+            <img src={post.url} alt={`${post.user}의 포스팅`} />
+          </div>
+          <div className="postcard-user">
+            <Link to={`/username/${post.user}`}>{post.user}</Link>
           </div>
 
-          <div className="bgr-color">
-            <label htmlFor="canvas-color">배경색</label>
-            <BgrColorPicker
-              setColor={setColor}
-              color={color}
-              id="canvas-color"
+          <div className="postcard-content">
+            <h3>{post.likeCount}</h3>
+            <p>{post.content}</p>
+          </div>
+          <div className="postcard-comments">
+            {comments && (
+              <ul>
+                {comments.map((comment, index) => (
+                  <li key={index}>
+                    <str>{comment.user}</str>
+                    {` ${comment.comment}`}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <CommentForm
+              uuid={uuid}
+              comments={comments}
+              setComments={setComments}
             />
           </div>
-        </div>
-
-        <div className="canvas-font">
-          <label htmlFor="font-size" style={labelStyle}>
-            글씨 크기
-          </label>
-          <Slider
-            id="font-size"
-            min={5}
-            max={50}
-            step={1}
-            defaultValue={16}
-            onChange={(val) => setFontsize(val)}
-            className="font-slider"
-          />
-          <label htmlFor="font-color" style={labelStyle}>
-            글씨 색상
-          </label>
-          <FontColorPicker setColor={setFontcolor} color={fontcolor} />
-        </div>
-      </div>
-      <Divider />
-      <Canvas
-        url={url}
-        color={color}
-        opt={opt}
-        fontcolor={fontcolor}
-        fontsize={fontsize}
-        quote={quote}
-        setQuote={setQuote}
-        content={content}
-        setContent={setContent}
-        canvasRef={canvasRef}
-      />
-      <Divider />
-      <div className="quote">
-        <label htmlFor="content" style={labelStyle}>
-          코멘트
-        </label>
-        <textarea
-          className="content-textarea"
-          name="content"
-          value={content}
-          rows="5"
-          // maxLength=
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="작가, 책 제목, 간단한 소감 등을 남겨주세요"
-        />
-      </div>
-      <div className="upload-btn">
-        <Button onClick={domToImage}>업로드</Button>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 };
 

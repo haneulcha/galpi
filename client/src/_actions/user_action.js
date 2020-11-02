@@ -1,13 +1,15 @@
 import axios from "axios";
 import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from "./types";
-import { delExp, AUTH_KEY } from "../util/auth";
 
 const baseUrl = `http://localhost:5000`;
 
 export function registerUser(body) {
-  const request = axios.post(`${baseUrl}/api/register`, body).then((res) => {
-    return res.data;
-  });
+  const request = axios
+    .post(`${baseUrl}/api/user`, body)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((e) => console.log(e));
 
   return {
     type: REGISTER_USER,
@@ -18,7 +20,8 @@ export function registerUser(body) {
 export function loginUser(dataToSubmit) {
   const request = axios
     .post(`${baseUrl}/api/login`, dataToSubmit)
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch((e) => console.log(e));
 
   return {
     type: LOGIN_USER,
@@ -27,9 +30,10 @@ export function loginUser(dataToSubmit) {
 }
 
 export function logOutUser() {
-  const request = axios.post(`${baseUrl}/api/logout`).then((res) => res.data);
-
-  delExp(AUTH_KEY);
+  const request = axios
+    .post(`${baseUrl}/api/logout`)
+    .then((res) => res.data)
+    .catch((e) => console.log(e));
 
   return {
     type: LOGOUT_USER,

@@ -11,6 +11,10 @@ const userSchema = new Schema(
     username: String,
     name: String,
     password: String,
+    role: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

@@ -1,26 +1,30 @@
 import express from "express";
-import { User } from "../models/index.js";
+import { Post, User } from "../models/index.js";
 import { auth, catchAsync, who } from "../middleware/index.js";
 
 const { Router } = express;
 const router = Router();
 
 router.get(
-  "/api/home",
+  "/api/dashboard",
   auth,
-  catchAsync(async (req, res) =>
-    res.json(await User.findById(req.session.userId))
-  )
-);
+  catchAsync(async (req, res) =>{
+    
+    const user = await User.findById(req.session.userId)
+    const posts = await Post.countDocuments({ user: req.session.userId })
 
-router.get(
-  "/api/auth",
-  who,
-  catchAsync(async (req, res) => {
-    const { username, name } = await User.findById(req.session.userId);
-    res.json({ isAuth: true, username, name });
+    res.json({ user, posts })
   })
 );
+
+// router.get(
+//   "/api/auth",
+//   who,
+//   catchAsync(async (req, res) => {
+//     const { username, name } = await User.findById(req.session.userId);
+//     res.json({ isAuth: true, username, name });
+//   })
+// );
 
 // // 토큰 유무로 로그인 여부 확인하기
 // let auth = (req, res, next) => {

@@ -5,8 +5,11 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_action";
 import { AUTH_KEY, setExp, TTL } from "../../../util/auth";
 
-const LoginForm = () => {
+
+const LoginForm = (props) => {
   const dispatch = useDispatch();
+  const { location, history } = props
+  const { state } = location
 
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
@@ -19,10 +22,16 @@ const LoginForm = () => {
 
     dispatch(loginUser(userinfo)).then((res) => {
       setExp(AUTH_KEY, res.payload.user, TTL);
-    });
+      if( state && state.from ) {
+        history.replace(state.from)
+      } else { history.replace('/') }
+
+    }).catch(e => console.error(e));
   };
 
   return (
+    <div className="login">
+    <h1>로그인</h1>
     <div className="login-form">
       <Form
         name="login"
@@ -70,6 +79,7 @@ const LoginForm = () => {
           혹은 <a href="/register">회원가입!</a>
         </Form.Item>
       </Form>
+    </div>
     </div>
   );
 };

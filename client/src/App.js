@@ -1,22 +1,41 @@
 import React from "react";
 import "./index.css";
-import Post from "./components/views/PostPage/post";
-import LandingPage from "./components/views/LandingPage/landing";
-import Register from "./components/views/RegisterPage/index";
-import Login from "./components/views/LoginPage/index";
+import {
+  Register,
+  Login,
+  Dashboard,
+  Home,
+  Post,
+  Posting,
+  Profile,
+  LandingPage,
+} from "./components/views/index";
+// import NotFound from './components/views/NotFound/notFound'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/views/NavBar/navbar";
+import { GuestRoute, AuthRoute } from "./route/index";
 // import Auth from "./hoc/auth";
 
 const App = () => {
   return (
     <Router>
-      <NavBar />
       <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/post" component={Post} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
+        <NavBar>
+          <div className="body">
+            <GuestRoute path="/login" component={Login} />
+            <GuestRoute path="/register" component={Register} />
+
+            <AuthRoute path="/dashboard" component={Dashboard} />
+            <AuthRoute path="/home" component={Home} />
+            <AuthRoute path="/post" component={Posting} />
+
+            <Route path="/user/:username" children={<Profile />} />
+            <Route path="/p/:uuid" children={<Post />} />
+            <Route exact path="/" component={LandingPage} />
+
+            {/* <Route component={NotFound} />      */}
+          </div>
+        </NavBar>
       </Switch>
     </Router>
   );

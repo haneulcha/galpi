@@ -1,6 +1,6 @@
 import express from "express";
 import { BadRequest } from "../errors/index.js";
-import { User } from "../models/index.js";
+import { Sequence, User, Post } from "../models/index.js";
 import { validate, registerSchema } from "../validation/index.js";
 import { catchAsync } from "../middleware/index.js";
 import { logIn } from "../auth.js";
@@ -10,12 +10,10 @@ const { Router } = express;
 const router = Router();
 
 router.post(
-  "/api/register",
+  "/api/user",
   guest,
   catchAsync(async (req, res) => {
     await validate(registerSchema, req.body);
-
-    console.log(req.body);
 
     const { email, username, name, password } = req.body;
 
@@ -31,12 +29,28 @@ router.post(
       username,
       name,
       password,
-      role: 1,
     });
+
+    await Sequence.create({ user: user.id });
 
     logIn(req, user.id);
 
     res.json({ message: "OK", user: name });
+  })
+);
+
+router.get(
+  "/api/user/:username",
+  catchAsync(async (req, res) => {
+    const username = req.params.username;
+
+    const user = await User.findOne({ username });
+    console.log(user);
+    if (!user) {
+      res.status(404).json({ message: "not Found" });
+    }
+
+    res.json({ user });
   })
 );
 

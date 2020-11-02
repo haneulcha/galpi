@@ -2,9 +2,8 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { Post } from "../models/index.js";
+import { Post, Sequence } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
-
 import { validate, postSchema } from "../validation/index.js";
 
 const { Router } = express;
@@ -43,16 +42,69 @@ router.post(
   upload2.none(),
   catchAsync(async (req, res) => {
     const { content, url } = req.body;
+    const user = req.session.userId;
+    //TODO: VALIDATE
+    const index = await Sequence.findOneAndUpdate(
+      { user },
+      { $inc: { uid: 1 } },
+      { new: true }
+    );
 
+    const number = JSON.stringify(index.uid);
     const data = {
       content,
       url,
-      user: req.session.userId,
+      user,
+      index: +number,
     };
 
-    await validate(postSchema, data);
     await Post.create(data);
     res.json({ message: "uploaded" });
+  })
+);
+
+router.get(
+  "/api/post",
+  catchAsync(async (req, res) => {
+    const { username = false, page = 1, limit = 10 } = req.query;
+
+    let posts, count;
+    if (username) {
+      console.log("username exists");
+      posts = await Post.find({ username })
+        .sort({ _id: -1 })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
+      count = await Post.countDocuments({ username });
+    } else {
+      console.log("no username");
+      posts = await Post.find()
+        .sort({ _id: -1 })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
+      count = await Post.countDocuments();
+    }
+
+    res.json({
+      posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
+  })
+);
+
+// 개별 포스트
+router.get(
+  "/api/post/:uuid",
+  catchAsync(async (req, res) => {
+    const uuid = req.params.uuid;
+
+    const post = await Post.findOne({ uuid });
+    console.log(post);
+    if (!post) {
+      res.status(404).json({ message: "not Found" });
+    }
+    res.json({ post });
   })
 );
 

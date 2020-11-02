@@ -1,21 +1,8 @@
-/* styling paper */
-@font-face {
-  font-family: "Handon3gyeopsal300g";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-body {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
 #paper {
-  width: 1200px;
+  width: 100%;
   /* height: 700px; */
   position: relative;
-  margin: 20px auto;
+  margin: 10px auto;
   padding: 40px 0;
   background-color: white;
   box-shadow: 0px 0px 5px 0px #888;
@@ -32,6 +19,7 @@ body {
   background-color: rgba(255, 0, 0, 0.6);
 }
 
+/* title + (img + description) */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -40,13 +28,14 @@ body {
 .card-title {
   width: 100%;
   margin-bottom: 0.1rem;
-  padding: 0 6%;
+  padding-left: 7%;
+  font-weight: 500;
 }
 /* styling blue horizontal lines */
 #pattern {
   /* height: 100%; */
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   position: relative;
   padding: 0 0 0 5%;
   background-origin: content-box;
@@ -62,20 +51,20 @@ body {
 
 .card-image-wrapper {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: 360px;
+  height: 360px;
 }
 .card-image-wrapper > img {
   width: 100%;
   height: 100%;
 }
+
 /* styling text content */
 #content {
   position: relative;
   padding: 0 15px;
   line-height: 32px;
-  font-family: "Handon3gyeopsal300g", cursive;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 1px;
   word-spacing: 3px;
 }

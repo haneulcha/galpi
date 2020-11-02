@@ -1,11 +1,11 @@
 @import "~antd/dist/antd.css";
 
-body {
-  margin: 0;
-  background: #dfe0e0;
-  font-family: roboto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "Handon3gyeopsal300g";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 code {
@@ -14,13 +14,31 @@ code {
 }
 
 :root {
-  --bg: #c8d4e0;
+  --bg: #fdfdff;
   --bg-accent: #9db5d8;
-  --text-color: #000000;
-  --nav-size: 60px;
+  --text-color: #090c08;
+  --font: "Handon3gyeopsal300g", Georgia, "Malgun Gothic", sans-serif;
+  --hover: #276fbf;
+  --nav-size: 80px;
+  --width: 1120px;
   --border: 1px solid #474a4d;
   --border-radius: 8px;
   --speed: 500ms;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  font-family: roboto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ul {
@@ -34,37 +52,104 @@ a {
   text-decoration: none;
 }
 
+/* HEADER */
+
+header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .navbar {
+  width: var(--width);
   height: var(--nav-size);
+  margin-top: 20px;
   background-color: var(--bg);
-  padding: 0 1rem;
+  padding: 0 2.5rem;
   border-bottom: var(--border);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.nav-title-text {
-  max-width: 100%;
+.logo-wrapper {
   height: 100%;
-  font-size: 2.3rem;
-  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* <ul> */
-.navbar-nav {
+.navbar > ul {
   max-width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end; /* 오르쪽으로 몰림 */
+  justify-content: flex-end; /* 오른쪽으로 몰림 */
+  font-family: var(--font);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.2rem;
+  color: var(--text-color);
 }
-/* <li> */
-.nav-item {
-  width: calc(var(--nav-size) * 0.9);
+
+.navbar > ul > li {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 3px;
+}
+
+.navbar > ul > li::after {
+  content: "/";
+  margin: 0 1em;
+  font-weight: 100;
+}
+
+.navbar > ul > li:last-child::after {
+  content: "";
+  margin: 0;
+}
+
+.navbar > ul > li > a.active {
+  color: #db2b39;
+}
+.navbar > ul > li > a:hover,
+button:hover {
+  color: #6b7d7d;
+}
+
+.navbar-dropdown-btn {
+  border: none;
+  background-color: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navbar-dropdown-btn:focus {
+  outline: transparent;
+}
+
+.ant-dropdown {
+  width: 95px;
+  right: 40px;
+  font: inherit;
+}
+
+.ant-dropdown-menu-item {
+  font-size: 14px;
+  text-align: center;
+  line-height: 26px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* BODY */
+
+.body {
+  width: var(--width);
 }
 
 /* Icon Button */
@@ -123,8 +208,17 @@ a {
   background-color: #525357;
 }
 
-/* post - stacked paper */
+/* LANDINGPAGE - papercards wrapper */
+.papercards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 40px;
+  font-family: var(--font);
+}
 
+/* post - stacked paper */
 .paper {
   background-color: #fff;
   /* Need position to allow stacking of pseudo-elements */
