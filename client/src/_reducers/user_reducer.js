@@ -15,7 +15,8 @@ export default function (state = {}, action) {
       return {
         ...state,
         loggedIn: true,
-        user: action.payload.user,
+        userId: action.payload.userId,
+        username: action.payload.username,
         register: action.payload.message,
       };
 
@@ -23,7 +24,8 @@ export default function (state = {}, action) {
       return {
         ...state,
         loggedIn: true,
-        user: action.payload.user,
+        userId: action.payload.userId,
+        username: action.payload.username,
         login: action.payload.message,
       };
 
@@ -31,7 +33,8 @@ export default function (state = {}, action) {
       return {
         ...state,
         loggedIn: false,
-        user: {},
+        userId: {},
+        username: {},
         logout: action.payload.message,
       };
 

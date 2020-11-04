@@ -12,13 +12,14 @@ const loginStatus = () => {
 };
 
 const loginDetail = () => {
-  return getExp(AUTH_KEY) ? getExp(AUTH_KEY) : null;
+  return getExp(AUTH_KEY) ? getExp(AUTH_KEY) : { userId: null, username: null };
 };
 
 const initialStates = {
   auth: {
     loggedIn: loginStatus(),
-    user: loginDetail(),
+    userId: loginDetail().userId,
+    username: loginDetail().username,
   },
 };
 

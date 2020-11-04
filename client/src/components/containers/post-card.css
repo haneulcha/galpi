@@ -1,0 +1,41 @@
+.postcard {
+  width: 800px;
+  height: 450px;
+  display: flex;
+  flex-wrap: wrap;
+  border: solid black 1px;
+}
+
+.postcard-wrapper {
+  width: 50%;
+  height: 100%;
+}
+.postcard-image {
+  width: 400px;
+  height: 400px;
+}
+
+.postcard-image-info {
+  width: 400px;
+  height: 50px;
+}
+
+.postcard-user {
+  width: 400px;
+  height: 50px;
+}
+
+.postcard-content {
+  height: 300px;
+}
+.postcard-features {
+  width: 400px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.postcard-comments {
+  width: 400px;
+  height: 50px;
+}

@@ -439,3 +439,25 @@ button:hover {
 #login > div:last-child {
   margin-bottom: 0;
 }
+
+/* postcard */
+
+/* .posts-list {
+  display: flex;
+  flex-flow: row wrap;
+} */
+
+.comment-form {
+  height: 100%;
+}
+
+.comment-form > input {
+  width: 90%;
+  height: 100%;
+}
+
+.comment-form > button {
+  width: 10%;
+  height: 100%;
+  padding: 0;
+}

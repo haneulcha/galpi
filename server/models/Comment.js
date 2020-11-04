@@ -21,4 +21,19 @@ const commentSchema = new Schema(
   }
 );
 
+commentSchema.post("find", async function (docs) {
+  for (let doc of docs) {
+    await doc.populate("user", "username").execPopulate();
+  }
+});
+
+commentSchema.post("save", function (doc, next) {
+  doc
+    .populate("user", "username")
+    .execPopulate()
+    .then(function () {
+      next();
+    });
+});
+
 export const Comment = model("Comment", commentSchema);

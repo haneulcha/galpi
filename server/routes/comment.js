@@ -12,8 +12,8 @@ router.get(
 
     const post = await Post.findOne({ uuid });
     const comments = await Comment.find({ post: post._id });
-
-    res.json(comments);
+    console.log("comments", comments);
+    res.json({ message: "OK", comments });
   })
 );
 
@@ -21,7 +21,7 @@ router.post(
   "/api/comment/:uuid",
   catchAsync(async (req, res) => {
     //TODO: VALIDATE
-    const user = req.session.userId;
+    const user = req.session.userId || "5fa0c4faa37c946708ebc8dc";
     const uuid = req.params.uuid;
     const comment = req.body.comment;
 
@@ -34,7 +34,7 @@ router.post(
     };
 
     const savedComment = await Comment.create(body);
-
+    console.log("saved comment", savedComment);
     res.json({ message: "OK", savedComment });
   })
 );

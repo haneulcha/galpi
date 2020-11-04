@@ -8,7 +8,8 @@ export const setExp = (key, user, ttl) => {
   const now = new Date();
 
   const item = {
-    user,
+    username: user.username,
+    userId: user.userId,
     exp: now.getTime() + ttl,
   };
 
@@ -30,7 +31,7 @@ export const getExp = (key) => {
     return false; // 만료 되어서 삭제. TODO: false => 클라이언트에서 다시 login
   }
 
-  return item.user; // username 반환
+  return item; // username 반환
 };
 
 export const delExp = (key) => {

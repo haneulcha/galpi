@@ -9,6 +9,7 @@ import { guest } from "../middleware/index.js";
 const { Router } = express;
 const router = Router();
 
+// 회원가입
 router.post(
   "/api/user",
   guest,
@@ -31,11 +32,11 @@ router.post(
       password,
     });
 
-    await Sequence.create({ user: user.id });
+    await Sequence.create({ user: user._id });
 
-    logIn(req, user.id);
+    logIn(req, user._id);
 
-    res.json({ message: "OK", user: name });
+    res.json({ message: "OK", userId: user._id, username: user.username });
   })
 );
 

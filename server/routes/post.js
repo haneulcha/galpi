@@ -100,7 +100,7 @@ router.get(
     const uuid = req.params.uuid;
 
     const post = await Post.findOne({ uuid });
-    console.log(post);
+
     if (!post) {
       res.status(404).json({ message: "not Found" });
     }

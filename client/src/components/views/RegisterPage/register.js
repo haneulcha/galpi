@@ -53,7 +53,7 @@ const RegistrationForm = () => {
     };
 
     dispatch(registerUser(userinfo)).then((res) =>
-      setExp(AUTH_KEY, res.payload.user, TTL)
+      setExp(AUTH_KEY, res.payload, TTL)
     );
   };
 

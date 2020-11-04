@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
+// GET posts
 const PostInfiniteScroll = ({ username = null, Component }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -88,7 +89,7 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
   return (
     <>
       {posts && (
-        <ul>
+        <ul className="posts-list">
           {posts.map((posts, index) => (
             <Component key={`post-${index}`} index={index} posts={posts} />
           ))}

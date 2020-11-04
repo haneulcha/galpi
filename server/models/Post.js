@@ -33,4 +33,11 @@ const postSchema = new Schema(
   }
 );
 
+postSchema.post("find", async function (docs) {
+  for (let doc of docs) {
+    await doc.populate("user", "username").execPopulate();
+    await doc.populate("likes", "username").execPopulate(); //TODO: arrays can be populated ?
+  }
+});
+
 export const Post = model("Post", postSchema);

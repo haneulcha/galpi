@@ -8,9 +8,9 @@ import { DownOutlined } from "@ant-design/icons";
 import { delExp, AUTH_KEY } from "../../../util/auth";
 
 const NavBar = (props) => {
-  const { loggedIn, user } = useSelector((state) => ({
+  const { loggedIn, username } = useSelector((state) => ({
     loggedIn: state.auth.loggedIn,
-    user: state.auth.user,
+    username: state.auth.username,
   }));
 
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ const NavBar = (props) => {
                     onClick={(e) => e.preventDefault()}
                   >
                     {/* Q: 왜 a 링크 없으면 onlyChild 에러 발생? */}
-                    {user} <DownOutlined />
+                    {username} <DownOutlined />
                   </button>
                 </Dropdown>
               </li>

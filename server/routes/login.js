@@ -25,9 +25,9 @@ router.post(
       // throw new Unauthorized("Incorrect email or password");
     }
 
-    logIn(req, user.id);
+    logIn(req, user._id);
     console.log(req.session);
-    res.json({ message: "OK", user: user.name });
+    res.json({ message: "OK", userId: user._id, username: user.username });
   })
 );
 

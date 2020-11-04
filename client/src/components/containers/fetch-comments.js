@@ -1,8 +1,10 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const FetchComments = (props) => {
-  const { uuid, setLoading, comments, setComments } = props;
+  const { uuid, comments, setComments } = props;
+  const [loading, setLoading] = useState(false);
 
   const fetchComment = useCallback(
     async (uuid) => {
@@ -28,7 +30,7 @@ const FetchComments = (props) => {
         const newComments = await fetchComment(uuid);
         const { status, data } = newComments;
         if (status === 200) {
-          setComments(data.comment);
+          setComments(data.comments);
           setLoading(false);
         }
       } catch (e) {
@@ -39,14 +41,21 @@ const FetchComments = (props) => {
   }, [fetchComment, setComments, setLoading, uuid]);
 
   return (
-    <ul>
-      {comments.map((comment, index) => (
-        <li key={index}>
-          <str>{comment.user}</str>
-          {` ${comment.comment}`}
-        </li>
-      ))}
-    </ul>
+    <>
+      {loading && <LoadingOutlined />}
+      {comments ? (
+        <ul>
+          {comments.map((comment, index) => (
+            <li key={index}>
+              <strong>{comment.user.username}</strong>
+              {` ${comment.comment}`}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span>첫 댓글을 달아보세요</span>
+      )}
+    </>
   );
 };
 
