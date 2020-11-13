@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "../../../_actions/user_action";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Menu, Dropdown } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+
 import { delExp, AUTH_KEY } from "../../../util/auth";
 
 const NavBar = (props) => {
@@ -12,6 +11,7 @@ const NavBar = (props) => {
     loggedIn: state.auth.loggedIn,
     username: state.auth.username,
   }));
+  const [menuToggle, setMenuToggle] = useState(false);
 
   const dispatch = useDispatch();
   const logout = async () => {
@@ -23,28 +23,45 @@ const NavBar = (props) => {
     delExp(AUTH_KEY);
   };
 
-  const menu = (
-    <Menu className="navbar-dropdown">
-      <Menu.Item key="0">
-        <NavLink to="/dashboard">대시보드</NavLink>
-      </Menu.Item>
-
-      <Menu.Divider />
-      <Menu.Item key="2" onClick={logout} style={{ color: "#276FBF" }}>
-        로그아웃
-      </Menu.Item>
-    </Menu>
-  );
+  const toggleMenu = (e) => {
+    e.preventDefault();
+    setMenuToggle(!menuToggle);
+  };
 
   return (
     <>
       <header>
-        <div className="navbar">
-          <div className="logo-wrapper">
-            <NavLink exact to="/">
-              <img className="logo" src="/galpi_logo.png" alt="logo galpi" />
-            </NavLink>
-          </div>
+        <Link to="/">
+          <h1 className="logo">galpi</h1>
+          {/* <img className="logo" src="/galpi_logo.png" alt="logo galpi" /> */}
+        </Link>
+
+        <svg
+          height="40px"
+          id="menu-btn"
+          className="open"
+          viewBox="0 0 32 32"
+          onClick={toggleMenu}
+        >
+          <path
+            fill="#db2b39"
+            d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"
+          />
+        </svg>
+
+        <nav id="nav" className={menuToggle ? `open-nav` : undefined}>
+          <svg
+            viewBox="0 0 24 24"
+            id="exit-btn"
+            className="exit"
+            onClick={toggleMenu}
+          >
+            <path
+              id="exit"
+              fill="#db2b39"
+              d="M14.8,12l3.6-3.6c0.8-0.8,0.8-2,0-2.8c-0.8-0.8-2-0.8-2.8,0L12,9.2L8.4,5.6c-0.8-0.8-2-0.8-2.8,0   c-0.8,0.8-0.8,2,0,2.8L9.2,12l-3.6,3.6c-0.8,0.8-0.8,2,0,2.8C6,18.8,6.5,19,7,19s1-0.2,1.4-0.6l3.6-3.6l3.6,3.6   C16,18.8,16.5,19,17,19s1-0.2,1.4-0.6c0.8-0.8,0.8-2,0-2.8L14.8,12z"
+            />
+          </svg>
           {!loggedIn ? (
             <ul>
               <li>
@@ -69,20 +86,24 @@ const NavBar = (props) => {
               <li>
                 <NavLink to="/post">갈피 남기기</NavLink>
               </li>
-              <li>
-                <Dropdown overlay={menu} trigger={["click"]}>
-                  <button
-                    className="ant-dropdown-link navbar-dropdown-btn"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    {/* Q: 왜 a 링크 없으면 onlyChild 에러 발생? */}
-                    {username} <DownOutlined />
-                  </button>
-                </Dropdown>
+              <li className="sub">
+                <NavLink to={`/user/${username}`} className="nav-username">
+                  {username}
+                </NavLink>
+                <div className="submenu">
+                  <ul>
+                    <li>
+                      <NavLink to="/dashboard">대시보드</NavLink>
+                    </li>
+                    <li onClick={logout}>
+                      <span>로그아웃</span>
+                    </li>
+                  </ul>
+                </div>
               </li>
             </ul>
           )}
-        </div>
+        </nav>
       </header>
       {props.children}
     </>

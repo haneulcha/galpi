@@ -9,7 +9,7 @@ const Likes = ({ likes, uuid }) => {
   const [likesArray, setLikesArray] = useState([...likes]);
   const [showLikes, setShowLikes] = useState(false);
 
-  const baseUrl = `http://localhost:5000/api/like/${uuid}`;
+  const baseUrl = `http://localhost:5050/api/like/${uuid}`;
 
   const handleLike = async () => {
     await axios.post(`${baseUrl}/like`);

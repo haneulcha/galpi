@@ -8,7 +8,7 @@ const Dashboard = (params) => {
 
   useEffect(() => {
     async function fetchData() {
-      const baseUrl = `http://localhost:5000/api/dashboard`;
+      const baseUrl = `http://localhost:5050/api/dashboard`;
       try {
         let { data } = await axios.get(`${baseUrl}`);
         let { user, posts } = data;

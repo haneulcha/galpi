@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CONTENT_POST, IMG_POST } from "./types";
 
-const baseUrl = `http://localhost:5000`;
+const baseUrl = `http://localhost:5050`;
 
 export function imgPost(formData) {
   let config = {

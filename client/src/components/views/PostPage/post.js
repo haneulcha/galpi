@@ -11,8 +11,8 @@ const Post = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const postUrl = `http://localhost:5000/api/post/${uuid}`;
-      const commentsUrl = `http://localhost:5000/api/comment/${uuid}`;
+      const postUrl = `http://localhost:5050/api/post/${uuid}`;
+      const commentsUrl = `http://localhost:5050/api/comment/${uuid}`;
       try {
         let { postRes } = await axios.get(postUrl);
         let { commentsRes } = await axios.get(commentsUrl);

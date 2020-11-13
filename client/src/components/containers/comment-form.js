@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import axios from "axios";
 
 const CommentForm = ({ uuid, setComments, comments }) => {
@@ -7,7 +6,7 @@ const CommentForm = ({ uuid, setComments, comments }) => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    const url = `http://localhost:5000/api/comment/${uuid}`;
+    const url = `http://localhost:5050/api/comment/${uuid}`;
     console.log("comment", comment);
     try {
       const res = await axios.post(url, { comment });
@@ -28,7 +27,7 @@ const CommentForm = ({ uuid, setComments, comments }) => {
   return (
     <form className="comment-form">
       <input placeholder="댓글 달기" value={comment} onChange={handleComment} />
-      <button onClick={handleCommentSubmit}>게시</button>
+      <button onClick={handleCommentSubmit}>↑</button>
     </form>
   );
 };

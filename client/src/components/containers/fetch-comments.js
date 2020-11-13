@@ -8,7 +8,7 @@ const FetchComments = (props) => {
 
   const fetchComment = useCallback(
     async (uuid) => {
-      const url = `http://localhost:5000/api/comment/${uuid}`;
+      const url = `http://localhost:5050/api/comment/${uuid}`;
       setLoading(true);
       try {
         const res = await axios.get(url);

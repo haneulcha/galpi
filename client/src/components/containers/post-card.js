@@ -29,42 +29,39 @@ const PostCard = ({ index, posts }) => {
 
   return (
     <li key={`postcard-${index}-by${username}`} className="postcard">
-      <div className="postcard-wrapper">
-        <div className="postcard-image">
-          <img alt="example" src={url} />
-        </div>
-
-        <div className="postcard-image-info">책정보</div>
+      <h1 className="user">{username}</h1>
+      <div className="post">
+        <img alt="example" src={url} />
       </div>
-      <div className="postcard-wrapper">
-        <div className="postcard-user">{username}</div>
-        <div className="postcard-content">{content}</div>
-        <div className="postcard-features">
-          {
-            <>
-              <Likes likes={likes} uuid={uuid} />
-              <CommentToggle />
-              <Link to={`/p/${uuid}`}>
-                <ZoomInOutlined key="link" />
-              </Link>
-            </>
-          }
-        </div>
-        <div className="postcard-comments">
-          {showComment && (
-            <FetchComments
-              uuid={uuid}
-              comments={comments}
-              setComments={setComments}
-            />
-          )}
 
-          <CommentForm
+      <p className="content">{content}</p>
+      <ul className="features">
+        <li>
+          <Likes likes={likes} uuid={uuid} />
+        </li>
+        <li>
+          <CommentToggle />
+        </li>
+        <li>
+          <Link to={`/p/${uuid}`}>
+            <ZoomInOutlined key="link" />
+          </Link>
+        </li>
+      </ul>
+      <div className="comments">
+        {showComment && (
+          <FetchComments
             uuid={uuid}
             comments={comments}
             setComments={setComments}
           />
-        </div>
+        )}
+
+        <CommentForm
+          uuid={uuid}
+          comments={comments}
+          setComments={setComments}
+        />
       </div>
     </li>
   );

@@ -1,41 +1,104 @@
 .postcard {
-  width: 800px;
-  height: 450px;
+  margin: 0.8em;
+  padding: 0.8em;
+  border: solid #090c08 1px;
+}
+.post {
+  width: 100%;
+}
+
+.postcard .user {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.postcard img {
+  width: 100%;
+}
+
+.postcard .features {
   display: flex;
-  flex-wrap: wrap;
-  border: solid black 1px;
+  align-items: center;
+  margin-top: 0;
 }
 
-.postcard-wrapper {
-  width: 50%;
-  height: 100%;
+.features li a {
+  padding: 0;
+  font-size: unset;
+  letter-spacing: unset;
 }
-.postcard-image {
-  width: 400px;
-  height: 400px;
+.features li {
+  margin-right: 0.5em;
 }
-
-.postcard-image-info {
-  width: 400px;
-  height: 50px;
-}
-
-.postcard-user {
-  width: 400px;
-  height: 50px;
-}
-
-.postcard-content {
-  height: 300px;
-}
-.postcard-features {
-  width: 400px;
-  height: 50px;
+.features li > * {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+}
+.features span {
+  font-size: 1.1em;
+  margin-right: 0.2em;
+  color: #db2b39;
 }
 
-.postcard-comments {
-  width: 400px;
-  height: 50px;
+.postcard > * {
+  margin-bottom: 0.5em;
+}
+.postcard > :last-child {
+  margin-bottom: 0;
+}
+
+.comments ul {
+  margin: 0.5em 0;
+}
+.comment-form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.comment-form input {
+  width: 85%;
+  margin-right: 3%;
+}
+.comment-form button {
+  width: 12%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #347fd5;
+  border: solid 1px #347fd5;
+  font-size: 0.8em;
+}
+
+@media (min-width: 750px) {
+  .postcard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    column-gap: 1em;
+    max-width: 900px;
+    justify-content: center;
+    align-content: center;
+  }
+  .postcard .user {
+    grid-area: 1 / 2 / 2 / 3;
+    font-size: 1.5em;
+  }
+  .postcard .post {
+    grid-area: 2 / 1 / 5 / 2;
+    min-width: 400px;
+  }
+  .postcard .content {
+    grid-area: 2 / 2 / 4 / 3;
+    font-size: 1.3em;
+  }
+  .postcard .features {
+    grid-area: 5 / 1 / 6 / 2;
+    font-size: 1.4em;
+    margin: 0 0 0 0.5em;
+  }
+  .postcard .comments {
+    grid-area: 5 / 2 / 6 / 3;
+  }
+  .postcard .comment-form {
+    height: 100%;
+  }
 }

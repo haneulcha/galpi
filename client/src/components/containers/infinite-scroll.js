@@ -39,9 +39,9 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
       let url;
 
       if (!username) {
-        url = `http://localhost:5000/api/post?&page=${pageNum}&limit=10`;
+        url = `http://localhost:5050/api/post?&page=${pageNum}&limit=10`;
       } else {
-        url = `http://localhost:5000/api/post?username=${username}page=${pageNum}&limit=10`;
+        url = `http://localhost:5050/api/post?username=${username}page=${pageNum}&limit=10`;
       }
 
       setLoading(true);
@@ -87,7 +87,7 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
   }, [handleInitial, element]);
 
   return (
-    <>
+    <div className="infinite-scroll-wrapper">
       {posts && (
         <ul className="posts-list">
           {posts.map((posts, index) => (
@@ -96,11 +96,9 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
         </ul>
       )}
 
-      {loading && <li>Loading...</li>}
-      <div ref={setElement}>
-        <span>Loading...</span>
-      </div>
-    </>
+      {loading && <div>Loading...</div>}
+      <div ref={setElement} />
+    </div>
   );
 };
 

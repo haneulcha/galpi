@@ -21,20 +21,18 @@ const App = () => {
     <Router>
       <Switch>
         <NavBar>
-          <div className="body">
-            <GuestRoute path="/login" component={Login} />
-            <GuestRoute path="/register" component={Register} />
+          <GuestRoute path="/login" component={Login} />
+          <GuestRoute path="/register" component={Register} />
 
-            <AuthRoute path="/dashboard" component={Dashboard} />
-            <AuthRoute path="/home" component={Home} />
-            <AuthRoute path="/post" component={Posting} />
+          <AuthRoute path="/dashboard" component={Dashboard} />
+          <AuthRoute path="/home" component={Home} />
+          <AuthRoute path="/post" component={Posting} />
 
-            <Route path="/user/:username" children={<Profile />} />
-            <Route path="/p/:uuid" children={<Post />} />
-            <Route exact path="/" component={LandingPage} />
+          <Route path="/user/:username" children={<Profile />} />
+          <Route path="/p/:uuid" children={<Post />} />
+          <Route exact path="/" component={LandingPage} />
 
-            {/* <Route component={NotFound} />      */}
-          </div>
+          {/* <Route component={NotFound} />      */}
         </NavBar>
       </Switch>
     </Router>

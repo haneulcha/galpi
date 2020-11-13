@@ -41,7 +41,7 @@ const Canvas = (props) => {
 
   const imgPos = {
     objectPosition: `${imgLeft}px ${imgTop}px`,
-    width: `${imgFit ? `100%` : `125%`}`,
+    // width: `${imgFit ? `100%` : `125%`}`,
   };
 
   const handleDragStartQuote = () => {
@@ -84,46 +84,46 @@ const Canvas = (props) => {
   }, [url]);
 
   return (
-    <div id="canvas" className="canvas" ref={canvasRef}>
-      {opt ? (
-        <div className="canvas-bgr" style={bgrStyleObj}>
-          <img
-            src={url}
-            alt="background for quote lines"
-            // width="400"
-            // height="400"
-            draggable="true"
-            onDragStart={(e) => {
-              handleDragStartImg(e, setCurY, setCurX);
-            }}
-            onDragEnd={(e) => {
-              handleDragEndImg(e, setImgTop, setImgLeft);
-            }}
-            onDoubleClick={() => setImgFit(!imgFit)}
-            style={imgPos}
-          />
-        </div>
-      ) : (
-        <div className="canvas-bgr" style={bgrStyleObj} />
-      )}
+    <section className="canvas-wrapper">
+      <div id="canvas" className="canvas" ref={canvasRef}>
+        {opt ? (
+          <div className="canvas-bgr" style={bgrStyleObj}>
+            <img
+              src={url}
+              alt="background for quote lines"
+              draggable="true"
+              onDragStart={(e) => {
+                handleDragStartImg(e, setCurY, setCurX);
+              }}
+              onDragEnd={(e) => {
+                handleDragEndImg(e, setImgTop, setImgLeft);
+              }}
+              onDoubleClick={() => setImgFit(!imgFit)}
+              style={imgPos}
+            />
+          </div>
+        ) : (
+          <div className="canvas-bgr" style={bgrStyleObj} />
+        )}
 
-      <textarea
-        className="quote-textarea"
-        value={quote}
-        onChange={(e) => setQuote(e.target.value)}
-        defaultValue={`여기에 마음에 드는 문장을 적어보세요!`}
-        style={textStyleObj}
-        draggable="true"
-        onFocus={() => setResize("both")}
-        onBlur={() => setResize("none")}
-        onDragStart={() => {
-          handleDragStartQuote();
-        }}
-        onDragEnd={(e) => {
-          handleDragEndQuote(e, setQuoteTop, setQuoteLeft);
-        }}
-      />
-    </div>
+        <textarea
+          className="quote-textarea"
+          value={quote}
+          onChange={(e) => setQuote(e.target.value)}
+          defaultValue={`마음에 드는 구절을 입력하세요`}
+          style={textStyleObj}
+          draggable="true"
+          onFocus={() => setResize("both")}
+          onBlur={() => setResize("none")}
+          onDragStart={() => {
+            handleDragStartQuote();
+          }}
+          onDragEnd={(e) => {
+            handleDragEndQuote(e, setQuoteTop, setQuoteLeft);
+          }}
+        />
+      </div>
+    </section>
   );
 };
 

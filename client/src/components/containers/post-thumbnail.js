@@ -1,8 +1,5 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Card } from "antd";
-
-const { Meta } = Card;
 
 const PostThumbnail = ({ index, posts }) => {
   const { uuid, url, user } = posts;
@@ -18,14 +15,9 @@ const PostThumbnail = ({ index, posts }) => {
       className="post-thumbnail"
       onClick={postHandler}
     >
-      <Card
-        hoverable
-        className="postthumbnail-image"
-        style={{ width: 240 }}
-        cover={<img src={url} alt={`post-by${username}`} />}
-      >
-        <Meta title={username} />
-      </Card>
+      <div className="post">
+        <img alt="example" src={url} />
+      </div>
     </li>
   );
 };

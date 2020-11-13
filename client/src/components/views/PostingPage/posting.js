@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Canvas from "./canvas";
-import { Slider, Button, Divider } from "antd";
+import { Slider } from "antd";
 import { Preview } from "./preview";
 import { BgrColorPicker } from "./bgrColorpicker";
 import { FontColorPicker } from "./fontColorpicker";
@@ -31,11 +31,6 @@ const Posting = () => {
     dispatch(contentPost(data))
       .then((res) => console.log("content", res))
       .catch((err) => console.error(err));
-    // axios
-    //   .post("http://localhost:5000/api/post", data)
-    //   .then((res) => {
-    //     console.log("posting finished", res.data);
-    //   })
   };
 
   const postImage = (blob) => {
@@ -46,12 +41,6 @@ const Posting = () => {
     dispatch(imgPost(formData))
       .then((res) => postContent(res.payload.url))
       .catch((err) => console.error(err));
-    // axios
-    //   .post("http://localhost:5000/api/post/img", formData, config)
-    //   .then((res) => {
-    //     console.log("after image posting", res.data.url);
-    //     postContent(res.data.url); // 이 부분 수정 이제 어디로 보낼 건지
-    //   })
   };
 
   const domToImage = () => {
@@ -69,31 +58,25 @@ const Posting = () => {
   useEffect(() => setOpt(false), [color]);
 
   return (
-    <div className="post paper">
-      <h1>갈피 남기기</h1>
-      <Divider />
-      <div className="canvas-opt">
-        <div className="canvas-background">
-          <div className="bgr-image">
-            <label htmlFor="canvas-image" style={labelStyle}>
-              배경 이미지
-            </label>
-            <Preview
-              url={url}
-              setUrl={setUrl}
-              setOpt={setOpt}
-              id="canvas-image"
-            />
-          </div>
+    <div className="posting">
+      <h1 className="page-title">갈피 남기기</h1>
 
-          <div className="bgr-color">
-            <label htmlFor="canvas-color">배경색</label>
-            <BgrColorPicker
-              setColor={setColor}
-              color={color}
-              id="canvas-color"
-            />
-          </div>
+      <div className="canvas-background">
+        <div className="bgr-image">
+          <label htmlFor="canvas-image" style={labelStyle}>
+            배경 이미지
+          </label>
+          <Preview
+            url={url}
+            setUrl={setUrl}
+            setOpt={setOpt}
+            id="canvas-image"
+          />
+        </div>
+
+        <div className="bgr-color">
+          <label htmlFor="canvas-color">배경색</label>
+          <BgrColorPicker setColor={setColor} color={color} id="canvas-color" />
         </div>
 
         <div className="canvas-font">
@@ -115,7 +98,7 @@ const Posting = () => {
           <FontColorPicker setColor={setFontcolor} color={fontcolor} />
         </div>
       </div>
-      <Divider />
+
       <Canvas
         url={url}
         color={color}
@@ -128,8 +111,8 @@ const Posting = () => {
         setContent={setContent}
         canvasRef={canvasRef}
       />
-      <Divider />
-      <div className="quote">
+
+      <div className="content">
         <label htmlFor="content" style={labelStyle}>
           코멘트
         </label>
@@ -144,7 +127,7 @@ const Posting = () => {
         />
       </div>
       <div className="upload-btn">
-        <Button onClick={domToImage}>업로드</Button>
+        <button onClick={domToImage}>업로드</button>
       </div>
     </div>
   );

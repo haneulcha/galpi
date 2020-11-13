@@ -1,7 +1,7 @@
 import axios from "axios";
 import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from "./types";
 
-const baseUrl = `http://localhost:5000`;
+const baseUrl = `http://localhost:5050`;
 
 export function registerUser(body) {
   const request = axios

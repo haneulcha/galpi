@@ -12,7 +12,7 @@ const Profile = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const baseUrl = `http://localhost:5000/api/user/${username}`;
+      const baseUrl = `http://localhost:5050/api/user/${username}`;
       try {
         let { data } = await axios.get(baseUrl);
         let { user } = data;
@@ -27,13 +27,13 @@ const Profile = () => {
   }, [username]);
 
   return (
-    <div>
+    <div className="profile">
       {user ? (
         <>
           <Card
             title={`${user.username}의 갈피들`}
             loading={loading}
-            style={{ width: 500 }}
+            style={{ width: "100%" }}
             bordered="true"
           >
             <p>이름: {user.name}</p>
