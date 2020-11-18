@@ -21,11 +21,11 @@ const LoginForm = (props) => {
 
     dispatch(loginUser(userinfo))
       .then((res) => {
-        setExp(AUTH_KEY, res.payload, TTL);
+        setExp(AUTH_KEY, res.payload, TTL); // TODO: DELETE
         if (state && state.from) {
           history.replace(state.from);
         } else {
-          history.replace("/");
+          history.replace("/home");
         }
       })
       .catch((e) => console.error(e));
@@ -35,12 +35,7 @@ const LoginForm = (props) => {
     <div className="form login">
       <h1 className="page-title">로그인</h1>
 
-      <Form
-        name="login"
-        // className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-      >
+      <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
         <Form.Item
           name="email"
           rules={[{ required: true, message: "이메일 주소를 입력하세요." }]}

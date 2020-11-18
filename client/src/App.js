@@ -14,7 +14,6 @@ import {
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
-// import Auth from "./hoc/auth";
 
 const App = () => {
   return (
@@ -30,7 +29,7 @@ const App = () => {
 
           <Route path="/user/:username" children={<Profile />} />
           <Route path="/p/:uuid" children={<Post />} />
-          <Route exact path="/" component={LandingPage} />
+          <GuestRoute exact path="/" component={LandingPage} />
 
           {/* <Route component={NotFound} />      */}
         </NavBar>

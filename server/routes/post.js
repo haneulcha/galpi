@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { Post, Sequence } from "../models/index.js";
+import { Post, Sequence, User } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
 import { validate, postSchema } from "../validation/index.js";
 
@@ -67,15 +67,17 @@ router.get(
   "/api/post",
   catchAsync(async (req, res) => {
     const { username = false, page = 1, limit = 10 } = req.query;
-
     let posts, count;
     if (username) {
       console.log("username exists");
-      posts = await Post.find({ username })
+
+      const user = await User.findOne({ username });
+
+      posts = await Post.find({ user: user._id })
         .sort({ _id: -1 })
         .limit(limit * 1)
         .skip((page - 1) * limit);
-      count = await Post.countDocuments({ username });
+      count = await Post.countDocuments({ user: user._id });
     } else {
       console.log("no username");
       posts = await Post.find()
@@ -86,6 +88,7 @@ router.get(
     }
 
     res.json({
+      message: "success",
       posts,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
@@ -104,7 +107,7 @@ router.get(
     if (!post) {
       res.status(404).json({ message: "not Found" });
     }
-    res.json({ post });
+    res.json({ message: "success", post });
   })
 );
 

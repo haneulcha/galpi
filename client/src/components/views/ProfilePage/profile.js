@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Card } from "antd";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import PostInfiniteScroll from "../../containers/infinite-scroll";
 import PostThumbnail from "../../containers/post-thumbnail";
+import { getUser } from "../../../_actions/user_action";
 
 const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchData() {
-      const baseUrl = `http://localhost:5050/api/user/${username}`;
       try {
-        let { data } = await axios.get(baseUrl);
-        let { user } = data;
+        let { user } = await dispatch(getUser(username)).then(
+          (res) => res.payload
+        );
 
         setUser(user);
         setLoading(false);
@@ -24,14 +26,14 @@ const Profile = () => {
       }
     }
     fetchData();
-  }, [username]);
+  }, [dispatch, username]);
 
   return (
     <div className="profile">
       {user ? (
         <>
           <Card
-            title={`${user.username}의 갈피들`}
+            title={`${user.username}`}
             loading={loading}
             style={{ width: "100%" }}
             bordered="true"
@@ -40,12 +42,18 @@ const Profile = () => {
             <p>이메일: {user.email}</p>
           </Card>
           <PostInfiniteScroll
-            Component={PostThumbnail}
+            render={(posts, index) => (
+              <PostThumbnail
+                key={`postthumbnail-${index}`}
+                posts={posts}
+                index={index}
+              />
+            )}
             username={user.username}
           />
         </>
       ) : (
-        <Card loading={loading} style={{ width: 500 }} />
+        <p> 해당하는 유저가 없습니다. </p>
       )}
     </div>
   );

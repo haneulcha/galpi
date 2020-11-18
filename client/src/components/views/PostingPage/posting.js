@@ -21,12 +21,10 @@ const Posting = () => {
   const canvasRef = useRef();
 
   const postContent = (url) => {
-    console.log("we're in postContent", url);
     let data = {
       content,
       url,
     };
-    console.log("data is", data);
 
     dispatch(contentPost(data))
       .then((res) => console.log("content", res))
@@ -36,7 +34,7 @@ const Posting = () => {
   const postImage = (blob) => {
     const img = blob;
     const formData = new FormData();
-    formData.append("img", img, "combined.png"); // 파일 이름 바꿔야 함
+    formData.append("img", img, "combined.png");
 
     dispatch(imgPost(formData))
       .then((res) => postContent(res.payload.url))

@@ -5,7 +5,11 @@ import PostCard from "../../containers/post-card";
 const Home = (params) => {
   return (
     <>
-      <PostInfiniteScroll Component={PostCard} />
+      <PostInfiniteScroll
+        render={(posts, index) => (
+          <PostCard key={`post-${index}`} posts={posts} index={index} />
+        )}
+      />
     </>
   );
 };

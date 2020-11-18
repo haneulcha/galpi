@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CommentForm from "./comment-form";
-import FetchComments from "./fetch-comments";
+import FetchComments from "./comments";
 import Likes from "./likes";
 import "./post-card.css";
 import { TagsOutlined, TagsFilled, ZoomInOutlined } from "@ant-design/icons";
@@ -48,21 +48,16 @@ const PostCard = ({ index, posts }) => {
           </Link>
         </li>
       </ul>
-      <div className="comments">
-        {showComment && (
-          <FetchComments
-            uuid={uuid}
-            comments={comments}
-            setComments={setComments}
-          />
-        )}
 
-        <CommentForm
+      {showComment && (
+        <FetchComments
           uuid={uuid}
           comments={comments}
           setComments={setComments}
         />
-      </div>
+      )}
+
+      <CommentForm uuid={uuid} comments={comments} setComments={setComments} />
     </li>
   );
 };

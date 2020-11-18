@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "antd";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { getDashboard } from "../../../_actions/user_action";
 
 const Dashboard = (params) => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState();
   const [posts, setPosts] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const baseUrl = `http://localhost:5050/api/dashboard`;
       try {
-        let { data } = await axios.get(`${baseUrl}`);
-        let { user, posts } = data;
+        let result = await dispatch(getDashboard);
+
+        let { user, posts } = result;
 
         setUser(user);
         setPosts(posts);
@@ -21,7 +24,7 @@ const Dashboard = (params) => {
       }
     }
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

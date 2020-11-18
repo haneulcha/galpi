@@ -3,14 +3,12 @@ import {
   REGISTER_USER,
   AUTH_USER,
   LOGOUT_USER,
+  GET_USER,
+  GET_DASHBOARD,
 } from "../_actions/types";
 
 export default function (state = {}, action) {
-  console.log("state", state);
-  console.log("action", action);
-  switch (
-    action.type // key 자리에 type
-  ) {
+  switch (action.type) {
     case REGISTER_USER:
       return {
         ...state,
@@ -38,8 +36,25 @@ export default function (state = {}, action) {
         logout: action.payload.message,
       };
 
+    case GET_USER:
+      return {
+        ...state,
+        getUserSuccess: action.payload.message,
+      };
+
+    case GET_DASHBOARD:
+      return {
+        ...state,
+        getDashboardSuccess: action.payload.message,
+      };
     case AUTH_USER:
-      return { ...state, userData: action.payload };
+      return {
+        ...state,
+        loggedIn: action.payload.isAuth,
+        userId: action.payload.user._id,
+        username: action.payload.user.username,
+        email: action.payload.user.email,
+      };
 
     default:
       return state;

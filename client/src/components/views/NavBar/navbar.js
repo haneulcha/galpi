@@ -20,7 +20,7 @@ const NavBar = (props) => {
         console.log("after logout", res);
       })
       .catch((e) => console.error(e));
-    delExp(AUTH_KEY);
+    delExp(AUTH_KEY); // TODO: DELETE
   };
 
   const toggleMenu = (e) => {

@@ -52,8 +52,8 @@ const RegistrationForm = () => {
       passwordConfirmation: confirm,
     };
 
-    dispatch(registerUser(userinfo)).then((res) =>
-      setExp(AUTH_KEY, res.payload, TTL)
+    dispatch(registerUser(userinfo)).then(
+      (res) => setExp(AUTH_KEY, res.payload, TTL) // TODO: DELETE
     );
   };
 

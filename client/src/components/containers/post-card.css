@@ -95,10 +95,12 @@
     font-size: 1.4em;
     margin: 0 0 0 0.5em;
   }
-  .postcard .comments {
+
+  .postcard .comment-form {
     grid-area: 5 / 2 / 6 / 3;
   }
-  .postcard .comment-form {
-    height: 100%;
+
+  .postcard .comments-list {
+    grid-area: 3 / 2 / 5 / 4;
   }
 }

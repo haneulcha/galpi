@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { getPosts } from "../../_actions/post_action";
 
 // GET posts
-const PostInfiniteScroll = ({ username = null, Component }) => {
+const PostInfiniteScroll = (props) => {
+  const { username = null } = props;
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [element, setElement] = useState(null);
@@ -36,19 +39,11 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
   // data fetching
   const fetchData = useCallback(
     async (pageNum) => {
-      let url;
-
-      if (!username) {
-        url = `http://localhost:5050/api/post?&page=${pageNum}&limit=10`;
-      } else {
-        url = `http://localhost:5050/api/post?username=${username}page=${pageNum}&limit=10`;
-      }
-
       setLoading(true);
-
       try {
-        const res = await axios.get(url);
-        const { status, data } = res;
+        let { status, data } = await dispatch(getPosts(pageNum, username)).then(
+          (res) => res.payload
+        );
 
         setLoading(false);
         return { status, data };
@@ -57,13 +52,14 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
         return e;
       }
     },
-    [username]
+    [username, dispatch]
   );
 
   const handleInitial = useCallback(
     async (page) => {
       const newPosts = await fetchData(page);
       const { status, data } = newPosts;
+      console.log(newPosts);
       if (status === 200) setPosts((images) => [...images, ...data.posts]);
     },
     [fetchData]
@@ -88,12 +84,12 @@ const PostInfiniteScroll = ({ username = null, Component }) => {
 
   return (
     <div className="infinite-scroll-wrapper">
-      {posts && (
+      {posts ? (
         <ul className="posts-list">
-          {posts.map((posts, index) => (
-            <Component key={`post-${index}`} index={index} posts={posts} />
-          ))}
+          {posts.map((posts, index) => props.render(posts, index))}
         </ul>
+      ) : (
+        <p> 마지막 포스트 입니다 ! </p>
       )}
 
       {loading && <div>Loading...</div>}

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { postComment } from "../../_actions/comment_action";
 
 const CommentForm = ({ uuid, setComments, comments }) => {
+  const dispatch = useDispatch();
   const [comment, setComment] = useState("");
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    const url = `http://localhost:5050/api/comment/${uuid}`;
-    console.log("comment", comment);
+
     try {
-      const res = await axios.post(url, { comment });
+      const res = await dispatch(postComment(uuid, { comment }));
       const { status, data } = res;
-      console.log("res data", data);
+
       if (status === 200) {
         setComments([...comments, data.savedComment]);
       }

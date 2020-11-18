@@ -12,8 +12,8 @@ router.get(
 
     const post = await Post.findOne({ uuid });
     const comments = await Comment.find({ post: post._id });
-    console.log("comments", comments);
-    res.json({ message: "OK", comments });
+
+    res.json({ message: "success", comments });
   })
 );
 
@@ -35,16 +35,21 @@ router.post(
 
     const savedComment = await Comment.create(body);
     console.log("saved comment", savedComment);
-    res.json({ message: "OK", savedComment });
+    res.json({ message: "success", savedComment });
   })
 );
 
 router.delete(
   "/api/comment/:id",
   catchAsync(async (req, res) => {
+    const user = req.session.userId;
     const id = req.params.id;
-    await Comment.findByIdAndDelete(id);
-    res.status(200).json({ message: "success" });
+    const comment = await Comment.findById(id);
+    if (comment.user._id === user) {
+      await Comment.findByIdAndDelete(id);
+      res.status(200).json({ message: "success" });
+    }
+    res.status(400).json({ message: "failed" });
   })
 );
 

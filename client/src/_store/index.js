@@ -5,6 +5,7 @@ import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
 
 const loginStatus = () => {
+  console.log("initial authentication confirm");
   if (getExp(AUTH_KEY)) {
     return true;
   }

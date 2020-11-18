@@ -8,7 +8,7 @@ const Canvas = (props) => {
   const [imgTop, setImgTop] = useState(0);
   const [imgLeft, setImgLeft] = useState(0);
   const [imgCursor, setImgCursor] = useState("move");
-  const [imgFit, setImgFit] = useState(true);
+
   const [curX, setCurX] = useState();
   const [curY, setCurY] = useState();
 
@@ -41,7 +41,6 @@ const Canvas = (props) => {
 
   const imgPos = {
     objectPosition: `${imgLeft}px ${imgTop}px`,
-    // width: `${imgFit ? `100%` : `125%`}`,
   };
 
   const handleDragStartQuote = () => {
@@ -98,7 +97,6 @@ const Canvas = (props) => {
               onDragEnd={(e) => {
                 handleDragEndImg(e, setImgTop, setImgLeft);
               }}
-              onDoubleClick={() => setImgFit(!imgFit)}
               style={imgPos}
             />
           </div>

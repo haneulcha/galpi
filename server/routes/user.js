@@ -1,6 +1,6 @@
 import express from "express";
 import { BadRequest } from "../errors/index.js";
-import { Sequence, User, Post } from "../models/index.js";
+import { Sequence, User } from "../models/index.js";
 import { validate, registerSchema } from "../validation/index.js";
 import { catchAsync } from "../middleware/index.js";
 import { logIn } from "../auth.js";
@@ -9,7 +9,6 @@ import { guest } from "../middleware/index.js";
 const { Router } = express;
 const router = Router();
 
-// 회원가입
 router.post(
   "/api/user",
   guest,
@@ -44,14 +43,12 @@ router.get(
   "/api/user/:username",
   catchAsync(async (req, res) => {
     const username = req.params.username;
-
     const user = await User.findOne({ username });
-    console.log(user);
+
     if (!user) {
       res.status(404).json({ message: "not Found" });
     }
-
-    res.json({ user });
+    res.json({ user, message: "success" });
   })
 );
 

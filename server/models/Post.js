@@ -32,7 +32,11 @@ const postSchema = new Schema(
     timestamps: true,
   }
 );
-
+postSchema.post("findOne", async function (doc, next) {
+  await doc.populate("user", "username").execPopulate();
+  await doc.populate("likes", "username").execPopulate();
+  next();
+});
 postSchema.post("find", async function (docs) {
   for (let doc of docs) {
     await doc.populate("user", "username").execPopulate();

@@ -1,4 +1,9 @@
-import { CONTENT_POST, IMG_POST } from "../_actions/types";
+import {
+  CONTENT_POST,
+  GET_A_POST,
+  IMG_POST,
+  GET_POSTS,
+} from "../_actions/types";
 
 export default function (state = {}, action) {
   switch (action.type) {
@@ -14,6 +19,17 @@ export default function (state = {}, action) {
         postUploadSuccess: action.payload.message,
       };
 
+    case GET_A_POST:
+      return {
+        ...state,
+        postGetSuccess: action.payload.message,
+      };
+
+    case GET_POSTS:
+      return {
+        ...state,
+        postsGetSuccess: action.payload.message,
+      };
     default:
       return state;
   }

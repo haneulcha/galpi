@@ -1,31 +1,47 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { PushpinFilled, PushpinOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { postLike, postUnlike } from "../../_actions/like_action";
 
 const Likes = ({ likes, uuid }) => {
   const loggedInUser = useSelector((state) => state.auth);
-
+  const dispatch = useDispatch();
   const [likesArray, setLikesArray] = useState([...likes]);
   const [showLikes, setShowLikes] = useState(false);
 
-  const baseUrl = `http://localhost:5050/api/like/${uuid}`;
+  const handleLike = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(postLike(uuid)).then((res) => {
+        console.log(res.payload);
+        console.log("like done");
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
-  const handleLike = async () => {
-    await axios.post(`${baseUrl}/like`);
     setLikesArray([...likesArray, loggedInUser.userId]);
 
     setShowLikes(true);
-    console.log("after liking", likesArray);
+
     return;
   };
 
-  const handleUnlike = async () => {
-    await axios.post(`${baseUrl}/unlike`);
+  const handleUnlike = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(postUnlike(uuid)).then((res) => {
+        console.log(res.payload);
+        console.log("like done");
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
     const filteredLikes = likesArray.filter((id) => id !== loggedInUser.userId);
     setLikesArray([...filteredLikes]);
     setShowLikes(false);
-    console.log("after unliking", likesArray);
+
     return;
   };
 
@@ -37,7 +53,7 @@ const Likes = ({ likes, uuid }) => {
   }, [likes, loggedInUser.userId]);
 
   return (
-    <div>
+    <div className="likes">
       {showLikes ? (
         <PushpinFilled key="likes" onClick={handleUnlike} />
       ) : (

@@ -372,6 +372,39 @@ h1 strong {
   font-size: 1.05em;
 }
 
+/* ----------------A POST--------------- */
+.a-post {
+  border: 1px solid black;
+  padding: 0.5em;
+  margin: 0.1em;
+}
+.a-post > * {
+  margin-bottom: 0.5em;
+}
+.a-post > :last-child {
+  margin-bottom: 0;
+}
+.a-post .content p {
+  margin: 0;
+  font-size: 1.2em;
+}
+.a-post .user a {
+  font-size: 1.5em;
+  color: var(--text-color);
+  font-weight: bold;
+}
+.a-post .user:hover a {
+  color: var(--point-color);
+}
+.a-post .image {
+  display: flex;
+  justify-content: center;
+}
+
+.a-post .likes {
+  font-size: 1.3em;
+}
+
 /* ----------------POST-THUMBNAIL--------------- */
 .profile {
   display: flex;
@@ -383,7 +416,23 @@ h1 strong {
   padding: 0.8em;
 }
 
+/* ----------------COMMENT--------------- */
+/* .comments-list button {
+  display: none;
+}
+.comments-list button:hover {
+  display: unset;
+} */
+
 @media (min-width: 750px) {
+  li a:hover,
+  li span:hover {
+    background: transparent;
+    font-weight: bolder;
+    color: #5695dc;
+    cursor: pointer;
+  }
+
   header .logo {
     font-size: 4.3em;
   }
@@ -457,11 +506,13 @@ h1 strong {
   }
   .submenu {
     display: none;
+    font-size: unset;
+    font-weight: bold;
   }
   .sub:hover .submenu {
     display: flex;
     position: absolute;
-    top: 8.5em;
+    top: 6em;
     right: 0;
     background: white;
     /* padding: 0.5em; */
@@ -471,13 +522,13 @@ h1 strong {
     display: block;
     margin: 0;
   }
-  .submenu li > * {
-    padding: 1em 2em;
-    font-size: 2em;
-    font-weight: bold;
-  }
+
   .submenu ul li:last-child {
     border-top: var(--main-color) solid 1px;
+  }
+
+  .submenu li > * {
+    padding: 0.5em 3em;
   }
 
   .form {
@@ -525,6 +576,15 @@ h1 strong {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .body-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .a-post {
+    width: 800px;
   }
 }
 
