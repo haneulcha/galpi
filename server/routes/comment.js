@@ -1,6 +1,6 @@
 import express from "express";
 import { Comment, Post } from "../models/index.js";
-import { catchAsync } from "../middleware/index.js";
+import { auth, catchAsync } from "../middleware/index.js";
 
 const { Router } = express;
 const router = Router();
@@ -41,6 +41,7 @@ router.post(
 
 router.delete(
   "/api/comment/:id",
+  auth,
   catchAsync(async (req, res) => {
     const user = req.session.userId;
     const id = req.params.id;
