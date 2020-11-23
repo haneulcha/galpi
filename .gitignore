@@ -1,9 +1,7 @@
 node_modules
 dev.js
-dist/
+
 coverage/
 .vscode/
 .env
 uploads/
-bgrImg/
-config
