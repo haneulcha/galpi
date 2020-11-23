@@ -2,20 +2,16 @@ import axios from "axios";
 import {
   LOGIN_USER,
   REGISTER_USER,
-  AUTH_USER,
+  AUTH,
   LOGOUT_USER,
   GET_USER,
   GET_DASHBOARD,
 } from "./types";
 
-const baseUrl = `http://localhost:5050/api`;
-
 export function registerUser(body) {
   const request = axios
-    .post(`${baseUrl}/user`, body)
-    .then((res) => {
-      return res.data;
-    })
+    .post(`/api/user`, body)
+    .then((res) => res.data)
     .catch((e) => console.log(e));
 
   return {
@@ -26,7 +22,7 @@ export function registerUser(body) {
 
 export function loginUser(dataToSubmit) {
   const request = axios
-    .post(`${baseUrl}/login`, dataToSubmit)
+    .post(`/api/login`, dataToSubmit)
     .then((res) => res.data)
     .catch((e) => console.log(e));
 
@@ -38,7 +34,7 @@ export function loginUser(dataToSubmit) {
 
 export function logOutUser() {
   const request = axios
-    .post(`${baseUrl}/logout`)
+    .post(`/api/logout`)
     .then((res) => res.data)
     .catch((e) => console.log(e));
 
@@ -48,9 +44,9 @@ export function logOutUser() {
   };
 }
 
-export function getUser(username) {
-  const request = axios
-    .get(`${baseUrl}/user/${username}`)
+export async function getUser(username) {
+  const request = await axios
+    .get(`/api/user/${username}`)
     .then((res) => res.data)
     .catch((e) => console.log(e));
 
@@ -62,7 +58,7 @@ export function getUser(username) {
 
 export function getDashboard() {
   const request = axios
-    .get(`${baseUrl}/dashboard`)
+    .get(`/api/dashboard`)
     .then((res) => res.data)
     .catch((e) => console.log(e));
 
@@ -72,14 +68,30 @@ export function getDashboard() {
   };
 }
 
-export function auth() {
-  const request = axios
-    .get(`${baseUrl}/auth`)
+export async function auth() {
+  const request = await axios
+    .get(`/api/auth`)
     .then((res) => res.data)
     .catch((e) => console.log(e));
 
+  console.log(request);
+  const { isAuth } = request;
+
+  if (isAuth) {
+    const { _id = null, username = null, email = null } = request.user;
+    return {
+      type: AUTH,
+      payload: {
+        isAuth,
+        _id,
+        username,
+        email,
+      },
+    };
+  }
+
   return {
-    type: AUTH_USER,
+    type: AUTH,
     payload: request,
   };
 }

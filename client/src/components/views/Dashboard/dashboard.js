@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "antd";
 import { useDispatch } from "react-redux";
-
 import { getDashboard } from "../../../_actions/user_action";
+import PaperCard from "../../containers/papercard";
 
 const Dashboard = (params) => {
   const dispatch = useDispatch();
@@ -30,19 +29,16 @@ const Dashboard = (params) => {
     <>
       {user ? (
         <>
-          <Card
-            title={`${user.username}님, 안녕하세요 !`}
-            loading={false}
-            style={{ width: 500 }}
-            bordered="true"
-          >
+          <PaperCard title={`${user.username}님, 안녕하세요 !`}>
+            <br />
             <p>이름: {user.name}</p>
             <p>이메일: {user.email}</p>
             <p>갈피: {posts.length} 개</p>
-          </Card>
+            <p>계정 생성일: {user.createdAt.slice(0, 10)}</p>
+          </PaperCard>
         </>
       ) : (
-        <Card loading={true} style={{ width: 500 }} />
+        <p> 유저 정보를 불러오고 있습니다. </p>
       )}
     </>
   );

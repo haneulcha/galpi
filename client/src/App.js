@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import "./index.css";
 import {
   Register,
@@ -14,24 +15,33 @@ import {
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
+import { auth } from "./_actions/user_action";
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("initial auth");
+    dispatch(auth());
+  }, [dispatch]);
+
   return (
     <Router>
       <Switch>
         <NavBar>
-          <GuestRoute path="/login" component={Login} />
-          <GuestRoute path="/register" component={Register} />
+          <section className="body-container">
+            <GuestRoute path="/login" component={Login} />
+            <GuestRoute path="/register" component={Register} />
 
-          <AuthRoute path="/dashboard" component={Dashboard} />
-          <AuthRoute path="/home" component={Home} />
-          <AuthRoute path="/post" component={Posting} />
+            <AuthRoute path="/dashboard" component={Dashboard} />
+            <AuthRoute path="/home" component={Home} />
+            <AuthRoute path="/post" component={Posting} />
 
-          <Route path="/user/:username" children={<Profile />} />
-          <Route path="/p/:uuid" children={<Post />} />
-          <GuestRoute exact path="/" component={LandingPage} />
+            <Route path="/user/:username" children={<Profile />} />
+            <Route path="/p/:uuid" children={<Post />} />
+            <GuestRoute exact path="/" component={LandingPage} />
 
-          {/* <Route component={NotFound} />      */}
+            {/* <Route component={NotFound} />      */}
+          </section>
         </NavBar>
       </Switch>
     </Router>

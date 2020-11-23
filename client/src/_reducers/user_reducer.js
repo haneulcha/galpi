@@ -1,7 +1,7 @@
 import {
   LOGIN_USER,
   REGISTER_USER,
-  AUTH_USER,
+  AUTH,
   LOGOUT_USER,
   GET_USER,
   GET_DASHBOARD,
@@ -47,13 +47,13 @@ export default function (state = {}, action) {
         ...state,
         getDashboardSuccess: action.payload.message,
       };
-    case AUTH_USER:
+    case AUTH:
       return {
         ...state,
         loggedIn: action.payload.isAuth,
-        userId: action.payload.user._id,
-        username: action.payload.user.username,
-        email: action.payload.user.email,
+        userId: action.payload._id || null,
+        username: action.payload.username || null,
+        email: action.payload.email || null,
       };
 
     default:

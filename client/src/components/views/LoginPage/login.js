@@ -3,7 +3,6 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_action";
-import { AUTH_KEY, setExp, TTL } from "../../../util/auth";
 
 const LoginForm = (props) => {
   const dispatch = useDispatch();
@@ -21,7 +20,6 @@ const LoginForm = (props) => {
 
     dispatch(loginUser(userinfo))
       .then((res) => {
-        setExp(AUTH_KEY, res.payload, TTL); // TODO: DELETE
         if (state && state.from) {
           history.replace(state.from);
         } else {

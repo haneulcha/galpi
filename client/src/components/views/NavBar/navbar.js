@@ -4,8 +4,6 @@ import { logOutUser } from "../../../_actions/user_action";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { delExp, AUTH_KEY } from "../../../util/auth";
-
 const NavBar = (props) => {
   const { loggedIn, username } = useSelector((state) => ({
     loggedIn: state.auth.loggedIn,
@@ -20,7 +18,6 @@ const NavBar = (props) => {
         console.log("after logout", res);
       })
       .catch((e) => console.error(e));
-    delExp(AUTH_KEY); // TODO: DELETE
   };
 
   const toggleMenu = (e) => {

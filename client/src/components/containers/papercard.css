@@ -1,0 +1,66 @@
+#paper {
+  width: auto;
+  position: relative;
+  /* margin: 10px auto; */
+  padding: 3em 0;
+  background-color: white;
+  box-shadow: 0px 0px 1px 0px #888;
+}
+
+/* styling red vertical line */
+#paper::after {
+  content: "";
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 2em;
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+/* title + (img + description) */
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  width: 100%;
+  margin: 0 0 0 0.7em;
+  font-weight: bold;
+}
+/* styling blue horizontal lines */
+#pattern {
+  /* height: 100%; */
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+  padding: 0 0 0 2em;
+  background-origin: content-box;
+  background-image: repeating-linear-gradient(teal 0px, white 2px, white 32px);
+}
+
+#content > * {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+/* styling text content */
+#content {
+  position: relative;
+  padding: 0 15px;
+  line-height: 32px;
+  font-size: 18px;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+}
+
+#content h1 {
+  font-size: 20px;
+  color: red;
+  margin: 0;
+}
+
+@media (min-width: 750px) {
+}

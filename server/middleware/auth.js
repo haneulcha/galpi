@@ -11,7 +11,11 @@ export const guest = (req, res, next) => {
 
 export const auth = (req, res, next) => {
   if (!isLoggedIn(req)) {
-    return res.json({ message: "You must be logged in", isAuth: false });
+    return res.json({
+      message: "You must be logged in",
+      isAuth: false,
+      user: null,
+    });
     // return next(new Unauthorized("You must be logged in")); //401
   } else next();
 };

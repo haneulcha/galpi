@@ -2,7 +2,6 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_action";
-import { AUTH_KEY, setExp, TTL } from "../../../util/auth";
 
 const formItemLayout = {
   labelCol: {
@@ -52,9 +51,7 @@ const RegistrationForm = () => {
       passwordConfirmation: confirm,
     };
 
-    dispatch(registerUser(userinfo)).then(
-      (res) => setExp(AUTH_KEY, res.payload, TTL) // TODO: DELETE
-    );
+    dispatch(registerUser(userinfo));
   };
 
   return (

@@ -39,6 +39,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.body-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 ul {
   list-style: none;
   padding: 0;

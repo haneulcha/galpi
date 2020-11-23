@@ -44,7 +44,8 @@ const PostInfiniteScroll = (props) => {
         let { status, data } = await dispatch(getPosts(pageNum, username)).then(
           (res) => res.payload
         );
-
+        console.log("fetch data", status);
+        console.log("fetch data", data);
         setLoading(false);
         return { status, data };
       } catch (e) {
@@ -57,10 +58,10 @@ const PostInfiniteScroll = (props) => {
 
   const handleInitial = useCallback(
     async (page) => {
-      const newPosts = await fetchData(page);
-      const { status, data } = newPosts;
-      console.log(newPosts);
-      if (status === 200) setPosts((images) => [...images, ...data.posts]);
+      const { status, data } = await fetchData(page);
+      if (status === 200) {
+        setPosts((posts) => [...posts, ...data.posts.values()]);
+      }
     },
     [fetchData]
   );

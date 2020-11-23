@@ -46,7 +46,7 @@ router.get(
     const user = await User.findOne({ username });
 
     if (!user) {
-      res.status(404).json({ message: "not Found" });
+      res.json({ message: "not Found" });
     }
     res.json({ user, message: "success" });
   })
