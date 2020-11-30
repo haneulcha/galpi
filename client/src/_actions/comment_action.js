@@ -1,38 +1,29 @@
 import axios from "axios";
+
 import { GET_COMMENT, POST_COMMENT, DELETE_COMMENT } from "./types";
 
-export function getComment(uuid) {
-  const request = axios
-    .get(`/api/comment/${uuid}`)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
-
+export async function getComment(uuid) {
+  let response = await axios.get(`/api/comment/${uuid}`);
   return {
     type: GET_COMMENT,
-    payload: request,
+    payload: response.data,
   };
 }
 
-export function postComment(uuid, body) {
-  const request = axios
-    .post(`/api/comment/${uuid}`, body)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
+export async function postComment(uuid, body) {
+  let response = await axios.post(`/api/comment/${uuid}`, body);
 
   return {
     type: POST_COMMENT,
-    payload: request,
+    payload: response.data,
   };
 }
 
-export function deleteComment(id) {
-  const request = axios
-    .delete(`/api/comment/${id}`)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
+export async function deleteComment(id) {
+  let response = await axios.delete(`/api/comment/${id}`);
 
   return {
     type: DELETE_COMMENT,
-    payload: request,
+    payload: response.data,
   };
 }

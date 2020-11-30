@@ -25,7 +25,7 @@ export const registerSchema = Joi.object({
   email,
   username,
   name,
-  password, // TODO: max
+  password,
   passwordConfirmation,
 });
 

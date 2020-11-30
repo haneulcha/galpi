@@ -1,66 +1,55 @@
 import axios from "axios";
+
 import { CONTENT_POST, IMG_POST, GET_A_POST, GET_POSTS } from "./types";
 
-export function imgPost(formData) {
-  let config = {
+export async function imgPost(formData) {
+  const config = {
     header: {
       "Content-type": "multipart/form-data",
     },
   };
-  const request = axios
-    .post(`/api/post/img`, formData, config)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
+
+  const response = await axios.post(`/api/post/img`, formData, config);
 
   return {
     type: IMG_POST,
-    payload: request,
+    payload: response.data,
   };
 }
 
-export function contentPost(data) {
-  const request = axios
-    .post(`/api/post`, data)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
+export async function contentPost(data) {
+  const response = await axios.post(`/api/post`, data);
 
   return {
     type: CONTENT_POST,
-    payload: request,
+    payload: response.data,
   };
 }
 
-export function getAPost(uuid) {
-  const request = axios
-    .get(`/api/post/${uuid}`)
-    .then((res) => res.data)
-    .catch((e) => console.log(e));
-
-  return {
-    type: GET_A_POST,
-    payload: request,
-  };
-}
-
-export function getPosts(page, username) {
+export async function getPosts(page, username) {
   if (username) {
-    const request = axios
-      .get(`/api/post?username=${username}&page=${page}&limit=10`)
-      .then((res) => res)
-      .catch((e) => console.log(e));
+    const response = await axios.get(
+      `/api/post?username=${username}&page=${page}&limit=10`
+    );
 
     return {
       type: GET_POSTS,
-      payload: request,
+      payload: response.data,
     };
   }
-  const request = axios
-    .get(`/api/post?page=${page}&limit=10`)
-    .then((res) => res)
-    .catch((e) => console.log(e));
+  const response = await axios.get(`/api/post?page=${page}&limit=10`);
 
   return {
     type: GET_POSTS,
-    payload: request,
+    payload: response.data,
+  };
+}
+
+export async function getAPost(uuid) {
+  const response = await axios.get(`/api/post/${uuid}`);
+
+  return {
+    type: GET_A_POST,
+    payload: response.data,
   };
 }

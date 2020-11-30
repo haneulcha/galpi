@@ -1,6 +1,8 @@
 import express from "express";
 import { Comment, Post } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
+import { validate, commentSchema } from "../validation/index.js";
+import { BadRequest } from "../errors/index.js";
 
 const { Router } = express;
 const router = Router();
@@ -11,21 +13,24 @@ router.get(
     const uuid = req.params.uuid;
 
     const post = await Post.findOne({ uuid });
+    if (!post) throw BadRequest("Post Not Found");
+
     const comments = await Comment.find({ post: post._id });
 
-    res.json({ message: "success", comments });
+    res.status(200).json({ message: "ok", comments });
   })
 );
 
 router.post(
   "/api/comment/:uuid",
+  auth,
   catchAsync(async (req, res) => {
-    //TODO: VALIDATE
-    const user = req.session.userId || "5fa0c4faa37c946708ebc8dc";
+    const user = req.session.userId;
     const uuid = req.params.uuid;
     const comment = req.body.comment;
 
     const post = await Post.findOne({ uuid });
+    if (!post) throw BadRequest("Post Not Found");
 
     const body = {
       post: post._id,
@@ -33,9 +38,11 @@ router.post(
       comment,
     };
 
-    const savedComment = await Comment.create(body);
-    console.log("saved comment", savedComment);
-    res.json({ message: "success", savedComment });
+    await validate(commentSchema, body);
+
+    const newComment = await Comment.create(body);
+
+    res.status(200).json({ message: "ok", newComment });
   })
 );
 
@@ -46,11 +53,11 @@ router.delete(
     const user = req.session.userId;
     const id = req.params.id;
     const comment = await Comment.findById(id);
+    if (!comment) throw new BadRequest("Comment Not Found");
     if (comment.user._id === user) {
       await Comment.findByIdAndDelete(id);
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ message: "ok" });
     }
-    res.status(400).json({ message: "failed" });
   })
 );
 

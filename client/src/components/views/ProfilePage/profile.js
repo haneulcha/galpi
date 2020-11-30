@@ -5,25 +5,24 @@ import PostInfiniteScroll from "../../containers/infinite-scroll";
 import PostThumbnail from "../../containers/post-thumbnail";
 import { getUser } from "../../../_actions/user_action";
 import PaperCard from "../../containers/papercard";
+import { errorHandle } from "../../../_actions/error_actions";
 
 const Profile = () => {
   const { username } = useParams();
   const [user, setUser] = useState();
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
-        let { user } = await dispatch(getUser(username)).then(
-          (res) => res.payload
-        );
-        console.log("in profile", user);
-
+        let response = await dispatch(getUser(username));
+        let { user } = response.payload;
         setUser(user);
-        // setLoading(false);
+        setLoading(false);
       } catch (e) {
-        console.error(e);
+        dispatch(errorHandle(e));
       }
     }
     fetchData();
@@ -31,6 +30,7 @@ const Profile = () => {
 
   return (
     <div className="profile">
+      {loading && "유저 정보를 가져오고 있습니다"}
       {user ? (
         <>
           <PaperCard title={user.username}>

@@ -72,7 +72,7 @@ li a {
 }
 
 .page-title {
-  margin: 1em auto 0.5em;
+  margin: 1em auto 1em;
   font-weight: bold;
   letter-spacing: var(--letter-spacing);
   text-align: center;
@@ -354,28 +354,77 @@ h1 strong {
 /* ------------REGISTER, SUBMIT------------ */
 
 .form {
-  text-align: center;
+  width: 60%;
 }
 
-#login,
-#register {
-  margin: auto;
-  max-width: 40em;
+.register form > *,
+.login form > * {
+  display: block;
+  width: 100%;
 }
 
-#register .ant-form-item {
-  margin-bottom: 0.1em;
+.form-control label::after {
+  content: " ＊";
+  color: #db2b39;
+  font-size: 0.1em;
 }
+
+.form-control {
+  position: relative;
+  margin-top: 0.8em;
+}
+.form-control input {
+  width: 100%;
+  border: 2px solid var(--bg-accent);
+  border-radius: calc(var(--border-radius) * 0.3);
+  padding: 0.3em;
+  outline: none;
+}
+.form-control input:focus {
+  outline: none;
+  border-color: #474a4d;
+}
+.form-control input::placeholder {
+  font-size: 0.8em;
+}
+
+.form-control.success input {
+  border-color: green;
+}
+.form-control.error input {
+  border-color: #db2b39;
+}
+
+.form-control .icon {
+  position: absolute;
+  visibility: hidden;
+  right: 0.8em;
+  top: 2.2em;
+}
+.form-control .icon-suc {
+  color: green;
+}
+.form-control .icon-err {
+  color: #db2b39;
+}
+.form-control.success .icon-suc {
+  visibility: visible;
+}
+.form-control.error .icon-err {
+  visibility: visible;
+}
+
 .submit-btn {
   background-color: #347fd5;
   height: unset;
   border: none;
-  padding: 0.6em 1.2em;
+  padding: 0.6em 0.8em;
   border-radius: var(--border-radius);
-  margin: 1.8em 0.5em 3em;
+  margin: 1.5em 0 1em;
   display: inline-block;
   letter-spacing: calc(var(--letter-spacing) * 1.2);
   font-size: 1.05em;
+  color: var(--bg-smooth);
 }
 
 /* ----------------A POST--------------- */
@@ -538,14 +587,7 @@ h1 strong {
   }
 
   .form {
-    text-align: unset;
-  }
-  .login {
-    text-align: center;
-  }
-
-  #register .ant-form-item {
-    margin-bottom: 1.5em;
+    max-width: 25em;
   }
 
   .ant-card {

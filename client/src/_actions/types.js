@@ -16,3 +16,5 @@ export const DELETE_COMMENT = "delete_comment";
 
 export const POST_LIKE = "post_like";
 export const POST_UNLIKE = "post_unlike";
+
+export const ERROR_HANDLE = "error_handle";

@@ -5,6 +5,7 @@ import fs from "fs";
 import { Post, Sequence, User } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
 import { validate, postSchema } from "../validation/index.js";
+import { BadRequest } from "../errors/index.js";
 
 const { Router } = express;
 const router = Router();
@@ -19,7 +20,7 @@ fs.readdir("uploads", (error) => {
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, "uploads/"); //
+      cb(null, "uploads/");
     },
     filename(req, file, cb) {
       const ext = path.extname(file.originalname);
@@ -29,12 +30,10 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-//이미지 업로드 처리하는 라우터; 하나의 이미지 -> req.file, 나머지 -> req.body
 router.post("/api/post/img", upload.single("img"), (req, res) => {
   res.json({ url: `/api/img/${req.file.filename}` });
 });
 
-//게시글 업로드를 처리하는 라우터; 데이터만 multipart 형식으로 -> req.body
 const upload2 = multer();
 router.post(
   "/api/post",
@@ -43,7 +42,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { content, url } = req.body;
     const user = req.session.userId;
-    //TODO: VALIDATE
+
     const index = await Sequence.findOneAndUpdate(
       { user },
       { $inc: { uid: 1 } },
@@ -57,9 +56,9 @@ router.post(
       user,
       index: +number,
     };
-
+    await validate(postSchema, data);
     await Post.create(data);
-    res.json({ message: "uploaded" });
+    res.status(200).json({ message: "ok" });
   })
 );
 
@@ -69,17 +68,13 @@ router.get(
     const { username = false, page = 1, limit = 10 } = req.query;
     let posts, count;
     if (username) {
-      console.log("username exists");
-
       const user = await User.findOne({ username });
-
       posts = await Post.find({ user: user._id })
         .sort({ _id: -1 })
         .limit(limit * 1)
         .skip((page - 1) * limit);
       count = await Post.countDocuments({ user: user._id });
     } else {
-      console.log("no username");
       posts = await Post.find()
         .sort({ _id: -1 })
         .limit(limit * 1)
@@ -87,8 +82,8 @@ router.get(
       count = await Post.countDocuments();
     }
 
-    res.json({
-      message: "success",
+    res.status(200).json({
+      message: "ok",
       posts,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
@@ -104,10 +99,9 @@ router.get(
 
     const post = await Post.findOne({ uuid });
 
-    if (!post) {
-      res.status(404).json({ message: "not Found" });
-    }
-    res.json({ message: "success", post });
+    if (!post) throw new BadRequest("Post Not Found");
+
+    res.status(200).json({ message: "ok", post });
   })
 );
 

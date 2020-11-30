@@ -19,12 +19,11 @@ router.post(
         $push: { likes: user },
       },
       (err, doc) => {
-        if (err) console.error(err);
-        console.log(doc);
+        if (err) throw err;
       }
     );
 
-    res.status(200).json({ message: "success" });
+    res.status(200).json({ message: "ok" });
   })
 );
 
@@ -42,12 +41,11 @@ router.post(
         $pull: { likes: user },
       },
       (err, doc) => {
-        if (err) console.error(err);
-        console.log(doc);
+        if (err) throw err;
       }
     );
 
-    res.status(200).json({ message: "success" });
+    res.status(200).json({ message: "ok" });
   })
 );
 

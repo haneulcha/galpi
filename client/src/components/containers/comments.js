@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getComment, deleteComment } from "../../_actions/comment_action";
+import { errorHandle } from "../../_actions/error_actions";
 
 const FetchComments = (props) => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.userId);
+  const userId = useSelector((state) => state.user.userId);
   const { uuid, comments, setComments } = props;
   const [loading, setLoading] = useState(false);
 
@@ -14,47 +15,29 @@ const FetchComments = (props) => {
     const li = e.target.parentElement;
 
     try {
-      await dispatch(deleteComment(li.id)).then((res) => {
-        console.log(res.payload);
-        console.log("댓글이 삭제되었습니다");
-      });
+      await dispatch(deleteComment(li.id));
+      alert("댓글이 삭제되었습니다");
     } catch (e) {
-      console.error(e);
+      dispatch(errorHandle(e));
     }
   };
 
-  const fetchComment = useCallback(
-    async (uuid) => {
+  useEffect(() => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await dispatch(getComment(uuid));
-        const { payload } = res;
-        setLoading(false);
-        return payload;
-      } catch (e) {
-        setLoading(false);
-        return e;
-      }
-    },
-    [setLoading, dispatch]
-  );
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        const newComments = await fetchComment(uuid);
-        const { comments, message } = newComments;
-        if (message === "success") {
+        const response = await dispatch(getComment(uuid));
+        const { comments, message } = response.payload;
+        if (message === "ok") {
           setComments(comments);
           setLoading(false);
         }
       } catch (e) {
-        console.error(e);
+        dispatch(errorHandle(e));
       }
     };
     fetchData();
-  }, [fetchComment, setComments, setLoading, uuid]);
+  }, [setComments, dispatch, uuid]);
 
   return (
     <>

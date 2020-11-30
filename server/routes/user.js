@@ -20,8 +20,7 @@ router.post(
     const found = await User.exists({ email });
 
     if (found) {
-      res.json({ message: "Invalid Email" });
-      // throw new BadRequest("Invalid Email");
+      throw new BadRequest("Invalid Email");
     }
 
     const user = await User.create({
@@ -35,7 +34,7 @@ router.post(
 
     logIn(req, user._id);
 
-    res.json({ message: "OK", userId: user._id, username: user.username });
+    res.status(200).json({ message: "ok", user });
   })
 );
 
@@ -46,9 +45,9 @@ router.get(
     const user = await User.findOne({ username });
 
     if (!user) {
-      res.json({ message: "not Found" });
+      throw new BadRequest("User Not Found");
     }
-    res.json({ user, message: "success" });
+    res.json({ message: "ok", user });
   })
 );
 

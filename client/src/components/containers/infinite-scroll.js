@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { errorHandle } from "../../_actions/error_actions";
 import { getPosts } from "../../_actions/post_action";
 
 // GET posts
@@ -36,21 +37,18 @@ const PostInfiniteScroll = (props) => {
 
   const observer = useRef(new IntersectionObserver(observerCallback, options));
 
-  // data fetching
   const fetchData = useCallback(
     async (pageNum) => {
       setLoading(true);
       try {
-        let { status, data } = await dispatch(getPosts(pageNum, username)).then(
-          (res) => res.payload
-        );
-        console.log("fetch data", status);
-        console.log("fetch data", data);
+        let response = await dispatch(getPosts(pageNum, username));
+        const { posts, message } = response.payload;
+
         setLoading(false);
-        return { status, data };
+        return { posts, message };
       } catch (e) {
+        dispatch(errorHandle(e));
         setLoading(false);
-        return e;
       }
     },
     [username, dispatch]
@@ -58,9 +56,9 @@ const PostInfiniteScroll = (props) => {
 
   const handleInitial = useCallback(
     async (page) => {
-      const { status, data } = await fetchData(page);
-      if (status === 200) {
-        setPosts((posts) => [...posts, ...data.posts.values()]);
+      const { posts, message } = await fetchData(page);
+      if (message === "ok") {
+        setPosts((items) => [...items, ...posts.values()]);
       }
     },
     [fetchData]

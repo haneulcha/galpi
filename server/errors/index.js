@@ -14,6 +14,6 @@ export class Unauthorized extends HttpError {
   constructor(message = "Unauthorized") {
     super(message);
 
-    this.status = 422;
+    this.status = 401;
   }
 }

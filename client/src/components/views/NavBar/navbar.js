@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "../../../_actions/user_action";
+import { errorHandle } from "../../../_actions/error_actions";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const NavBar = (props) => {
   const { loggedIn, username } = useSelector((state) => ({
-    loggedIn: state.auth.loggedIn,
-    username: state.auth.username,
+    loggedIn: state.user.loggedIn,
+    username: state.user.username,
   }));
   const [menuToggle, setMenuToggle] = useState(false);
+  const { history } = props;
 
   const dispatch = useDispatch();
   const logout = async () => {
-    await dispatch(logOutUser())
-      .then((res) => {
-        console.log("after logout", res);
-      })
-      .catch((e) => console.error(e));
+    try {
+      await dispatch(logOutUser());
+      alert("로그아웃 되었습니다");
+      history.replace("/");
+    } catch (e) {
+      dispatch(errorHandle(e));
+    }
   };
 
   const toggleMenu = (e) => {
@@ -30,7 +34,6 @@ const NavBar = (props) => {
       <header>
         <Link to="/">
           <h1 className="logo">galpi</h1>
-          {/* <img className="logo" src="/galpi_logo.png" alt="logo galpi" /> */}
         </Link>
 
         <svg

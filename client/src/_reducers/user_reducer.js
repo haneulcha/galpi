@@ -12,19 +12,15 @@ export default function (state = {}, action) {
     case REGISTER_USER:
       return {
         ...state,
-        loggedIn: true,
-        userId: action.payload.userId,
-        username: action.payload.username,
-        register: action.payload.message,
+        getRegisterSuccess: action.payload.message,
       };
 
     case LOGIN_USER:
       return {
         ...state,
         loggedIn: true,
-        userId: action.payload.userId,
-        username: action.payload.username,
-        login: action.payload.message,
+        userId: action.payload.user.userId,
+        username: action.payload.user.username,
       };
 
     case LOGOUT_USER:
@@ -33,7 +29,6 @@ export default function (state = {}, action) {
         loggedIn: false,
         userId: {},
         username: {},
-        logout: action.payload.message,
       };
 
     case GET_USER:
@@ -51,9 +46,8 @@ export default function (state = {}, action) {
       return {
         ...state,
         loggedIn: action.payload.isAuth,
-        userId: action.payload._id || null,
-        username: action.payload.username || null,
-        email: action.payload.email || null,
+        userId: action.payload.user._id,
+        username: action.payload.user.username,
       };
 
     default:

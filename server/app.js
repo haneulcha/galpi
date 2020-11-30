@@ -1,7 +1,7 @@
 import express from "express";
 import session from "express-session";
-// import cors from "cors";
 import path from "path";
+import cors from "cors";
 import { SESSION_OPTION } from "./config/index.js";
 import {
   notFound,
@@ -11,22 +11,19 @@ import {
 } from "./middleware/index.js";
 import { user, login, home, post, like, comment } from "./routes/index.js";
 
-export const createApp = () => {
+export const createApp = (store) => {
   const __dirname = path.resolve();
   const app = express();
 
-  // app.use(cors());
-  app.use(express.static(path.join(__dirname, "dist")));
-  app.get("/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
+  app.use(cors());
+  // app.use(express.static(path.join(__dirname, "public")));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(
     session({
       ...SESSION_OPTION,
-      // store
+      // store,
     })
   );
 
@@ -36,7 +33,7 @@ export const createApp = () => {
 
   app.use(home);
 
-  app.use(user); // register
+  app.use(user);
 
   app.use(login);
 
@@ -45,6 +42,10 @@ export const createApp = () => {
   app.use(like);
 
   app.use(comment);
+
+  // app.get("/*", function (req, res) {
+  //   res.sendFile(path.join(__dirname, "public", "index.html"));
+  // });
 
   app.use(notFound);
 

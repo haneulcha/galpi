@@ -1,47 +1,113 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import * as EmailValidator from "email-validator";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
+import { errorHandle } from "../../../_actions/error_actions";
 import { registerUser } from "../../../_actions/user_action";
 
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 4,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 20,
-    },
-  },
-};
-
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 14,
-      offset: 10,
-    },
-  },
-};
-
-const RegistrationForm = () => {
+const RegistrationForm = (props) => {
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
+  const { history } = props;
+  const [email, setEmail] = useState("");
+  const [emailValid, setEmailValid] = useState({
+    valid: "",
+    message: "",
+    ok: false,
+  });
+  const [username, setUsername] = useState("");
+  const [usernameValid, setUsernameValid] = useState({
+    valid: "",
+    message: "최소 2글자 이상의 영문",
+    ok: false,
+  });
+  const [name, setName] = useState("");
+  const [nameValid, setNameValid] = useState({
+    valid: "",
+    message: "",
+    ok: false,
+  });
+  const [password, setPassword] = useState("");
+  const [passwordValid, setPasswordValid] = useState({
+    valid: "",
+    message: "영어 대·소문자와 숫자 포함, 8글자 이상.",
+    ok: false,
+  });
+  const [confirm, setConfirm] = useState("");
+  const [confirmValid, setConfirmValid] = useState({
+    valid: "",
+    message: "",
+    ok: false,
+  });
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-    const { email, name, password, username, confirm } = values;
+  const isPassword = (pwd) => {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(pwd);
+  };
+
+  const onFinish = async (e) => {
+    e.preventDefault();
+    if (email === "") {
+      setEmailValid({
+        valid: "error",
+        message: "이메일을 입력하세요",
+        ok: false,
+      });
+    } else if (!EmailValidator.validate(email)) {
+      setEmailValid({
+        valid: "error",
+        message: "이메일을 올바르게 입력하세요",
+        ok: false,
+      });
+    } else {
+      setEmailValid({
+        valid: "success",
+        message: "",
+        ok: true,
+      });
+    }
+
+    if (username === "") {
+      setUsernameValid({
+        valid: "error",
+        message: "아이디를 입력하세요",
+        ok: false,
+      });
+    } else {
+      setUsernameValid({ valid: "success", message: "", ok: true });
+    }
+
+    if (name === "") {
+      setNameValid({ valid: "error", message: "이름을 입력하세요", ok: false });
+    } else {
+      setNameValid({ valid: "success", message: "", ok: true });
+    }
+
+    if (password === "") {
+      setPasswordValid({
+        valid: "error",
+        message: "비밀번호를 입력하세요",
+        ok: false,
+      });
+    } else if (!isPassword(password)) {
+      setPasswordValid({
+        valid: "error",
+        message: "영어 대·소문자와 숫자 포함하고 8글자 이상이여야 합니다",
+        ok: false,
+      });
+    } else setPasswordValid({ valid: "success", message: "", ok: true });
+
+    if (confirm === "") {
+      setConfirmValid({
+        valid: "error",
+        message: "비밀번호 확인을 입력하세요",
+        ok: false,
+      });
+    } else if (password !== confirm) {
+      setConfirmValid({
+        valid: "error",
+        message: "비밀번호를 동일하게 입력하세요",
+        ok: false,
+      });
+    } else setConfirmValid({ valid: "success", message: "", ok: true });
 
     const userinfo = {
       email,
@@ -51,113 +117,99 @@ const RegistrationForm = () => {
       passwordConfirmation: confirm,
     };
 
-    dispatch(registerUser(userinfo));
+    if (
+      emailValid.ok &&
+      usernameValid.ok &&
+      nameValid.ok &&
+      passwordValid.ok &&
+      confirmValid.ok
+    ) {
+      await dispatch(registerUser(userinfo))
+        .then((res) => {
+          alert("회원가입에 성공했습니다.");
+          history.replace("/login");
+        })
+        .catch((e) => dispatch(errorHandle(e)));
+    }
   };
 
   return (
     <div className="form register">
       <h1 className="page-title">회원가입</h1>
+      <form onSubmit={onFinish}>
+        <div className={`form-control ${emailValid.valid}`}>
+          <label htmlFor="email">이메일</label>
+          <input
+            id="email"
+            type="text"
+            value={email}
+            placeholder="예) galpi@galpi.com"
+            min="8"
+            max="254"
+            onChange={(e) => setEmail(e.target.value.trim())}
+          />
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
+          <small>{emailValid.message}</small>
+        </div>
 
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="email"
-          label="이메일"
-          rules={[
-            {
-              type: "email",
-              message: "올바르지 않은 이메일 형식입니다.",
-            },
-            {
-              required: true,
-              message: "이메일을 입력하세요.",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+        <div className={`form-control ${usernameValid.valid}`}>
+          <label htmlFor="username">아이디(영문)</label>
+          <input
+            id="username"
+            type="text"
+            maxLength="128"
+            pattern=".{3,}"
+            title="최소 2글자 이상"
+            value={username}
+            onChange={(e) => setUsername(e.target.value.trim())}
+          />
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
+          <small>{usernameValid.message}</small>
+        </div>
 
-        <Form.Item
-          name="username"
-          label="아이디"
-          rules={[
-            {
-              required: true,
-              message: "아이디를 입력하세요!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+        <div className={`form-control ${nameValid.valid}`}>
+          <label htmlFor="name">이름</label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value.trim())}
+          />
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
+          <small>{nameValid.message}</small>
+        </div>
 
-        <Form.Item
-          name="password"
-          label="비밀번호"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력하세요.",
-            },
-            {
-              min: 8,
-              message: "비밀번호는 8글자 이상이여야 합니다.",
-            },
-            {
-              pattern: /^(?=.*?[\p{Lu}])(?=.*?[\p{Ll}])(?=.*?\d).*$/u,
-              message:
-                "적어도 하나 이상의 영어 대문자, 소문자, 숫자가 포함되어야 합니다.",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
+        <div className={`form-control ${passwordValid.valid}`}>
+          <label htmlFor="password">비밀번호</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value.trim())}
+          />
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
 
-        <Form.Item
-          name="confirm"
-          label="비밀번호 확인"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
+          <small>{passwordValid.message}</small>
+        </div>
+        <div className={`form-control ${confirmValid.valid}`}>
+          <label htmlFor="confirm">비밀번호 확인</label>
+          <input
+            id="confirm"
+            type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value.trim())}
+          />
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
+          <small>{confirmValid.message}</small>
+        </div>
 
-                return Promise.reject(
-                  "입력하신 비밀번호가 서로 일치하지 않습니다."
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          label="이름"
-          name="name"
-          rules={[{ required: true, message: "이름을 입력하세요" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" className="submit-btn">
-            가입하기
-          </Button>
-        </Form.Item>
-      </Form>
+        <input type="submit" value="가입하기" className="submit-btn" />
+      </form>
     </div>
   );
 };

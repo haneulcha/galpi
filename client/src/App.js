@@ -16,12 +16,22 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
 import { auth } from "./_actions/user_action";
+import { errorHandle } from "./_actions/error_actions";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("initial auth");
-    dispatch(auth());
+    const fetchAuth = async () => {
+      console.log("initial auth");
+
+      try {
+        await dispatch(auth());
+      } catch (e) {
+        dispatch(errorHandle(e));
+      }
+    };
+
+    fetchAuth();
   }, [dispatch]);
 
   return (

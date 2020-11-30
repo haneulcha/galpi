@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { PushpinFilled, PushpinOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { postLike, postUnlike } from "../../_actions/like_action";
+import { errorHandle } from "../../_actions/error_actions";
 
 const Likes = ({ likes, uuid }) => {
-  const loggedInUser = useSelector((state) => state.auth);
+  const loggedInUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [likesArray, setLikesArray] = useState([...likes]);
   const [showLikes, setShowLikes] = useState(false);
@@ -12,42 +13,28 @@ const Likes = ({ likes, uuid }) => {
   const handleLike = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(postLike(uuid)).then((res) => {
-        console.log(res.payload);
-        console.log("like done");
-      });
+      await dispatch(postLike(uuid));
+      setLikesArray([...likesArray, loggedInUser.userId]);
+      setShowLikes(true);
     } catch (e) {
-      console.error(e);
+      dispatch(errorHandle(e));
     }
-
-    setLikesArray([...likesArray, loggedInUser.userId]);
-
-    setShowLikes(true);
-
-    return;
   };
 
   const handleUnlike = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(postUnlike(uuid)).then((res) => {
-        console.log(res.payload);
-        console.log("like done");
-      });
+      await dispatch(postUnlike(uuid));
+      let filteredLikes = likesArray.filter((id) => id !== loggedInUser.userId);
+      setLikesArray([...filteredLikes]);
+      setShowLikes(false);
     } catch (e) {
-      console.error(e);
+      dispatch(errorHandle(e));
     }
-
-    const filteredLikes = likesArray.filter((id) => id !== loggedInUser.userId);
-    setLikesArray([...filteredLikes]);
-    setShowLikes(false);
-
-    return;
   };
 
   useEffect(() => {
     if (likes.includes(loggedInUser.userId)) {
-      console.log("user already liked");
       setShowLikes(true);
     }
   }, [likes, loggedInUser.userId]);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { errorHandle } from "../../../_actions/error_actions";
 import { getDashboard } from "../../../_actions/user_action";
 import PaperCard from "../../containers/papercard";
 
@@ -11,15 +12,13 @@ const Dashboard = (params) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        let result = await dispatch(getDashboard);
-
-        let { user, posts } = result;
+        let response = await dispatch(getDashboard());
+        let { user, posts } = response.payload;
 
         setUser(user);
         setPosts(posts);
-        console.log(user);
       } catch (e) {
-        console.error(e);
+        dispatch(errorHandle(e));
       }
     }
     fetchData();

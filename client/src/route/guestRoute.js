@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 export const GuestRoute = ({ component: Component, ...rest }) => {
   const { loggedIn } = useSelector((state) => ({
-    loggedIn: state.auth.loggedIn,
+    loggedIn: state.user.loggedIn,
   }));
 
   return (

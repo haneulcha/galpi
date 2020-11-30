@@ -6,6 +6,7 @@ import { getAPost } from "../../../_actions/post_action";
 import Likes from "../../containers/likes";
 import CommentForm from "../../containers/comment-form";
 import FetchComments from "../../containers/comments";
+import { errorHandle } from "../../../_actions/error_actions";
 
 const Post = () => {
   const dispatch = useDispatch();
@@ -16,9 +17,10 @@ const Post = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        await dispatch(getAPost(uuid)).then((res) => setPost(res.payload.post));
+        let response = await dispatch(getAPost(uuid));
+        setPost(response.payload.post);
       } catch (e) {
-        console.error(e);
+        dispatch(errorHandle(e));
       }
     }
     fetchData();

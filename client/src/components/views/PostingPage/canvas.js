@@ -74,7 +74,6 @@ const Canvas = (props) => {
 
     cbtop(imgTop + y);
     cbleft(imgLeft + x);
-    console.log(imgTop + y, imgLeft + x);
   };
 
   useEffect(() => {

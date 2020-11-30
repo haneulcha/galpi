@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postComment } from "../../_actions/comment_action";
+import { errorHandle } from "../../_actions/error_actions";
 
 const CommentForm = ({ uuid, setComments, comments }) => {
   const dispatch = useDispatch();
@@ -10,14 +11,14 @@ const CommentForm = ({ uuid, setComments, comments }) => {
     e.preventDefault();
 
     try {
-      const res = await dispatch(postComment(uuid, { comment }));
-      const { status, data } = res;
+      const response = await dispatch(postComment(uuid, { comment }));
+      const { newComment, message } = response.payload;
 
-      if (status === 200) {
-        setComments([...comments, data.savedComment]);
+      if (message === "ok") {
+        setComments([...comments, newComment]);
       }
     } catch (e) {
-      console.error(e);
+      dispatch(errorHandle(e));
     }
   };
 

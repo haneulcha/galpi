@@ -7,9 +7,11 @@ import { FontColorPicker } from "./fontColorpicker";
 import domtoimage from "dom-to-image";
 import { useDispatch } from "react-redux";
 import { contentPost, imgPost } from "../../../_actions/post_action";
+import { errorHandle } from "../../../_actions/error_actions";
 
-const Posting = () => {
+const Posting = (props) => {
   const dispatch = useDispatch();
+  const { history } = props;
   const [url, setUrl] = useState(); // preview
   const [color, setColor] = useState("#f1f2f6");
   const [fontsize, setFontsize] = useState(14);
@@ -20,25 +22,31 @@ const Posting = () => {
 
   const canvasRef = useRef();
 
-  const postContent = (url) => {
+  const postContent = async (url) => {
     let data = {
       content,
       url,
     };
-
-    dispatch(contentPost(data))
-      .then((res) => console.log("content", res))
-      .catch((err) => console.error(err));
+    try {
+      await dispatch(dispatch(contentPost(data)));
+      alert("업로드 성공 !");
+      history.replace("/home");
+    } catch (e) {
+      dispatch(errorHandle(e));
+    }
   };
 
-  const postImage = (blob) => {
+  const postImage = async (blob) => {
     const img = blob;
     const formData = new FormData();
     formData.append("img", img, "combined.png");
 
-    dispatch(imgPost(formData))
-      .then((res) => postContent(res.payload.url))
-      .catch((err) => console.error(err));
+    try {
+      let response = await dispatch(imgPost(formData));
+      postContent(response.payload.url);
+    } catch (e) {
+      dispatch(errorHandle(e));
+    }
   };
 
   const domToImage = () => {

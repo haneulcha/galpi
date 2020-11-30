@@ -12,16 +12,24 @@ router.get(
     const user = await User.findById(req.session.userId);
     const posts = await Post.countDocuments({ user: req.session.userId });
 
-    res.json({ user, posts, message: "success" });
+    res.status(200).json({ user, posts, message: "ok" });
   })
 );
 
 router.get(
   "/api/auth",
-  auth,
   catchAsync(async (req, res) => {
     const user = await User.findById(req.session.userId);
-    res.json({ isAuth: true, user });
+    if (!user)
+      return res.json({
+        message: "not logged in",
+        isAuth: false,
+        user: {
+          _id: {},
+          username: {},
+        },
+      });
+    res.status(200).json({ isAuth: true, user, message: "ok" });
   })
 );
 
