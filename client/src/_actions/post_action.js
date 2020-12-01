@@ -1,6 +1,12 @@
 import axios from "axios";
 
-import { CONTENT_POST, IMG_POST, GET_A_POST, GET_POSTS } from "./types";
+import {
+  CONTENT_POST,
+  IMG_POST,
+  GET_A_POST,
+  GET_POSTS,
+  DELETE_POST,
+} from "./types";
 
 export async function imgPost(formData) {
   const config = {
@@ -50,6 +56,15 @@ export async function getAPost(uuid) {
 
   return {
     type: GET_A_POST,
+    payload: response.data,
+  };
+}
+
+export async function deletePost(uuid) {
+  const response = await axios.delete(`/api/post/${uuid}`);
+
+  return {
+    type: DELETE_POST,
     payload: response.data,
   };
 }

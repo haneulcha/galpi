@@ -17,7 +17,7 @@ router.post(
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-
+    console.log(email, password);
     if (!user || !(await user.matchesPassword(password))) {
       throw new Unauthorized("Incorrect email or password");
     }

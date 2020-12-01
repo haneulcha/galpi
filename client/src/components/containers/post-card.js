@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CommentForm from "./comment-form";
 import FetchComments from "./comments";
 import Likes from "./likes";
 import "./post-card.css";
 import { TagsOutlined, TagsFilled, ZoomInOutlined } from "@ant-design/icons";
+import DeleteAPost from "./post-delete";
 
 const PostCard = ({ index, posts }) => {
   const { uuid, likes, content, url, user } = posts;
   const { username } = user;
+  const userId = useSelector((state) => state.user.userId);
 
   const [showComment, setShowComment] = useState(false);
   const [comments, setComments] = useState([]);
@@ -47,6 +50,11 @@ const PostCard = ({ index, posts }) => {
             <ZoomInOutlined key="link" />
           </Link>
         </li>
+        {userId === user._id && (
+          <li>
+            <DeleteAPost uuid={uuid} />
+          </li>
+        )}
       </ul>
 
       {showComment && (

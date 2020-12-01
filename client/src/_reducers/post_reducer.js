@@ -3,6 +3,7 @@ import {
   GET_A_POST,
   IMG_POST,
   GET_POSTS,
+  DELETE_POST,
 } from "../_actions/types";
 
 export default function (state = {}, action) {
@@ -29,6 +30,12 @@ export default function (state = {}, action) {
       return {
         ...state,
         postsGetSuccess: action.payload.message,
+      };
+
+    case DELETE_POST:
+      return {
+        ...state,
+        postDelSuccess: action.payload.message,
       };
     default:
       return state;

@@ -19,7 +19,7 @@ export default function (state = {}, action) {
       return {
         ...state,
         loggedIn: true,
-        userId: action.payload.user.userId,
+        userId: action.payload.user._id,
         username: action.payload.user.username,
       };
 

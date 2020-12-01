@@ -105,4 +105,19 @@ router.get(
   })
 );
 
+router.delete(
+  "/api/post/:uuid",
+  auth,
+  catchAsync(async (req, res) => {
+    const user = req.session.userId;
+    const uuid = req.params.uuid;
+    const post = await Post.findOne({ uuid });
+    if (!post) throw new BadRequest("Post Not Found");
+    if (post.user._id === user) {
+      await Post.findByIdAndDelete(post._id);
+      res.status(200).json({ message: "ok" });
+    }
+    throw new BadRequest("Delete faild");
+  })
+);
 export default router;

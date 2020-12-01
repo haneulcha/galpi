@@ -7,7 +7,8 @@ export default function (state = initState, action) {
 
   if (error) {
     return {
-      error: error,
+      name: error.name,
+      message: error.message,
     };
   }
 

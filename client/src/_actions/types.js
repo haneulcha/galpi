@@ -9,6 +9,7 @@ export const IMG_POST = "img_post";
 export const CONTENT_POST = "content_post";
 export const GET_A_POST = "get_a_post";
 export const GET_POSTS = "get_posts";
+export const DELETE_POST = "delete_post";
 
 export const POST_COMMENT = "post_comment";
 export const GET_COMMENT = "get_comment";

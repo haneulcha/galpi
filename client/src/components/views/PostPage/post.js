@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { getAPost } from "../../../_actions/post_action";
+import { errorHandle } from "../../../_actions/error_actions";
 import Likes from "../../containers/likes";
 import CommentForm from "../../containers/comment-form";
 import FetchComments from "../../containers/comments";
-import { errorHandle } from "../../../_actions/error_actions";
+import DeleteAPost from "../../containers/post-delete";
 
 const Post = () => {
-  const dispatch = useDispatch();
   const { uuid } = useParams();
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.userId);
+
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
 
@@ -30,10 +32,17 @@ const Post = () => {
     <div className="body-wrapper">
       {post && (
         <section className="a-post">
-          <div className="user">
-            <Link to={`/username/${post.user.username}`}>
-              {post.user.username}
-            </Link>
+          <div className="a-post-header">
+            <div className="user">
+              <Link to={`/username/${post.user.username}`}>
+                {post.user.username}
+              </Link>
+            </div>
+            {userId === post.user._id && (
+              <div className="delete">
+                <DeleteAPost uuid={uuid} />
+              </div>
+            )}
           </div>
 
           <div className="image">

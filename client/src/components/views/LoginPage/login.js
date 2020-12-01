@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
 import { useDispatch } from "react-redux";
+import * as EmailValidator from "email-validator";
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import { errorHandle } from "../../../_actions/error_actions";
 import { loginUser } from "../../../_actions/user_action";
@@ -22,36 +22,53 @@ const LoginForm = (props) => {
     ok: false,
   });
 
-  const onFinish = async (e) => {
-    e.preventDefault();
-    if (email === "") {
+  const pwdHandler = (e) => {
+    let val = e.target.value.trim();
+    setPassword(val);
+    if (val === "") {
+      setPasswordValid({
+        valid: "",
+        message: "비밀번호를 입력하세요",
+        ok: false,
+      });
+    } else setPasswordValid({ valid: "", message: "", ok: true });
+  };
+
+  const emailHandler = (e) => {
+    let val = e.target.value.trim();
+    setEmail(val);
+    console.log("val", val);
+    console.log("email", email);
+    if (val === "") {
+      setEmailValid({
+        valid: "",
+        message: "이메일을 입력하세요",
+        ok: false,
+      });
+    } else if (!EmailValidator.validate(val)) {
       setEmailValid({
         valid: "error",
-        message: "이메일을 입력하세요",
+        message: "이메일을 알맞게 입력하세요",
         ok: false,
       });
     } else {
       setEmailValid({
-        valid: "success",
+        valid: "",
         message: "",
         ok: true,
       });
     }
+    console.log("eV", emailValid);
+  };
 
-    if (password === "") {
-      setPasswordValid({
-        valid: "error",
-        message: "비밀번호를 입력하세요",
-        ok: false,
-      });
-    } else setPasswordValid({ valid: "success", message: "", ok: true });
-
-    let userinfo = {
-      email,
-      password,
-    };
+  const onFinish = async (e) => {
+    e.preventDefault();
     if (emailValid.ok && passwordValid.ok) {
       try {
+        let userinfo = {
+          email,
+          password,
+        };
         await dispatch(loginUser(userinfo));
 
         if (state && state.from) {
@@ -78,10 +95,9 @@ const LoginForm = (props) => {
             placeholder="예) galpi@galpi.com"
             min="8"
             max="254"
-            onChange={(e) => setEmail(e.target.value.trim())}
+            onChange={emailHandler}
           />
-          <CheckCircleOutlined className="icon icon-suc" />
-          <WarningOutlined className="icon icon-err" />
+
           <small>{emailValid.message}</small>
         </div>
 
@@ -91,7 +107,7 @@ const LoginForm = (props) => {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value.trim())}
+            onChange={pwdHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />

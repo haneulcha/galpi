@@ -433,6 +433,14 @@ h1 strong {
   padding: 0.5em;
   margin: 0.1em;
 }
+.a-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.a-post .delete {
+  font-size: 1.2em;
+}
 .a-post > * {
   margin-bottom: 0.5em;
 }
@@ -632,7 +640,7 @@ h1 strong {
     align-items: center;
   }
   .a-post {
-    width: 800px;
+    padding: 1em;
   }
 }
 

@@ -39,6 +39,31 @@ const RegistrationForm = (props) => {
     ok: false,
   });
 
+  const onDispatch = async () => {
+    if (
+      emailValid.ok &&
+      usernameValid.ok &&
+      nameValid.ok &&
+      passwordValid.ok &&
+      confirmValid.ok
+    ) {
+      let userinfo = {
+        email,
+        username,
+        name,
+        password,
+        passwordConfirmation: confirm,
+      };
+      await dispatch(registerUser(userinfo))
+        .then((res) => {
+          alert("회원가입에 성공했습니다.");
+          history.replace("/login");
+        })
+        .catch((e) => dispatch(errorHandle(e)));
+    }
+    return alert("정확하게 입력해주세요");
+  };
+
   const isPassword = (pwd) => {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(pwd);
   };
@@ -109,28 +134,7 @@ const RegistrationForm = (props) => {
       });
     } else setConfirmValid({ valid: "success", message: "", ok: true });
 
-    const userinfo = {
-      email,
-      username,
-      name,
-      password,
-      passwordConfirmation: confirm,
-    };
-
-    if (
-      emailValid.ok &&
-      usernameValid.ok &&
-      nameValid.ok &&
-      passwordValid.ok &&
-      confirmValid.ok
-    ) {
-      await dispatch(registerUser(userinfo))
-        .then((res) => {
-          alert("회원가입에 성공했습니다.");
-          history.replace("/login");
-        })
-        .catch((e) => dispatch(errorHandle(e)));
-    }
+    onDispatch();
   };
 
   return (
