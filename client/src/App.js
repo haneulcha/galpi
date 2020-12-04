@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./index.css";
 import {
   Register,
@@ -18,6 +18,7 @@ import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
 import { auth } from "./_actions/user_action";
 import { errorHandle } from "./_actions/error_actions";
+import ErrorModal from "./components/views/Modal/modal-content";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const App = () => {
         </NavBar>
       </Router>
       <Footer />
+      <ErrorModal />
     </>
   );
 };

@@ -17,9 +17,11 @@ router.post(
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    console.log(email, password);
+
     if (!user || !(await user.matchesPassword(password))) {
-      throw new Unauthorized("Incorrect email or password");
+      throw new Unauthorized(
+        "잘못된 이메일 혹은 비밀번호 입니다 \n Incorrect email or password"
+      );
     }
 
     logIn(req, user._id);

@@ -9,7 +9,6 @@ const DeleteAPost = ({ uuid }) => {
 
   const deletePostHandle = async (e) => {
     e.preventDefault();
-    console.log("delete?");
     try {
       await dispatch(deletePost(uuid));
       alert("포스트가 삭제되었습니다");

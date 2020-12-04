@@ -518,13 +518,35 @@ h1 strong {
   padding: 0.8em;
 }
 
-/* ----------------COMMENT--------------- */
-/* .comments-list button {
-  display: none;
+/* ----------------MODAL--------------- */
+
+#modal {
+  position: relative;
+  z-index: 999;
 }
-.comments-list button:hover {
-  display: unset;
-} */
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.error-message {
+  width: 20em;
+  padding: 1em;
+  text-align: center;
+  background-color: var(--bg-smooth);
+  border-radius: var(--border-radius);
+}
+.error-message .submit-btn {
+  margin: 0.5em 0;
+  padding: 0.5em 1.2em;
+  background-color: #db2b39;
+}
 
 @media (min-width: 750px) {
   li a:hover,

@@ -53,7 +53,8 @@ router.delete(
     const user = req.session.userId;
     const id = req.params.id;
     const comment = await Comment.findById(id);
-    if (!comment) throw new BadRequest("Comment Not Found");
+    if (!comment)
+      throw new BadRequest("댓글을 찾을 수 없습니다 \n Comment Not Found");
     if (comment.user._id === user) {
       await Comment.findByIdAndDelete(id);
       res.status(200).json({ message: "ok" });

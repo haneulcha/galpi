@@ -20,7 +20,7 @@ router.post(
     const found = await User.exists({ email });
 
     if (found) {
-      throw new BadRequest("Invalid Email");
+      throw new BadRequest("다른 이메일로 가입해주세요 \n Invalid Email");
     }
 
     const user = await User.create({
@@ -45,7 +45,7 @@ router.get(
     const user = await User.findOne({ username });
 
     if (!user) {
-      throw new BadRequest("User Not Found");
+      throw new BadRequest("해당 유저를 찾을 수 없습니다 \n User Not Found");
     }
     res.json({ message: "ok", user });
   })

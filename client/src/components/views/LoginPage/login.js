@@ -78,7 +78,6 @@ const LoginForm = (props) => {
         dispatch(errorHandle(e.response));
       }
     }
-    alert("로그인 실패 !");
   };
 
   return (
