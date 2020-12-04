@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./index.css";
 import {
   Register,
@@ -10,8 +10,9 @@ import {
   Posting,
   Profile,
   LandingPage,
+  Footer,
 } from "./components/views/index";
-// import NotFound from './components/views/NotFound/notFound'
+import NotFound from "./components/views/NotFound/notFound";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
@@ -20,6 +21,7 @@ import { errorHandle } from "./_actions/error_actions";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchAuth = async () => {
       console.log("initial auth");
@@ -27,34 +29,37 @@ const App = () => {
       try {
         await dispatch(auth());
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     };
-
     fetchAuth();
   }, [dispatch]);
 
   return (
-    <Router>
-      <Switch>
+    <>
+      <Router>
         <NavBar>
           <section className="body-container">
-            <GuestRoute path="/login" component={Login} />
-            <GuestRoute path="/register" component={Register} />
+            <Switch>
+              <GuestRoute exact path="/" component={LandingPage} />
 
-            <AuthRoute path="/dashboard" component={Dashboard} />
-            <AuthRoute path="/home" component={Home} />
-            <AuthRoute path="/post" component={Posting} />
+              <GuestRoute path="/login" component={Login} />
+              <GuestRoute path="/register" component={Register} />
 
-            <Route path="/user/:username" children={<Profile />} />
-            <Route path="/p/:uuid" children={<Post />} />
-            <GuestRoute exact path="/" component={LandingPage} />
+              <AuthRoute path="/dashboard" component={Dashboard} />
+              <AuthRoute path="/home" component={Home} />
+              <AuthRoute path="/post" component={Posting} />
 
-            {/* <Route component={NotFound} />      */}
+              <Route path="/user/:username" children={<Profile />} />
+              <Route path="/p/:uuid" children={<Post />} />
+
+              <Route component={NotFound} />
+            </Switch>
           </section>
         </NavBar>
-      </Switch>
-    </Router>
+      </Router>
+      <Footer />
+    </>
   );
 };
 

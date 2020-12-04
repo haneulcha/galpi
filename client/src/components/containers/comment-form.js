@@ -18,7 +18,7 @@ const CommentForm = ({ uuid, setComments, comments }) => {
         setComments([...comments, newComment]);
       }
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 

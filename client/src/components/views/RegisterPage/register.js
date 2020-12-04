@@ -17,7 +17,7 @@ const RegistrationForm = (props) => {
   const [username, setUsername] = useState("");
   const [usernameValid, setUsernameValid] = useState({
     valid: "",
-    message: "최소 2글자 이상의 영문",
+    message: "3 ~ 15글자 이상, 영문 및 숫자",
     ok: false,
   });
   const [name, setName] = useState("");
@@ -39,7 +39,8 @@ const RegistrationForm = (props) => {
     ok: false,
   });
 
-  const onDispatch = async () => {
+  const onFinish = async (e) => {
+    e.preventDefault();
     if (
       emailValid.ok &&
       usernameValid.ok &&
@@ -54,29 +55,95 @@ const RegistrationForm = (props) => {
         password,
         passwordConfirmation: confirm,
       };
-      await dispatch(registerUser(userinfo))
+      return await dispatch(registerUser(userinfo))
         .then((res) => {
           alert("회원가입에 성공했습니다.");
           history.replace("/login");
         })
-        .catch((e) => dispatch(errorHandle(e)));
-    }
-    return alert("정확하게 입력해주세요");
+        .catch((e) => dispatch(errorHandle(e.response)));
+    } else return alert("정확하게 입력해주세요");
   };
 
   const isPassword = (pwd) => {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(pwd);
   };
 
-  const onFinish = async (e) => {
-    e.preventDefault();
-    if (email === "") {
+  const confirmHandler = (e) => {
+    let val = e.target.value.trim();
+    setConfirm(val);
+    if (val === "") {
+      setConfirmValid({
+        valid: "error",
+        message: "비밀번호 확인을 입력하세요",
+        ok: false,
+      });
+    } else if (password !== val) {
+      setConfirmValid({
+        valid: "error",
+        message: "비밀번호를 동일하게 입력하세요",
+        ok: false,
+      });
+    } else setConfirmValid({ valid: "success", message: "", ok: true });
+  };
+
+  const passwordHandler = (e) => {
+    let val = e.target.value.trim();
+    setPassword(val);
+    if (val === "") {
+      setPasswordValid({
+        valid: "error",
+        message: "비밀번호를 입력하세요",
+        ok: false,
+      });
+    } else if (!isPassword(val)) {
+      setPasswordValid({
+        valid: "error",
+        message: "영어 대·소문자와 숫자 포함하고 8글자 이상이여야 합니다",
+        ok: false,
+      });
+    } else setPasswordValid({ valid: "success", message: "", ok: true });
+  };
+
+  const nameHandler = (e) => {
+    let val = e.target.value.trim();
+    setName(val);
+    if (val === "") {
+      setNameValid({ valid: "error", message: "이름을 입력하세요", ok: false });
+    } else {
+      setNameValid({ valid: "success", message: "", ok: true });
+    }
+  };
+
+  const usernameHandler = (e) => {
+    let val = e.target.value.trim();
+    setUsername(val);
+    if (val === "") {
+      setUsernameValid({
+        valid: "error",
+        message: "아이디를 입력하세요",
+        ok: false,
+      });
+    } else if ((!/^[A-za-z0-9]{3,15}$/g).test(val)) {
+      setUsernameValid({
+        valid: "error",
+        message: "3 ~ 15글자 이상, 영문 및 숫자",
+        ok: false,
+      });
+    } else {
+      setUsernameValid({ valid: "success", message: "", ok: true });
+    }
+  };
+
+  const emailHandler = (e) => {
+    let val = e.target.value.trim();
+    setEmail(val);
+    if (val === "") {
       setEmailValid({
         valid: "error",
         message: "이메일을 입력하세요",
         ok: false,
       });
-    } else if (!EmailValidator.validate(email)) {
+    } else if (!EmailValidator.validate(val)) {
       setEmailValid({
         valid: "error",
         message: "이메일을 올바르게 입력하세요",
@@ -89,52 +156,6 @@ const RegistrationForm = (props) => {
         ok: true,
       });
     }
-
-    if (username === "") {
-      setUsernameValid({
-        valid: "error",
-        message: "아이디를 입력하세요",
-        ok: false,
-      });
-    } else {
-      setUsernameValid({ valid: "success", message: "", ok: true });
-    }
-
-    if (name === "") {
-      setNameValid({ valid: "error", message: "이름을 입력하세요", ok: false });
-    } else {
-      setNameValid({ valid: "success", message: "", ok: true });
-    }
-
-    if (password === "") {
-      setPasswordValid({
-        valid: "error",
-        message: "비밀번호를 입력하세요",
-        ok: false,
-      });
-    } else if (!isPassword(password)) {
-      setPasswordValid({
-        valid: "error",
-        message: "영어 대·소문자와 숫자 포함하고 8글자 이상이여야 합니다",
-        ok: false,
-      });
-    } else setPasswordValid({ valid: "success", message: "", ok: true });
-
-    if (confirm === "") {
-      setConfirmValid({
-        valid: "error",
-        message: "비밀번호 확인을 입력하세요",
-        ok: false,
-      });
-    } else if (password !== confirm) {
-      setConfirmValid({
-        valid: "error",
-        message: "비밀번호를 동일하게 입력하세요",
-        ok: false,
-      });
-    } else setConfirmValid({ valid: "success", message: "", ok: true });
-
-    onDispatch();
   };
 
   return (
@@ -150,7 +171,7 @@ const RegistrationForm = (props) => {
             placeholder="예) galpi@galpi.com"
             min="8"
             max="254"
-            onChange={(e) => setEmail(e.target.value.trim())}
+            onChange={emailHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />
@@ -166,7 +187,7 @@ const RegistrationForm = (props) => {
             pattern=".{3,}"
             title="최소 2글자 이상"
             value={username}
-            onChange={(e) => setUsername(e.target.value.trim())}
+            onChange={usernameHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />
@@ -175,12 +196,7 @@ const RegistrationForm = (props) => {
 
         <div className={`form-control ${nameValid.valid}`}>
           <label htmlFor="name">이름</label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value.trim())}
-          />
+          <input id="name" type="text" value={name} onChange={nameHandler} />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />
           <small>{nameValid.message}</small>
@@ -192,7 +208,7 @@ const RegistrationForm = (props) => {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value.trim())}
+            onChange={passwordHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />
@@ -205,7 +221,7 @@ const RegistrationForm = (props) => {
             id="confirm"
             type="password"
             value={confirm}
-            onChange={(e) => setConfirm(e.target.value.trim())}
+            onChange={confirmHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
           <WarningOutlined className="icon icon-err" />

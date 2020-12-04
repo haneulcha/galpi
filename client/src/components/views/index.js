@@ -6,3 +6,4 @@ export { default as Posting } from "./PostingPage/posting";
 export { default as Profile } from "./ProfilePage/profile";
 export { default as Register } from "./RegisterPage/register";
 export { default as Post } from "./PostPage/post";
+export { default as Footer } from "./Footer/footer";

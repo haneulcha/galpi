@@ -18,7 +18,7 @@ const FetchComments = (props) => {
       await dispatch(deleteComment(li.id));
       alert("댓글이 삭제되었습니다");
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 
@@ -33,7 +33,7 @@ const FetchComments = (props) => {
           setLoading(false);
         }
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     };
     fetchData();

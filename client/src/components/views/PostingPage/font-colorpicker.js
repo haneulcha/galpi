@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TwitterPicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { FontColorsOutlined } from "@ant-design/icons";
 
 export const FontColorPicker = (props) => {
@@ -17,11 +17,11 @@ export const FontColorPicker = (props) => {
   };
 
   return (
-    <div>
+    <div className="font-color">
       <FontColorsOutlined onClick={() => setDisplay(!display)} style={style} />
       {display && (
-        <div className="twitter-picker">
-          <TwitterPicker color={color} onChange={handleColor} triangle="hide" />
+        <div className="sketch-picker">
+          <SketchPicker color={color} onChange={handleColor} triangle="hide" />
         </div>
       )}
     </div>

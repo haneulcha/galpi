@@ -14,15 +14,17 @@ import {
 (async () => {
   await mongoose.connect(MONGO_URI, MONGO_OPTION);
 
-  const RedisStore = connectRedis(session);
+  // const RedisStore = connectRedis(session);
 
-  const client = new Redis(REDIS_URL, {
-    password: REDIS_PASSWORD,
-  });
+  // const client = new Redis(REDIS_URL, {
+  //   password: REDIS_PASSWORD,
+  // });
 
-  const store = new RedisStore({ client });
+  // const store = new RedisStore({ client });
 
-  const app = createApp(store);
+  // const app = createApp(store);
+
+  const app = createApp();
 
   app.listen(APP_PORT, () => console.log(`http://localhost:${APP_PORT}`));
 })();

@@ -22,7 +22,7 @@ const Profile = () => {
         setUser(user);
         setLoading(false);
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     }
     fetchData();

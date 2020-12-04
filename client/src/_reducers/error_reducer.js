@@ -1,16 +1,33 @@
+import { ERROR_HANDLE, ERROR_HIDE } from "../_actions/types";
+
 const initState = {
-  error: null,
+  name: null,
+  status: null,
+  message: null,
+  isOpen: false,
 };
 
 export default function (state = initState, action) {
   const { error } = action;
 
-  if (error) {
-    return {
-      name: error.name,
-      message: error.message,
-    };
-  }
+  switch (action.type) {
+    case ERROR_HANDLE:
+      return {
+        name: error.statusText,
+        status: error.status,
+        message: error.data.message,
+        isOpen: true,
+      };
 
-  return state;
+    case ERROR_HIDE:
+      return {
+        name: null,
+        status: null,
+        message: null,
+        isOpen: false,
+      };
+
+    default:
+      return state;
+  }
 }

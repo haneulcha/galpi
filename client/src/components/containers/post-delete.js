@@ -14,7 +14,7 @@ const DeleteAPost = ({ uuid }) => {
       await dispatch(deletePost(uuid));
       alert("포스트가 삭제되었습니다");
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 

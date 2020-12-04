@@ -1,21 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import Canvas from "./canvas";
-import { Slider } from "antd";
 import { Preview } from "./preview";
-import { BgrColorPicker } from "./bgrColorpicker";
-import { FontColorPicker } from "./fontColorpicker";
+import { BgrColorPicker } from "./bgr-colorpicker";
+import { FontColorPicker } from "./font-colorpicker";
 import domtoimage from "dom-to-image";
 import { useDispatch } from "react-redux";
 import { contentPost, imgPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
+import FontSlider from "./font-slider";
+import FontType from "./font-type";
 
 const Posting = (props) => {
   const dispatch = useDispatch();
   const { history } = props;
   const [url, setUrl] = useState(); // preview
   const [color, setColor] = useState("#f1f2f6");
-  const [fontsize, setFontsize] = useState(14);
+  const [fontsize, setFontsize] = useState(16);
   const [fontcolor, setFontcolor] = useState("black");
+  const [fonttype, setFonttype] = useState(
+    '"Noto Serif KR", "Times New Roman","Georgia", "serif"'
+  );
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
   const [content, setContent] = useState();
@@ -32,7 +36,7 @@ const Posting = (props) => {
       alert("업로드 성공 !");
       history.replace("/home");
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 
@@ -45,7 +49,7 @@ const Posting = (props) => {
       let response = await dispatch(imgPost(formData));
       postContent(response.payload.url);
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 
@@ -89,19 +93,14 @@ const Posting = (props) => {
           <label htmlFor="font-size" style={labelStyle}>
             글씨 크기
           </label>
-          <Slider
-            id="font-size"
-            min={5}
-            max={50}
-            step={1}
-            defaultValue={16}
-            onChange={(val) => setFontsize(val)}
-            className="font-slider"
-          />
+          <FontSlider setFontsize={setFontsize} />
+
           <label htmlFor="font-color" style={labelStyle}>
             글씨 색상
           </label>
           <FontColorPicker setColor={setFontcolor} color={fontcolor} />
+          <label htmlFor="font-type" style={labelStyle} />
+          <FontType setFonttype={setFonttype} />
         </div>
       </div>
 
@@ -111,6 +110,7 @@ const Posting = (props) => {
         opt={opt}
         fontcolor={fontcolor}
         fontsize={fontsize}
+        fonttype={fonttype}
         quote={quote}
         setQuote={setQuote}
         content={content}
@@ -127,7 +127,6 @@ const Posting = (props) => {
           name="content"
           value={content}
           rows="5"
-          // maxLength=
           onChange={(e) => setContent(e.target.value)}
           placeholder="작가, 책 제목, 간단한 소감 등을 남겨주세요"
         />

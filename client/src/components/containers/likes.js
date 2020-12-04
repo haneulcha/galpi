@@ -17,7 +17,7 @@ const Likes = ({ likes, uuid }) => {
       setLikesArray([...likesArray, loggedInUser.userId]);
       setShowLikes(true);
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 
@@ -29,7 +29,7 @@ const Likes = ({ likes, uuid }) => {
       setLikesArray([...filteredLikes]);
       setShowLikes(false);
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 

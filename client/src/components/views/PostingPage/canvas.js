@@ -21,6 +21,7 @@ const Canvas = (props) => {
     quote,
     fontcolor,
     fontsize,
+    fonttype,
     setQuote,
     canvasRef,
   } = props;
@@ -33,6 +34,7 @@ const Canvas = (props) => {
   const textStyleObj = {
     color: fontcolor,
     fontSize: `${fontsize}px`,
+    fontFamily: fonttype,
     resize,
     top: quoteTop,
     left: quoteLeft,

@@ -37,11 +37,9 @@ const LoginForm = (props) => {
   const emailHandler = (e) => {
     let val = e.target.value.trim();
     setEmail(val);
-    console.log("val", val);
-    console.log("email", email);
     if (val === "") {
       setEmailValid({
-        valid: "",
+        valid: "error",
         message: "이메일을 입력하세요",
         ok: false,
       });
@@ -58,7 +56,6 @@ const LoginForm = (props) => {
         ok: true,
       });
     }
-    console.log("eV", emailValid);
   };
 
   const onFinish = async (e) => {
@@ -69,17 +66,19 @@ const LoginForm = (props) => {
           email,
           password,
         };
+
         await dispatch(loginUser(userinfo));
 
         if (state && state.from) {
-          history.replace(state.from);
+          return history.replace(state.from);
         } else {
-          history.replace("/home");
+          return history.replace("/home");
         }
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     }
+    alert("로그인 실패 !");
   };
 
   return (
@@ -97,7 +96,8 @@ const LoginForm = (props) => {
             max="254"
             onChange={emailHandler}
           />
-
+          <CheckCircleOutlined className="icon icon-suc" />
+          <WarningOutlined className="icon icon-err" />
           <small>{emailValid.message}</small>
         </div>
 
@@ -109,8 +109,6 @@ const LoginForm = (props) => {
             value={password}
             onChange={pwdHandler}
           />
-          <CheckCircleOutlined className="icon icon-suc" />
-          <WarningOutlined className="icon icon-err" />
 
           <small>{passwordValid.message}</small>
         </div>

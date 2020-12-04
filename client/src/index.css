@@ -3,6 +3,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@600&display=swap");
 /* 'Noto Sans KR' */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+/* 'Noto Serif KR' */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500&display=swap");
+
+@font-face {
+  font-family: "UhBeeDoolDool";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeDoolDool.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -15,6 +25,7 @@ code {
   --bg-smooth: #f6f4f3;
   --text-color: #090c08;
   --font: "Noto Sans KR", Georgia, "Malgun Gothic", sans-serif;
+  --serif-font: "Noto Serif KR", serif;
   --main-color: #db2b39;
   --point-color: #276fbf;
   --nav-size: 80px;
@@ -29,22 +40,44 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 body {
-  height: 100vh;
+  height: 100%;
   background-color: var(--bg);
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 .body-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  flex: 1 0 auto;
 }
 
+footer {
+  flex-shrink: 0;
+  width: 100vw;
+  /* height: 5em; */
+  bottom: 0;
+  color: #222222;
+  background-color: #ebebeb;
+  font-size: 0.8em;
+  padding: 0.7em 1em;
+  text-align: right;
+}
+footer p,
+address {
+  margin: 0 0 0.3em 0;
+}
 ul {
   list-style: none;
   padding: 0;
@@ -87,6 +120,7 @@ header {
   overflow: hidden;
   padding: 0 0.5em 0 0;
   margin: 0;
+  flex: none;
 }
 
 header .logo {
@@ -229,6 +263,7 @@ h1 strong {
 /* ----------------CANVAS-OPTION--------------- */
 .posting {
   margin: auto 1.2em;
+  width: 100%;
 }
 .posting h1 {
   margin: 1em auto;
@@ -276,13 +311,17 @@ h1 strong {
   align-items: center;
 }
 .font-slider {
-  width: 90%;
+  width: 70%;
   margin: 0;
 }
-.twitter-picker {
+.font-type svg {
+  font-size: 2.5em;
+}
+.sketch-picker {
   position: absolute;
   z-index: 1;
-  right: 0.7em;
+  right: 0;
+  /* right: 0.7em; */
 }
 
 .content textarea {
@@ -585,13 +624,21 @@ h1 strong {
     display: block;
     margin: 0;
   }
-
   .submenu ul li:last-child {
-    border-top: var(--main-color) solid 1px;
+    position: relative;
+  }
+  .submenu ul li:last-child::before {
+    position: absolute;
+    content: "";
+    width: auto;
+    height: 1px;
+    background-color: var(--main-color);
+    left: 1em;
+    right: 1em;
   }
 
   .submenu li > * {
-    padding: 0.5em 3em;
+    padding: 0.5em 2em;
   }
 
   .form {
@@ -626,6 +673,9 @@ h1 strong {
   }
   .upload-btn {
     grid-area: 4 / 2 / 5 / 3;
+  }
+  .sketch-picker {
+    right: unset;
   }
 
   .infinite-scroll-wrapper {

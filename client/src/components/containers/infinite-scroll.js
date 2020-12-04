@@ -47,7 +47,7 @@ const PostInfiniteScroll = (props) => {
         setLoading(false);
         return { posts, message };
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
         setLoading(false);
       }
     },

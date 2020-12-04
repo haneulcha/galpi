@@ -32,7 +32,9 @@ const PostCard = ({ index, posts }) => {
 
   return (
     <li key={`postcard-${index}-by${username}`} className="postcard">
-      <h1 className="user">{username}</h1>
+      <h1 className="user">
+        <Link to={`/username/${username}`}>{username}</Link>
+      </h1>
       <div className="post">
         <img alt="example" src={url} />
       </div>

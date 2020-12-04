@@ -22,7 +22,7 @@ const Post = () => {
         let response = await dispatch(getAPost(uuid));
         setPost(response.payload.post);
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     }
     fetchData();

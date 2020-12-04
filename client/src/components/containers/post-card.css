@@ -7,9 +7,9 @@
   width: 100%;
 }
 
-.postcard .user {
-  font-size: 1.2em;
+.postcard .user a {
   font-weight: bold;
+  color: #090c08;
 }
 .postcard img {
   width: 100%;

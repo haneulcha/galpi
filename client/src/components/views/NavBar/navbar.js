@@ -20,7 +20,7 @@ const NavBar = (props) => {
       alert("로그아웃 되었습니다");
       history.replace("/");
     } catch (e) {
-      dispatch(errorHandle(e));
+      dispatch(errorHandle(e.response));
     }
   };
 

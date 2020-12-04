@@ -18,7 +18,7 @@ const Dashboard = (params) => {
         setUser(user);
         setPosts(posts);
       } catch (e) {
-        dispatch(errorHandle(e));
+        dispatch(errorHandle(e.response));
       }
     }
     fetchData();
@@ -26,7 +26,7 @@ const Dashboard = (params) => {
 
   return (
     <>
-      {user ? (
+      {user && posts ? (
         <>
           <PaperCard title={`${user.username}님, 안녕하세요 !`}>
             <br />
