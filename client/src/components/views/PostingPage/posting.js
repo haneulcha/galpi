@@ -9,6 +9,7 @@ import { contentPost, imgPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
 import FontSlider from "./font-slider";
 import FontType from "./font-type";
+import FontLineHeight from "./font-lineheight";
 
 const Posting = (props) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Posting = (props) => {
   const [fonttype, setFonttype] = useState(
     '"Noto Serif KR", "Times New Roman","Georgia", "serif"'
   );
+  const [fontlineheight, setFontlineheight] = useState(20);
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
   const [content, setContent] = useState();
@@ -60,10 +62,6 @@ const Posting = (props) => {
     });
   };
 
-  const labelStyle = {
-    display: "none",
-  };
-
   useEffect(() => setOpt(true), [url]);
   useEffect(() => setOpt(false), [color]);
 
@@ -73,9 +71,6 @@ const Posting = (props) => {
 
       <div className="canvas-background">
         <div className="bgr-image">
-          <label htmlFor="canvas-image" style={labelStyle}>
-            배경 이미지
-          </label>
           <Preview
             url={url}
             setUrl={setUrl}
@@ -85,22 +80,14 @@ const Posting = (props) => {
         </div>
 
         <div className="bgr-color">
-          <label htmlFor="canvas-color">배경색</label>
           <BgrColorPicker setColor={setColor} color={color} id="canvas-color" />
         </div>
 
         <div className="canvas-font">
-          <label htmlFor="font-size" style={labelStyle}>
-            글씨 크기
-          </label>
-          <FontSlider setFontsize={setFontsize} />
-
-          <label htmlFor="font-color" style={labelStyle}>
-            글씨 색상
-          </label>
-          <FontColorPicker setColor={setFontcolor} color={fontcolor} />
-          <label htmlFor="font-type" style={labelStyle} />
           <FontType setFonttype={setFonttype} />
+          <FontColorPicker setColor={setFontcolor} color={fontcolor} />
+          <FontSlider setFontsize={setFontsize} />
+          <FontLineHeight setFontlineheight={setFontlineheight} />
         </div>
       </div>
 
@@ -116,10 +103,11 @@ const Posting = (props) => {
         content={content}
         setContent={setContent}
         canvasRef={canvasRef}
+        fontlineheight={fontlineheight}
       />
 
       <div className="content">
-        <label htmlFor="content" style={labelStyle}>
+        <label htmlFor="content" style={{ display: "none" }}>
           코멘트
         </label>
         <textarea

@@ -109,6 +109,7 @@ li a {
   font-weight: bold;
   letter-spacing: var(--letter-spacing);
   text-align: center;
+  font-size: 2em;
 }
 
 /* ---------------HEADER--------------- */
@@ -118,7 +119,6 @@ header {
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
-  padding: 0 0.5em 0 0;
   margin: 0;
   flex: none;
 }
@@ -129,7 +129,7 @@ header .logo {
   font-weight: bold;
   font-size: 3.3em;
   letter-spacing: calc(var(--letter-spacing) * 0.7);
-  margin: 0 0.5em;
+  margin: 0 0.4em;
 }
 
 nav {
@@ -137,7 +137,7 @@ nav {
   background-color: var(--bg-smooth);
   top: 0;
   right: 0;
-  width: 50%;
+  width: 45%;
   height: 100vh;
   z-index: 1;
   visibility: hidden;
@@ -148,14 +148,16 @@ nav {
 
 .open {
   cursor: pointer;
+  width: 2.5em;
+  margin-right: 0.7em;
 }
 
 .exit {
   color: var(--main-color);
-  width: 2em;
+  width: 3em;
   float: right;
-  margin: 0.5em;
   cursor: pointer;
+  margin: 1em 0.5em;
 }
 
 nav svg {
@@ -264,10 +266,9 @@ h1 strong {
 .posting {
   margin: auto 1.2em;
   width: 100%;
+  padding: 1em;
 }
-.posting h1 {
-  margin: 1em auto;
-}
+
 .posting > * {
   margin-bottom: 1.5em;
 }
@@ -276,13 +277,13 @@ h1 strong {
   display: block;
 }
 .canvas-background > * {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 .bgr-image {
   width: 8em;
   height: 8em;
-  margin: 0 auto;
+  margin: 0 auto 2em;
 }
 .ant-upload.ant-upload-select-picture-card {
   width: 100%;
@@ -309,14 +310,16 @@ h1 strong {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-flow: wrap;
 }
-.font-slider {
-  width: 70%;
-  margin: 0;
+
+.font {
+  font-size: 2.4em;
 }
-.font-type svg {
-  font-size: 2.5em;
+.font input[type="range"] {
+  margin-left: 0.2em;
 }
+
 .sketch-picker {
   position: absolute;
   z-index: 1;
@@ -512,6 +515,7 @@ h1 strong {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 4em auto;
 }
 .profile .posts-list {
   margin: 0.8em;
@@ -548,7 +552,7 @@ h1 strong {
   background-color: #db2b39;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   li a:hover,
   li span:hover {
     background: transparent;
@@ -672,10 +676,9 @@ h1 strong {
   }
 
   .posting {
-    margin: 1em auto;
     display: grid;
     grid-template-columns: 32em 32em;
-    grid-column-gap: 4em;
+
     grid-template-rows: 5em 30em 6em 3em;
     grid-row-gap: 3em;
     justify-content: center;

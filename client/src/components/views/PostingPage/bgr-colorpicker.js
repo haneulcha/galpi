@@ -9,10 +9,13 @@ export const BgrColorPicker = (props) => {
   };
 
   return (
-    <SliderPicker
-      color={color}
-      onChange={handleColor}
-      className="bgr-colorpicker"
-    />
+    <>
+      <label htmlFor="canvas-color">배경색</label>
+      <SliderPicker
+        color={color}
+        onChange={handleColor}
+        className="bgr-colorpicker"
+      />
+    </>
   );
 };

@@ -54,24 +54,29 @@ export const Preview = (props) => {
   );
 
   return (
-    <Upload
-      name="background-img"
-      listType="picture-card"
-      showUploadList={false}
-      beforeUpload={beforeUpload}
-      onChange={handleChange}
-      customRequest={dummyRequest}
-      className="preview-image"
-    >
-      {url ? (
-        <img
-          src={url}
-          alt="preview"
-          style={{ width: "100%", height: "100%" }}
-        />
-      ) : (
-        uploadBtn
-      )}
-    </Upload>
+    <>
+      <label htmlFor="canvas-image" style={{ display: "none" }}>
+        배경 이미지
+      </label>
+      <Upload
+        name="background-img"
+        listType="picture-card"
+        showUploadList={false}
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+        customRequest={dummyRequest}
+        className="preview-image"
+      >
+        {url ? (
+          <img
+            src={url}
+            alt="preview"
+            style={{ width: "100%", height: "100%" }}
+          />
+        ) : (
+          uploadBtn
+        )}
+      </Upload>
+    </>
   );
 };

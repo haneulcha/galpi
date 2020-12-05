@@ -13,7 +13,7 @@ export default function (state = initState, action) {
   switch (action.type) {
     case ERROR_HANDLE:
       return {
-        name: error.statusText,
+        name: error.statusText || null,
         status: error.status,
         message: error.data.message,
         isOpen: true,

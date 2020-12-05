@@ -8,7 +8,6 @@ const Canvas = (props) => {
   const [imgTop, setImgTop] = useState(0);
   const [imgLeft, setImgLeft] = useState(0);
   const [imgCursor, setImgCursor] = useState("move");
-
   const [curX, setCurX] = useState();
   const [curY, setCurY] = useState();
 
@@ -22,6 +21,7 @@ const Canvas = (props) => {
     fontcolor,
     fontsize,
     fonttype,
+    fontlineheight,
     setQuote,
     canvasRef,
   } = props;
@@ -35,6 +35,7 @@ const Canvas = (props) => {
     color: fontcolor,
     fontSize: `${fontsize}px`,
     fontFamily: fonttype,
+    lineHeight: `${fontlineheight}px`,
     resize,
     top: quoteTop,
     left: quoteLeft,

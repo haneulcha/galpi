@@ -68,13 +68,13 @@
   font-size: 0.8em;
 }
 
-@media (min-width: 750px) {
+@media (min-width: 800px) {
   .postcard {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
     column-gap: 1em;
-    max-width: 900px;
+    max-width: 840px;
     justify-content: center;
     align-content: center;
   }
@@ -83,7 +83,7 @@
   }
   .postcard .user {
     grid-area: 1 / 2 / 2 / 3;
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .postcard .post {
     grid-area: 2 / 1 / 5 / 2;
@@ -91,7 +91,6 @@
   }
   .postcard .content {
     grid-area: 2 / 2 / 4 / 3;
-    font-size: 1.3em;
   }
   .postcard .features {
     grid-area: 5 / 1 / 6 / 2;

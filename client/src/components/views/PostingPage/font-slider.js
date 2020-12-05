@@ -1,4 +1,5 @@
 import React from "react";
+import { FontSizeOutlined } from "@ant-design/icons";
 
 const FontSlider = ({ setFontsize }) => {
   const fontsizeHandler = (e) => {
@@ -7,16 +8,22 @@ const FontSlider = ({ setFontsize }) => {
     setFontsize(val);
   };
   return (
-    <input
-      type="range"
-      id="font-size"
-      min={5}
-      max={50}
-      step={1}
-      defaultValue={16}
-      onChange={fontsizeHandler}
-      className="font-slider"
-    />
+    <div className="font">
+      <label htmlFor="font-size" style={{ display: "none" }}>
+        글씨 크기
+      </label>
+      <FontSizeOutlined className="icon" />
+      <input
+        type="range"
+        id="font-size"
+        min={5}
+        max={50}
+        step={1}
+        defaultValue={16}
+        onChange={fontsizeHandler}
+        className="slider"
+      />
+    </div>
   );
 };
 

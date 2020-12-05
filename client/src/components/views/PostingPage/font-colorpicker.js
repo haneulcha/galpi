@@ -11,14 +11,19 @@ export const FontColorPicker = (props) => {
   };
 
   const style = {
-    fontSize: 36,
     color: color,
-    width: "10%",
   };
 
   return (
-    <div className="font-color">
-      <FontColorsOutlined onClick={() => setDisplay(!display)} style={style} />
+    <div className="font">
+      <label htmlFor="font-color" style={{ display: "none" }}>
+        글씨 색상
+      </label>
+      <FontColorsOutlined
+        className="icon"
+        onClick={() => setDisplay(!display)}
+        style={style}
+      />
       {display && (
         <div className="sketch-picker">
           <SketchPicker color={color} onChange={handleColor} triangle="hide" />

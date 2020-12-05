@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PostInfiniteScroll from "../../containers/infinite-scroll";
@@ -13,20 +13,22 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        let response = await dispatch(getUser(username));
-        let { user } = response.payload;
-        setUser(user);
-        setLoading(false);
-      } catch (e) {
-        dispatch(errorHandle(e.response));
-      }
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      let response = await dispatch(getUser(username));
+      let { user } = response.payload;
+      setUser(user);
+      setLoading(false);
+    } catch (e) {
+      dispatch(errorHandle(e.response));
+      setLoading(false);
     }
-    fetchData();
   }, [dispatch, username]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div className="profile">
