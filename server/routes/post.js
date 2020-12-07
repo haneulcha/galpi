@@ -112,12 +112,15 @@ router.delete(
     const user = req.session.userId;
     const uuid = req.params.uuid;
     const post = await Post.findOne({ uuid });
-    if (!post) throw new BadRequest("Post Not Found");
-    if (post.user._id === user) {
+    const id = post.user._id.toString();
+
+    if (!post)
+      throw new BadRequest("해당 포스트를 찾을 수 없습니다 \n Post Not Found");
+    if (id === user) {
+      console.log();
       await Post.findByIdAndDelete(post._id);
       res.status(200).json({ message: "ok" });
-    }
-    throw new BadRequest("Delete faild");
+    } else throw new BadRequest("삭제에 실패했습니다 \n Delete faild");
   })
 );
 export default router;

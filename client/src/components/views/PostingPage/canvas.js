@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from "react";
 
-const Canvas = (props) => {
+const Canvas = ({
+  url,
+  color,
+  opt,
+  quote,
+  fontcolor,
+  fontsize,
+  fonttype,
+  fontlineheight,
+  setQuote,
+  canvasRef,
+  fontalign,
+}) => {
+  const [quoteClickStart, setQuoteClickStart] = useState({ x: 0, y: 0 });
+  const [quoteXY, setQuoteXY] = useState({ x: 200, y: 200 });
+  const [imgClickStart, setImgClickStart] = useState({ x: 0, y: 0 });
+  const [imgXY, setImgXY] = useState({ x: 0, y: 0 });
   const [resize, setResize] = useState("none");
-  const [quoteTop, setQuoteTop] = useState(200);
-  const [quoteLeft, setQuoteLeft] = useState(200);
   const [quoteCursor, setQuoteCursor] = useState("grab");
-  const [imgTop, setImgTop] = useState(0);
-  const [imgLeft, setImgLeft] = useState(0);
   const [imgCursor, setImgCursor] = useState("move");
-  const [curX, setCurX] = useState();
-  const [curY, setCurY] = useState();
-
-  // const [overflow, setOverflow] = useState();
-
-  const {
-    url,
-    color,
-    opt,
-    quote,
-    fontcolor,
-    fontsize,
-    fonttype,
-    fontlineheight,
-    setQuote,
-    canvasRef,
-  } = props;
 
   const bgrStyleObj = {
     backgroundColor: color,
@@ -37,51 +32,44 @@ const Canvas = (props) => {
     fontFamily: fonttype,
     lineHeight: `${fontlineheight}px`,
     resize,
-    top: quoteTop,
-    left: quoteLeft,
+    top: quoteXY.y,
+    left: quoteXY.x,
     cursor: quoteCursor,
+    textAlign: fontalign,
   };
 
   const imgPos = {
-    objectPosition: `${imgLeft}px ${imgTop}px`,
+    top: imgXY.y,
+    left: imgXY.x,
   };
 
-  const handleDragStartQuote = () => {
+  const handleDragStart = (e, cb) => {
     setQuoteCursor("grabbing");
-  };
-
-  const handleDragEndQuote = (e, cbtop, cbleft) => {
-    setQuoteCursor("grab");
-    let parent = e.target.parentElement.getBoundingClientRect();
-
-    const relativeX = e.clientX - parent.x;
-    const relativeY = e.clientY - parent.y;
-
-    cbtop(relativeY);
-    cbleft(relativeX);
-  };
-
-  const handleDragStartImg = (e, cbtop, cbleft) => {
     setImgCursor("grabbing");
     const x = e.clientX;
     const y = e.clientY;
-
-    cbtop(y);
-    cbleft(x);
+    cb({ x, y });
   };
 
-  const handleDragEndImg = (e, cbtop, cbleft) => {
-    setImgCursor("move");
-    const x = e.clientX - curX;
-    const y = e.clientY - curY;
+  const handleDragEndQuote = (e) => {
+    setQuoteCursor("grab");
+    let distanceX = e.clientX - quoteClickStart.x;
+    let distanceY = e.clientY - quoteClickStart.y;
+    setQuoteXY({ x: quoteXY.x + distanceX, y: quoteXY.y + distanceY });
+  };
 
-    cbtop(imgTop + y);
-    cbleft(imgLeft + x);
+  const handleDragEndImg = (e) => {
+    setImgCursor("move");
+    let distanceX = e.clientX - imgClickStart.x;
+    let distanceY = e.clientY - imgClickStart.y;
+    setImgXY({
+      x: imgXY.x + distanceX,
+      y: imgXY.y + distanceY,
+    });
   };
 
   useEffect(() => {
-    setImgLeft(0);
-    setImgTop(0);
+    setImgXY({ x: 0, y: 0 });
   }, [url]);
 
   return (
@@ -93,11 +81,12 @@ const Canvas = (props) => {
               src={url}
               alt="background for quote lines"
               draggable="true"
+              onDoubleClick={() => setImgXY({ x: 0, y: 0 })}
               onDragStart={(e) => {
-                handleDragStartImg(e, setCurY, setCurX);
+                handleDragStart(e, setImgClickStart);
               }}
               onDragEnd={(e) => {
-                handleDragEndImg(e, setImgTop, setImgLeft);
+                handleDragEndImg(e);
               }}
               style={imgPos}
             />
@@ -115,11 +104,11 @@ const Canvas = (props) => {
           draggable="true"
           onFocus={() => setResize("both")}
           onBlur={() => setResize("none")}
-          onDragStart={() => {
-            handleDragStartQuote();
+          onDragStart={(e) => {
+            handleDragStart(e, setQuoteClickStart);
           }}
           onDragEnd={(e) => {
-            handleDragEndQuote(e, setQuoteTop, setQuoteLeft);
+            handleDragEndQuote(e);
           }}
         />
       </div>

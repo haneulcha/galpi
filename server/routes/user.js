@@ -1,9 +1,9 @@
 import express from "express";
 import { BadRequest } from "../errors/index.js";
-import { Sequence, User } from "../models/index.js";
+import { Post, Sequence, User } from "../models/index.js";
 import { validate, registerSchema } from "../validation/index.js";
-import { catchAsync } from "../middleware/index.js";
-import { logIn } from "../auth.js";
+import { auth, catchAsync } from "../middleware/index.js";
+import { logIn, logOut } from "../auth.js";
 import { guest } from "../middleware/index.js";
 
 const { Router } = express;
@@ -51,4 +51,22 @@ router.get(
   })
 );
 
+router.delete(
+  "api/user",
+  auth,
+  catchAsync(async (req, res) => {
+    const _id = req.session.userId;
+    const { password } = req.body;
+    const user = await User.findById(_id);
+    if (!user || !(await user.matchesPassword(password))) {
+      throw new Unauthorized(
+        "잘못된 이메일 혹은 비밀번호 입니다 \n Incorrect email or password"
+      );
+    }
+    await User.findByIdAndDelete(user._id);
+    await Post.deleteMany({ user: user._id });
+    await logOut(req, res);
+    res.json({ message: "ok" });
+  })
+);
 export default router;

@@ -6,6 +6,7 @@ import {
   LOGOUT_USER,
   GET_USER,
   GET_DASHBOARD,
+  DELETE_USER,
 } from "./types";
 
 export async function registerUser(body) {
@@ -40,6 +41,15 @@ export async function getUser(username) {
 
   return {
     type: GET_USER,
+    payload: response.data,
+  };
+}
+
+export async function deleteUser(pwd) {
+  let response = await axios.delete(`api/user`, { data: pwd });
+
+  return {
+    type: DELETE_USER,
     payload: response.data,
   };
 }

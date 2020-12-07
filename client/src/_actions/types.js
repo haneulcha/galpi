@@ -4,6 +4,7 @@ export const AUTH = "auth";
 export const LOGOUT_USER = "logout_user";
 export const GET_USER = "get_user";
 export const GET_DASHBOARD = "get_dashboard";
+export const DELETE_USER = "delete_user";
 
 export const IMG_POST = "img_post";
 export const CONTENT_POST = "content_post";

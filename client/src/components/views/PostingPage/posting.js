@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import domtoimage from "dom-to-image";
 import Canvas from "./canvas";
 import { Preview } from "./preview";
 import { BgrColorPicker } from "./bgr-colorpicker";
-import { FontColorPicker } from "./font-colorpicker";
-import domtoimage from "dom-to-image";
-import { useDispatch } from "react-redux";
+import {
+  FontSlider,
+  FontType,
+  FontLineHeight,
+  FontAlign,
+  FontColorPicker,
+} from "./font";
 import { contentPost, imgPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
-import FontSlider from "./font-slider";
-import FontType from "./font-type";
-import FontLineHeight from "./font-lineheight";
 
 const Posting = (props) => {
   const dispatch = useDispatch();
@@ -21,6 +24,7 @@ const Posting = (props) => {
   const [fonttype, setFonttype] = useState(
     '"Noto Serif KR", "Times New Roman","Georgia", "serif"'
   );
+  const [fontalign, setFontalign] = useState("left");
   const [fontlineheight, setFontlineheight] = useState(20);
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
@@ -86,6 +90,7 @@ const Posting = (props) => {
         <div className="canvas-font">
           <FontType setFonttype={setFonttype} />
           <FontColorPicker setColor={setFontcolor} color={fontcolor} />
+          <FontAlign setFontalign={setFontalign} fontalign={fontalign} />
           <FontSlider setFontsize={setFontsize} />
           <FontLineHeight setFontlineheight={setFontlineheight} />
         </div>
@@ -104,8 +109,14 @@ const Posting = (props) => {
         setContent={setContent}
         canvasRef={canvasRef}
         fontlineheight={fontlineheight}
+        fontalign={fontalign}
       />
-
+      <ul className="canvas-desc">
+        <li>✒ 텍스트 상자의 크기와 위치를 직접 조정할 수 있습니다</li>
+        <li>
+          ✒ 이미지의 위치를 조정할 수 있고, 더블클릭 시 처음 위치로 설정됩니다
+        </li>{" "}
+      </ul>
       <div className="content">
         <label htmlFor="content" style={{ display: "none" }}>
           코멘트

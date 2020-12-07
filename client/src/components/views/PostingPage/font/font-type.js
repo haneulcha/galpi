@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { QuestionOutlined } from "@ant-design/icons";
 
-const FontType = ({ setFonttype }) => {
+export const FontType = ({ setFonttype }) => {
   const [counter, setCounter] = useState(0);
   const fonts = [
     '"Noto Serif KR", "Times New Roman","Georgia", "serif"',
@@ -23,5 +23,3 @@ const FontType = ({ setFonttype }) => {
     </div>
   );
 };
-
-export default FontType;

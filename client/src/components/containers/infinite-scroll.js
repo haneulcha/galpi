@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { errorHandle } from "../../_actions/error_actions";
 import { getPosts } from "../../_actions/post_action";
+import { LoadingOutlined } from "@ant-design/icons";
 
 // GET posts
 const PostInfiniteScroll = (props) => {
@@ -10,6 +11,7 @@ const PostInfiniteScroll = (props) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [element, setElement] = useState(null);
+
   const page = useRef(1);
   const prevY = useRef(0);
 
@@ -37,36 +39,29 @@ const PostInfiniteScroll = (props) => {
 
   const observer = useRef(new IntersectionObserver(observerCallback, options));
 
-  const fetchData = useCallback(
-    async (pageNum) => {
+  const handleInitial = useCallback(
+    async (page) => {
       setLoading(true);
       try {
-        let response = await dispatch(getPosts(pageNum, username));
+        let response = await dispatch(getPosts(page, username));
         const { posts, message } = response.payload;
-
-        setLoading(false);
-        return { posts, message };
+        if (message === "ok") {
+          setPosts((items) => [...items, ...posts]);
+          setLoading(false);
+        }
       } catch (e) {
         dispatch(errorHandle(e.response));
         setLoading(false);
       }
     },
-    [username, dispatch]
-  );
-
-  const handleInitial = useCallback(
-    async (page) => {
-      const { posts, message } = await fetchData(page);
-      if (message === "ok") {
-        setPosts((items) => [...items, ...posts.values()]);
-      }
-    },
-    [fetchData]
+    [dispatch, username]
   );
 
   useEffect(() => {
     handleInitial(page.current);
+  }, [handleInitial]);
 
+  useEffect(() => {
     const currentElement = element;
     const currentObserver = observer.current;
 
@@ -79,20 +74,21 @@ const PostInfiniteScroll = (props) => {
         currentObserver.unobserve(currentElement);
       }
     };
-  }, [handleInitial, element]);
+  }, [element]);
 
   return (
     <div className="infinite-scroll-wrapper">
       {posts ? (
-        <ul className="posts-list">
-          {posts.map((posts, index) => props.render(posts, index))}
-        </ul>
+        <>
+          <ul className="posts-list">
+            {posts.map((posts, index) => props.render(posts, index))}
+          </ul>
+        </>
       ) : (
         <p> 마지막 포스트 입니다 ! </p>
       )}
-
-      {loading && <div>Loading...</div>}
-      <div ref={setElement} />
+      {loading && <LoadingOutlined />}
+      <div ref={(ref) => setElement(ref)} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import { nanoid } from "nanoid";
 
 const { Schema, model } = mongoose;
-import shortid from "shortid";
 
 const postSchema = new Schema(
   {
@@ -13,7 +13,7 @@ const postSchema = new Schema(
     },
     uuid: {
       type: String,
-      default: shortid.generate(),
+      default: () => nanoid(),
     },
     index: Number,
     likeCount: {

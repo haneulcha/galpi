@@ -23,13 +23,13 @@ export const createApp = (store) => {
   app.use(
     session({
       ...SESSION_OPTION,
-      // store,
+      store,
     })
   );
 
   app.use("/api/img", express.static(path.join(__dirname, "uploads")));
 
-  // app.use(catchAsync(active));
+  app.use(catchAsync(active));
 
   app.use(home);
 

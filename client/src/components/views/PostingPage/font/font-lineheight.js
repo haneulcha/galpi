@@ -1,11 +1,10 @@
 import React from "react";
 import { LineHeightOutlined } from "@ant-design/icons";
 
-const FontLineHeight = ({ setFontlineheight }) => {
+export const FontLineHeight = ({ setFontlineheight }) => {
   const fontLineHandler = (e) => {
     e.preventDefault();
     setFontlineheight(e.target.value);
-    console.log(e.target.value);
   };
 
   return (
@@ -17,8 +16,8 @@ const FontLineHeight = ({ setFontlineheight }) => {
       <input
         type="range"
         id="font-lineheight"
-        min={15}
-        max={40}
+        min={18}
+        max={50}
         step={1}
         defaultValue={20}
         onChange={fontLineHandler}
@@ -27,5 +26,3 @@ const FontLineHeight = ({ setFontlineheight }) => {
     </div>
   );
 };
-
-export default FontLineHeight;

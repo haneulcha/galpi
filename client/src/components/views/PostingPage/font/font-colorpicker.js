@@ -25,7 +25,7 @@ export const FontColorPicker = (props) => {
         style={style}
       />
       {display && (
-        <div className="sketch-picker">
+        <div className="pop-up sketch-picker">
           <SketchPicker color={color} onChange={handleColor} triangle="hide" />
         </div>
       )}

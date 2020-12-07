@@ -36,7 +36,7 @@ const PostCard = ({ index, posts }) => {
         <Link to={`/username/${username}`}>{username}</Link>
       </h1>
       <div className="post">
-        <img alt="example" src={url} />
+        <img alt={`${username}'s post`} src={url} />
       </div>
 
       <p className="content">{content}</p>

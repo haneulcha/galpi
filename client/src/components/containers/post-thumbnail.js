@@ -16,7 +16,7 @@ const PostThumbnail = ({ index, posts }) => {
       onClick={postHandler}
     >
       <div className="post">
-        <img alt="example" src={url} />
+        <img alt={`${user}'s post`} src={url} />
       </div>
     </li>
   );

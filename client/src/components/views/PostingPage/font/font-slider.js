@@ -1,7 +1,7 @@
 import React from "react";
 import { FontSizeOutlined } from "@ant-design/icons";
 
-const FontSlider = ({ setFontsize }) => {
+export const FontSlider = ({ setFontsize }) => {
   const fontsizeHandler = (e) => {
     e.preventDefault();
     let val = e.target.value;
@@ -26,5 +26,3 @@ const FontSlider = ({ setFontsize }) => {
     </div>
   );
 };
-
-export default FontSlider;

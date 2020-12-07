@@ -5,6 +5,7 @@ import {
   LOGOUT_USER,
   GET_USER,
   GET_DASHBOARD,
+  DELETE_USER,
 } from "../_actions/types";
 
 export default function (state = {}, action) {
@@ -35,6 +36,12 @@ export default function (state = {}, action) {
       return {
         ...state,
         getUserSuccess: action.payload.message,
+      };
+
+    case DELETE_USER:
+      return {
+        ...state,
+        deleteUserSuccess: action.payload.message,
       };
 
     case GET_DASHBOARD:

@@ -58,7 +58,7 @@ const RegistrationForm = (props) => {
       return await dispatch(registerUser(userinfo))
         .then((res) => {
           alert("회원가입에 성공했습니다.");
-          history.replace("/login");
+          history.replace("/home");
         })
         .catch((e) => dispatch(errorHandle(e.response)));
     } else return alert("정확하게 입력해주세요");
@@ -123,10 +123,12 @@ const RegistrationForm = (props) => {
         message: "아이디를 입력하세요",
         ok: false,
       });
-    } else if ((!/^[A-za-z0-9]{3,15}$/g).test(val)) {
+    } else if (
+      !/^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/.test(val)
+    ) {
       setUsernameValid({
         valid: "error",
-        message: "3 ~ 15글자 이상, 영문 및 숫자",
+        message: "3 ~ 15글자 이상, 영문 혹은 숫자",
         ok: false,
       });
     } else {
@@ -169,8 +171,6 @@ const RegistrationForm = (props) => {
             type="text"
             value={email}
             placeholder="예) galpi@galpi.com"
-            min="8"
-            max="254"
             onChange={emailHandler}
           />
           <CheckCircleOutlined className="icon icon-suc" />
@@ -184,7 +184,6 @@ const RegistrationForm = (props) => {
             id="username"
             type="text"
             maxLength="128"
-            pattern=".{3,}"
             title="최소 2글자 이상"
             value={username}
             onChange={usernameHandler}
