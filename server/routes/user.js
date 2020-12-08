@@ -52,7 +52,7 @@ router.get(
 );
 
 router.delete(
-  "api/user",
+  "/api/user",
   auth,
   catchAsync(async (req, res) => {
     const _id = req.session.userId;

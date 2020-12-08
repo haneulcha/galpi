@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { errorHandle } from "../../../_actions/error_actions";
-import { getDashboard, logOutUser } from "../../../_actions/user_action";
+import { deleteUser, getDashboard } from "../../../_actions/user_action";
 import PaperCard from "../../containers/papercard";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
-  const { history } = props;
+
   const [user, setUser] = useState();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState();
   const [password, setPassword] = useState("");
 
   const deleteUserHandler = async (e) => {
-    e.preventDefault();
-    try {
-      await dispatch(deleteUserHandler({ password }));
-      await dispatch(logOutUser());
-      return history.replace("/");
-    } catch (e) {
-      dispatch(errorHandle(e.response));
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      e.preventDefault();
+      let data = {
+        password,
+      };
+      try {
+        await dispatch(deleteUser(data));
+        alert("삭제 되었습니다");
+        return <Redirect to="/" />;
+      } catch (e) {
+        dispatch(errorHandle(e.response));
+      }
     }
+    e.preventDefault();
+    return;
   };
 
   useEffect(() => {
@@ -39,13 +47,13 @@ const Dashboard = (props) => {
 
   return (
     <>
-      {user && posts ? (
+      {user ? (
         <>
           <PaperCard title={`${user.username}님, 안녕하세요 !`}>
             <br />
             <p>이름: {user.name}</p>
             <p>이메일: {user.email}</p>
-            <p>갈피: {posts.length} 개</p>
+            <p>갈피: {posts} 개</p>
             <p>계정 생성일: {user.createdAt.slice(0, 10)}</p>
             <br />
             <h2 className="account-delete">계정 삭제</h2>

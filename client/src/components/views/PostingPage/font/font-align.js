@@ -9,20 +9,27 @@ import {
 export const FontAlign = ({ setFontalign, fontalign }) => {
   const [display, setDisplay] = useState(false);
 
+  const iconHandler = () => {
+    switch (fontalign) {
+      case "left":
+        return <AlignLeftOutlined />;
+      case "center":
+        return <AlignCenterOutlined />;
+      case "right":
+        return <AlignRightOutlined />;
+      case "justify":
+        return <ColumnWidthOutlined />;
+      default:
+        return <AlignLeftOutlined />;
+    }
+  };
+
   return (
     <div className="font" onClick={() => setDisplay(!display)}>
       <label htmlFor="font-align" style={{ display: "none" }}>
         정렬
       </label>
-      {fontalign === "left" ? (
-        <AlignLeftOutlined />
-      ) : "center" ? (
-        <AlignCenterOutlined />
-      ) : "right" ? (
-        <AlignRightOutlined />
-      ) : (
-        <ColumnWidthOutlined />
-      )}
+      {iconHandler()}
       {display && (
         <div className="pop-up align-opt">
           <AlignLeftOutlined

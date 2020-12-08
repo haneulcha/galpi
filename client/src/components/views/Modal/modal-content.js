@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "./modal";
+import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { errorHide } from "../../../_actions/error_actions";
 
@@ -13,6 +14,10 @@ const ErrorModal = (params) => {
   const hideModal = (params) => {
     dispatch(errorHide());
   };
+
+  if (message === "You are already logged in") {
+    return <Redirect to="/home" />;
+  }
 
   return (
     <>

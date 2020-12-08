@@ -24,7 +24,5 @@ import {
 
   const app = createApp(store);
 
-  // const app = createApp();
-
   app.listen(APP_PORT, () => console.log(`http://localhost:${APP_PORT}`));
 })();

@@ -9,11 +9,12 @@ const initState = {
 
 export default function (state = initState, action) {
   const { error } = action;
-
+  console.log(error);
   switch (action.type) {
     case ERROR_HANDLE:
+      if (!error.statusText) error.statusText = null;
       return {
-        name: error.statusText || null,
+        name: error.statusText,
         status: error.status,
         message: error.data.message,
         isOpen: true,

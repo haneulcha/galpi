@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { logOutUser } from "../../../_actions/user_action";
+import { auth, logOutUser } from "../../../_actions/user_action";
 import { errorHandle } from "../../../_actions/error_actions";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const NavBar = (props) => {
@@ -11,15 +11,16 @@ const NavBar = (props) => {
     username: state.user.username,
   }));
   const [menuToggle, setMenuToggle] = useState(false);
-  const { history } = props;
 
   const dispatch = useDispatch();
   const logout = async () => {
     try {
       await dispatch(logOutUser());
+      await dispatch(auth());
       alert("로그아웃 되었습니다");
-      history.replace("/");
+      return <Redirect to="/" />;
     } catch (e) {
+      console.log("logout", e);
       dispatch(errorHandle(e.response));
     }
   };
