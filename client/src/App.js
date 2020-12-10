@@ -25,8 +25,6 @@ const App = () => {
 
   useEffect(() => {
     const fetchAuth = async () => {
-      console.log("initial auth");
-
       try {
         await dispatch(auth());
       } catch (e) {

@@ -31,13 +31,15 @@ router.post(
 
     const post = await Post.findOne({ uuid });
     if (!post) throw BadRequest("Post Not Found");
+    const postId = post._id.toString();
 
     const body = {
-      post: post._id,
+      post: postId,
       user,
       comment,
     };
 
+    console.log(body);
     await validate(commentSchema, body);
 
     const newComment = await Comment.create(body);
@@ -53,11 +55,12 @@ router.delete(
     const user = req.session.userId;
     const id = req.params.id;
     const comment = await Comment.findById(id);
+    const userId = comment.user._id.toString();
     if (!comment)
       throw new BadRequest("댓글을 찾을 수 없습니다 \n Comment Not Found");
-    if (comment.user._id === user) {
+    if (userId === user) {
       await Comment.findByIdAndDelete(id);
-      res.status(200).json({ message: "ok" });
+      return res.status(200).json({ message: "ok" });
     }
   })
 );

@@ -11,7 +11,6 @@ router.get(
   catchAsync(async (req, res) => {
     const user = await User.findById(req.session.userId);
     const posts = await Post.countDocuments({ user: req.session.userId });
-    console.log(user, posts);
     res.status(200).json({ user, posts, message: "ok" });
   })
 );

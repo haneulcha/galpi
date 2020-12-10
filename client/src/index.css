@@ -557,6 +557,12 @@ h2.account-delete {
   color: var(--bg-smooth);
 }
 
+.comments-list li button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 /* ----------------MODAL--------------- */
 
 #modal {

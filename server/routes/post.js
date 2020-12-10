@@ -117,7 +117,6 @@ router.delete(
     if (!post)
       throw new BadRequest("해당 포스트를 찾을 수 없습니다 \n Post Not Found");
     if (id === user) {
-      console.log();
       await Post.findByIdAndDelete(post._id);
       res.status(200).json({ message: "ok" });
     } else throw new BadRequest("삭제에 실패했습니다 \n Delete faild");

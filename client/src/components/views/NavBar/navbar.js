@@ -20,7 +20,6 @@ const NavBar = (props) => {
       alert("로그아웃 되었습니다");
       return <Redirect to="/" />;
     } catch (e) {
-      console.log("logout", e);
       dispatch(errorHandle(e.response));
     }
   };

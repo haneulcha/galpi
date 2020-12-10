@@ -16,6 +16,10 @@ const PostCard = ({ index, posts }) => {
   const [showComment, setShowComment] = useState(false);
   const [comments, setComments] = useState([]);
 
+  const contentStyle = {
+    display: showComment ? "none" : "inherit",
+  };
+
   const CommentToggle = (params) => {
     return (
       <div onClick={() => setShowComment(!showComment)}>
@@ -39,7 +43,9 @@ const PostCard = ({ index, posts }) => {
         <img alt={`${username}'s post`} src={url} />
       </div>
 
-      <p className="content">{content}</p>
+      <p className="content" style={contentStyle}>
+        {content}
+      </p>
       <ul className="features">
         <li>
           <Likes likes={likes} uuid={uuid} />
@@ -67,7 +73,12 @@ const PostCard = ({ index, posts }) => {
         />
       )}
 
-      <CommentForm uuid={uuid} comments={comments} setComments={setComments} />
+      <CommentForm
+        uuid={uuid}
+        comments={comments}
+        setComments={setComments}
+        setShowComment={setShowComment}
+      />
     </li>
   );
 };

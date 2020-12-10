@@ -10,12 +10,14 @@ const FetchComments = (props) => {
   const { uuid, comments, setComments } = props;
   const [loading, setLoading] = useState(false);
 
-  const deleteAComment = async (e) => {
-    e.preventDefault();
-    const li = e.target.parentElement;
+  const deleteAComment = async (event) => {
+    event.preventDefault();
+    const li = event.target.parentElement;
 
     try {
       await dispatch(deleteComment(li.id));
+      let filteredComment = comments.filter((item) => item._id !== li.id);
+      setComments([...filteredComment]);
       alert("댓글이 삭제되었습니다");
     } catch (e) {
       dispatch(errorHandle(e.response));
@@ -49,7 +51,7 @@ const FetchComments = (props) => {
               <strong>{comment.user.username}</strong>
               {` ${comment.comment}`}
               {userId === comment.user._id && (
-                <button onClick={deleteAComment}>⨉</button>
+                <button onClick={deleteAComment}>×</button>
               )}
             </li>
           ))}
