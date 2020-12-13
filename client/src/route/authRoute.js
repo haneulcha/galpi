@@ -15,6 +15,7 @@ export const AuthRoute = ({ component: Component, ...rest }) => {
           <Component {...props} />
         ) : (
           <Redirect
+            push
             to={{ pathname: "/login", state: { from: props.location } }}
           />
         )

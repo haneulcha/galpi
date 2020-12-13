@@ -11,8 +11,10 @@ import DeleteAPost from "../../containers/post-delete";
 const Post = () => {
   const { uuid } = useParams();
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.userId);
-
+  const { loggedIn, userId } = useSelector((state) => ({
+    loggedIn: state.user.loggedIn,
+    userId: state.user.userId,
+  }));
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
 
@@ -52,9 +54,7 @@ const Post = () => {
           <div className="content">
             <p>{post.content}</p>
           </div>
-
-          <Likes likes={post.likes} uuid={post.uuid} />
-
+          {loggedIn && <Likes likes={post.likes} uuid={post.uuid} />}
           {comments && (
             <FetchComments
               uuid={uuid}
@@ -62,11 +62,13 @@ const Post = () => {
               setComments={setComments}
             />
           )}
-          <CommentForm
-            uuid={uuid}
-            comments={comments}
-            setComments={setComments}
-          />
+          {loggedIn && (
+            <CommentForm
+              uuid={uuid}
+              comments={comments}
+              setComments={setComments}
+            />
+          )}
         </section>
       )}
     </div>

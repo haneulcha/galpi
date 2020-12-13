@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import "./index.css";
+import "./App.css";
 import {
-  Register,
-  Login,
   Dashboard,
-  Home,
-  Post,
-  Posting,
-  Profile,
-  LandingPage,
+  ErrorModal,
   Footer,
+  Home,
+  LandingPage,
+  Login,
+  NavBar,
+  NotFound,
+  Posting,
+  Post,
+  Profile,
+  Register,
+  Thumbnails,
 } from "./components/views/index";
-import NotFound from "./components/views/NotFound/notFound";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBar from "./components/views/NavBar/navbar";
 import { GuestRoute, AuthRoute } from "./route/index";
 import { auth } from "./_actions/user_action";
 import { errorHandle } from "./_actions/error_actions";
-import ErrorModal from "./components/views/Modal/modal-content";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const App = () => {
               <AuthRoute path="/home" component={Home} />
               <AuthRoute path="/post" component={Posting} />
 
+              <Route path="/thumbnails" component={Thumbnails} />
               <Route path="/user/:username" children={<Profile />} />
               <Route path="/p/:uuid" children={<Post />} />
 

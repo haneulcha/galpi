@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import sanitizeHtml from "sanitize-html";
 import { Post, Sequence, User } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
 import { validate, postSchema } from "../validation/index.js";
@@ -42,6 +43,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { content, url } = req.body;
     const user = req.session.userId;
+    const sanitizedContent = sanitizeHtml(content);
 
     const index = await Sequence.findOneAndUpdate(
       { user },
@@ -51,7 +53,7 @@ router.post(
 
     const number = JSON.stringify(index.uid);
     const data = {
-      content,
+      content: sanitizedContent,
       url,
       user,
       index: +number,
@@ -109,17 +111,15 @@ router.delete(
   "/api/post/:uuid",
   auth,
   catchAsync(async (req, res) => {
-    const user = req.session.userId;
     const uuid = req.params.uuid;
     const post = await Post.findOne({ uuid });
-    const id = post.user._id.toString();
 
-    if (!post)
+    if (!post) {
       throw new BadRequest("해당 포스트를 찾을 수 없습니다 \n Post Not Found");
-    if (id === user) {
-      await Post.findByIdAndDelete(post._id);
-      res.status(200).json({ message: "ok" });
-    } else throw new BadRequest("삭제에 실패했습니다 \n Delete faild");
+    }
+
+    await Post.findOneAndDelete({ uuid });
+    res.status(200).json({ message: "ok" });
   })
 );
 export default router;

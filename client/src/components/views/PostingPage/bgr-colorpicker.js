@@ -1,5 +1,5 @@
 import React from "react";
-import { SliderPicker } from "react-color";
+import { ChromePicker } from "react-color";
 
 export const BgrColorPicker = (props) => {
   const { setColor, color } = props;
@@ -9,13 +9,15 @@ export const BgrColorPicker = (props) => {
   };
 
   return (
-    <>
-      <label htmlFor="canvas-color">배경색</label>
-      <SliderPicker
+    <div className="canvas-color">
+      <label htmlFor="canvas-color" style={{ display: "none" }}>
+        배경색
+      </label>
+      <ChromePicker
         color={color}
         onChange={handleColor}
         className="bgr-colorpicker"
       />
-    </>
+    </div>
   );
 };

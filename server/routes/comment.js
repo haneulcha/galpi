@@ -39,7 +39,6 @@ router.post(
       comment,
     };
 
-    console.log(body);
     await validate(commentSchema, body);
 
     const newComment = await Comment.create(body);

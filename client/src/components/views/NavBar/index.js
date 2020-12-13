@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth, logOutUser } from "../../../_actions/user_action";
 import { errorHandle } from "../../../_actions/error_actions";
-import { NavLink, Link, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, Link, useHistory } from "react-router-dom";
 
 const NavBar = (props) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const { loggedIn, username } = useSelector((state) => ({
     loggedIn: state.user.loggedIn,
     username: state.user.username,
   }));
   const [menuToggle, setMenuToggle] = useState(false);
 
-  const dispatch = useDispatch();
   const logout = async () => {
     try {
       await dispatch(logOutUser());
-      await dispatch(auth());
       alert("로그아웃 되었습니다");
-      return <Redirect to="/" />;
+      await dispatch(auth());
+      return history.push("/");
     } catch (e) {
       dispatch(errorHandle(e.response));
     }
@@ -66,8 +66,11 @@ const NavBar = (props) => {
             <ul>
               <li>
                 <NavLink exact to="/">
-                  메인
+                  Home
                 </NavLink>
+              </li>
+              <li>
+                <NavLink to="/thumbnails">갈피들</NavLink>
               </li>
               <li>
                 <NavLink to="/login">로그인</NavLink>
@@ -80,7 +83,7 @@ const NavBar = (props) => {
             <ul>
               <li>
                 <NavLink exact to="/">
-                  메인
+                  Home
                 </NavLink>
               </li>
               <li>

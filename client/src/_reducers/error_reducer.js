@@ -9,7 +9,7 @@ const initState = {
 
 export default function (state = initState, action) {
   const { error } = action;
-  console.log(error);
+
   switch (action.type) {
     case ERROR_HANDLE:
       if (!error.statusText) error.statusText = null;

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { errorHandle } from "../../../_actions/error_actions";
-import { deleteUser, getDashboard } from "../../../_actions/user_action";
+import { auth, deleteUser, getDashboard } from "../../../_actions/user_action";
 import PaperCard from "../../containers/papercard";
 
 const Dashboard = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [user, setUser] = useState();
   const [posts, setPosts] = useState();
@@ -21,7 +22,8 @@ const Dashboard = (props) => {
       try {
         await dispatch(deleteUser(data));
         alert("삭제 되었습니다");
-        return <Redirect to="/" />;
+        await dispatch(auth());
+        history.push("/");
       } catch (e) {
         dispatch(errorHandle(e.response));
       }

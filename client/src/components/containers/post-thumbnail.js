@@ -1,22 +1,26 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const PostThumbnail = ({ index, posts }) => {
-  const { uuid, url, user } = posts;
+  const { uuid, url, user, content } = posts;
   const { username } = user;
-  const postHandler = (e) => {
-    e.preventDefault();
-    return <Redirect push to={`/p/${uuid}`} />;
+  const history = useHistory();
+  const postHandler = () => {
+    return history.push(`/p/${uuid}`);
   };
 
   return (
     <li
       key={`postthumbnail-${index}-by${username}`}
-      className="post-thumbnail"
+      className="post-thumbnail-li"
       onClick={postHandler}
     >
       <div className="post">
-        <img alt={`${user}'s post`} src={url} />
+        <img alt={`${username}'s post`} src={url} />
+      </div>
+      <div className="info">
+        <h2>{username}</h2>
+        <p>{content}</p>
       </div>
     </li>
   );

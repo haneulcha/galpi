@@ -25,7 +25,7 @@ export const SESSION_OPTION = {
   name: SESSION_NAME,
   cookie: {
     maxAge: +SESSION_IDLE_TIMEOUT,
-    secure: IN_PROD, // 프로덕션 모드 일때
+    secure: IN_PROD,
     sameSite: true,
   },
   rolling: true,

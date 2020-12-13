@@ -15,6 +15,7 @@ export const GuestRoute = ({ component: Component, ...rest }) => {
           <Component {...props} />
         ) : (
           <Redirect
+            push
             to={{ pathname: "/home", state: { from: props.location } }}
           />
         )

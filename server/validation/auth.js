@@ -15,7 +15,7 @@ const password = Joi.string()
   .max(BCRYPT_MAX_BYTES, "utf8")
   .regex(/^(?=.*?[\p{Lu}])(?=.*?[\p{Ll}])(?=.*?\d).*$/u)
   .message(
-    '"{#label}" must contain one uppercase letter, one lowercase letter, and one digit'
+    '형식에 맞추어 입력해주세요.(영 대·소문자, 숫자 포함) \n "{#label}" must contain one uppercase letter, one lowercase letter, and one digit'
   )
   .required();
 

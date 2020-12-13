@@ -13,6 +13,7 @@ import {
 } from "./font";
 import { contentPost, imgPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Posting = (props) => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Posting = (props) => {
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
   const [content, setContent] = useState();
+  const [loading, setLoading] = useState(false);
 
   const canvasRef = useRef();
 
@@ -40,6 +42,7 @@ const Posting = (props) => {
     try {
       await dispatch(dispatch(contentPost(data)));
       alert("업로드 성공 !");
+      setLoading(false);
       history.replace("/home");
     } catch (e) {
       dispatch(errorHandle(e.response));
@@ -60,6 +63,7 @@ const Posting = (props) => {
   };
 
   const domToImage = () => {
+    setLoading(true);
     const canvasDiv = canvasRef.current;
     domtoimage.toBlob(canvasDiv).then((blob) => {
       postImage(blob);
@@ -74,19 +78,13 @@ const Posting = (props) => {
       <h1 className="page-title">갈피 남기기</h1>
 
       <div className="canvas-background">
-        <div className="bgr-image">
-          <Preview
-            url={url}
-            setUrl={setUrl}
-            setOpt={setOpt}
-            id="canvas-image"
-          />
-        </div>
-
-        <div className="bgr-color">
+        <span className="instruction">1. 배경 선택</span>
+        <div className="canvas-back">
+          <Preview setUrl={setUrl} setOpt={setOpt} id="canvas-image" />
+          <span>OR</span>
           <BgrColorPicker setColor={setColor} color={color} id="canvas-color" />
         </div>
-
+        <span className="instruction">2. 폰트 선택</span>
         <div className="canvas-font">
           <FontType setFonttype={setFonttype} />
           <FontColorPicker setColor={setFontcolor} color={fontcolor} />
@@ -112,12 +110,13 @@ const Posting = (props) => {
         fontalign={fontalign}
       />
       <ul className="canvas-desc">
-        <li>✒ 텍스트 상자의 크기와 위치를 직접 조정할 수 있습니다</li>
+        <li>👁‍🗨 텍스트 상자의 크기와 위치를 직접 조정할 수 있습니다</li>
         <li>
-          ✒ 이미지의 위치를 조정할 수 있고, 더블클릭 시 처음 위치로 설정됩니다
+          👁‍🗨이미지의 위치를 조정할 수 있고, 더블클릭 시 처음 위치로 설정됩니다
         </li>{" "}
       </ul>
       <div className="content">
+        <span className="instruction">3. 코멘트 추가</span>
         <label htmlFor="content" style={{ display: "none" }}>
           코멘트
         </label>
@@ -131,7 +130,9 @@ const Posting = (props) => {
         />
       </div>
       <div className="upload-btn">
-        <button onClick={domToImage}>업로드</button>
+        <button onClick={domToImage}>
+          {!loading ? "업로드" : <LoadingOutlined />}
+        </button>
       </div>
     </div>
   );

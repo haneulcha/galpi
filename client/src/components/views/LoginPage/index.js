@@ -7,8 +7,7 @@ import { loginUser } from "../../../_actions/user_action";
 
 const LoginForm = (props) => {
   const dispatch = useDispatch();
-  const { location, history } = props;
-  const { state } = location;
+  const { history } = props;
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState({
     valid: "",
@@ -66,14 +65,8 @@ const LoginForm = (props) => {
           email,
           password,
         };
-
         await dispatch(loginUser(userinfo));
-
-        if (state && state.from) {
-          return history.replace(state.from);
-        } else {
-          return history.replace("/home");
-        }
+        return history.replace("/home");
       } catch (e) {
         dispatch(errorHandle(e.response));
       }

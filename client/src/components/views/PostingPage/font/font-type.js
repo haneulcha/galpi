@@ -4,9 +4,11 @@ import { QuestionOutlined } from "@ant-design/icons";
 export const FontType = ({ setFonttype }) => {
   const [counter, setCounter] = useState(0);
   const fonts = [
-    '"Noto Serif KR", "Times New Roman","Georgia", "serif"',
-    '"UhBeeDoolDool", "Dotum", "Caflisch Script", "Adobe Poetica", "Sanvito", "Ex Ponto", "cursive" ',
     '"Noto Sans KR", "Verdana", "Malgun Gothic", "sans-serif"',
+    '"Noto Serif KR", "Times New Roman","Georgia", "serif"',
+    '"GyeonggiBatang", "Batang", "Caflisch Script", "Adobe Poetica", "Sanvito", "Ex Ponto", "cursive" ',
+    '"SunBatang-Bold", "Dotum", "Modern", "Arial Black", "serif"',
+    '"TmoneyRoundWindRegular", "Courier New", "fantasy"',
   ];
 
   const fontTypeHandler = () => {

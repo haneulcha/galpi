@@ -1,23 +1,31 @@
 import React from "react";
 import Modal from "./modal";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { errorHide } from "../../../_actions/error_actions";
+import { auth } from "../../../_actions/user_action";
 
 const ErrorModal = (params) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const name = useSelector((state) => state.error.name);
   const message = useSelector((state) => state.error.message);
   const isOpen = useSelector((state) => state.error.isOpen);
 
-  const hideModal = (params) => {
+  const hideModal = async (e) => {
+    e.preventDefault();
     dispatch(errorHide());
-  };
 
-  if (message === "You are already logged in") {
-    return <Redirect to="/home" />;
-  }
+    if (message === "You are already logged in") {
+      await dispatch(auth());
+      return history.push("/");
+    }
+    if (message === "You must be logged in") {
+      await dispatch(auth());
+      return history.push("/login");
+    }
+    return;
+  };
 
   return (
     <>

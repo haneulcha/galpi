@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as EmailValidator from "email-validator";
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import { errorHandle } from "../../../_actions/error_actions";
-import { registerUser } from "../../../_actions/user_action";
+import { auth, registerUser } from "../../../_actions/user_action";
 
 const RegistrationForm = (props) => {
   const dispatch = useDispatch();
-  const { history } = props;
+  const history = useHistory();
+
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState({
     valid: "",
@@ -29,7 +31,7 @@ const RegistrationForm = (props) => {
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState({
     valid: "",
-    message: "영어 대·소문자와 숫자 포함, 8글자 이상.",
+    message: "영어 대·소문자와 숫자 포함, 8글자 이상",
     ok: false,
   });
   const [confirm, setConfirm] = useState("");
@@ -48,19 +50,21 @@ const RegistrationForm = (props) => {
       passwordValid.ok &&
       confirmValid.ok
     ) {
-      let userinfo = {
-        email,
-        username,
-        name,
-        password,
-        passwordConfirmation: confirm,
-      };
-      return await dispatch(registerUser(userinfo))
-        .then((res) => {
-          alert("회원가입에 성공했습니다.");
-          history.replace("/home");
-        })
-        .catch((e) => dispatch(errorHandle(e.response)));
+      try {
+        let userinfo = {
+          email,
+          username,
+          name,
+          password,
+          passwordConfirmation: confirm,
+        };
+        await dispatch(registerUser(userinfo));
+        alert("회원가입에 성공했습니다.");
+        await dispatch(auth());
+        return history.push("/home");
+      } catch (e) {
+        dispatch(errorHandle(e.response));
+      }
     } else return alert("정확하게 입력해주세요");
   };
 

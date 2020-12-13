@@ -5,10 +5,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 /* 'Noto Serif KR' */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500&display=swap");
-
 @font-face {
-  font-family: "UhBeeDoolDool";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeDoolDool.woff")
+  font-family: "GyeonggiBatang";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff")
+    format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "TmoneyRoundWindRegular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindRegular.woff")
+    format("woff");
+  font-weight: normal;
+
+  font-style: normal;
+}
+@font-face {
+  font-family: "SunBatang-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Bold.woff")
     format("woff");
   font-weight: normal;
   font-style: normal;
@@ -36,6 +50,9 @@ code {
   --letter-spacing: 0.1em;
 }
 
+* {
+  box-sizing: border-box;
+}
 html,
 body {
   margin: 0;
@@ -60,13 +77,11 @@ body {
   flex-direction: column;
   align-items: center;
   flex: 1 0 auto;
-  margin-top: 3em;
+  margin: 3em 0 5em;
 }
 
 footer {
   flex-shrink: 0;
-  width: 100vw;
-  /* height: 5em; */
   bottom: 0;
   color: #222222;
   background-color: #ebebeb;
@@ -86,6 +101,7 @@ ul {
 a {
   margin: 0;
   padding: 0;
+  text-decoration: none;
 }
 
 button {
@@ -100,6 +116,9 @@ li a {
   letter-spacing: var(--letter-spacing);
 }
 
+address {
+  font-style: normal;
+}
 .wrapper {
   padding: 1em;
 }
@@ -112,7 +131,9 @@ li a {
   font-size: 2em;
 }
 
-/* ---------------HEADER--------------- */
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
 
 header {
   display: flex;
@@ -186,7 +207,9 @@ li span:hover {
   cursor: pointer;
 }
 
-/* ---------------------LANDING------------------ */
+/* ==========================================================================
+   LANDING PAGE
+   ========================================================================== */
 
 .bgr-img {
   position: fixed;
@@ -194,7 +217,7 @@ li span:hover {
   top: 0;
   left: 0;
   z-index: -1;
-  background: url(./img/bg-img-2.jpg) no-repeat center center fixed;
+  background: url(/bg-img-2.jpg) no-repeat center center fixed;
   background-size: cover;
   height: 100%;
   overflow: hidden;
@@ -262,7 +285,9 @@ h1 strong {
   padding: 0.4em 2em;
 }
 
-/* ----------------CANVAS-OPTION--------------- */
+/* ==========================================================================
+   CANVAS-OPTION
+   ========================================================================== */
 .posting {
   margin: auto 1.2em;
   width: 100%;
@@ -273,6 +298,12 @@ h1 strong {
   margin-bottom: 1.5em;
 }
 
+.posting .instruction {
+  background-color: var(--point-color);
+  color: var(--bg);
+  padding: 0.1em 0.5em;
+  font-size: 1.3em;
+}
 .canvas-background {
   display: block;
 }
@@ -280,22 +311,6 @@ h1 strong {
   margin-bottom: 2em;
 }
 
-.bgr-image {
-  width: 8em;
-  height: 8em;
-  margin: 0 auto 2em;
-}
-.ant-upload.ant-upload-select-picture-card {
-  width: 100%;
-  height: 100%;
-  /* overflow: hidden; */
-  margin: 0;
-}
-.ant-upload.ant-upload-select-picture-card > .ant-upload {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
 .preview-image {
   width: 100%;
   height: 100%;
@@ -354,7 +369,9 @@ h1 strong {
   font-size: 1.05em;
 }
 
-/* ----------------CANVAS--------------- */
+/* ==========================================================================
+   CANVAS
+   ========================================================================== */
 .canvas-wrapper {
   width: 100%;
   height: 400px;
@@ -384,6 +401,24 @@ h1 strong {
   cursor: move;
   object-fit: cover;
 }
+.canvas-back {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-flow: wrap;
+}
+.canvas-image label {
+  padding: 0.2em 0.4em;
+  font-size: 1.4em;
+  font-weight: 700;
+
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 2px, rgba(0, 0, 0, 0.3) 0px 4px 8px;
+}
 
 .quote-textarea {
   font-weight: normal;
@@ -395,7 +430,9 @@ h1 strong {
   transform: translate(-50%, -50%);
 }
 
-/* ------------REGISTER, SUBMIT------------ */
+/* ==========================================================================
+   REGISTER
+   ========================================================================== */
 
 .form {
   width: 60%;
@@ -471,7 +508,9 @@ h1 strong {
   color: var(--bg-smooth);
 }
 
-/* ----------------A POST--------------- */
+/* ==========================================================================
+   A POST
+   ========================================================================== */
 .a-post {
   border: 1px solid black;
   padding: 0.5em;
@@ -512,21 +551,16 @@ h1 strong {
   font-size: 1.3em;
 }
 
-/* ----------------profile. POST-THUMBNAIL--------------- */
+/* ==========================================================================
+   PROFILE, POST-THUMBNAIL
+   ========================================================================== */
 
 .profile #paper {
   max-width: 400px;
-  margin: auto;
-}
-.profile .posts-list {
-  /* margin: 0.8em;
-  padding: 0.8em; */
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  margin: 2em auto;
 }
 
-.post-thumbnail {
+.post-thumbnail-li {
   max-width: 400px;
   margin: 0.8em;
 }
@@ -562,8 +596,56 @@ h2.account-delete {
   border: none;
   cursor: pointer;
 }
+/* ==========================================================================
+   THUMBNAILS
+   ========================================================================== */
 
-/* ----------------MODAL--------------- */
+.thumbnails .notice {
+  font-size: 1em;
+  text-align: end;
+}
+.thumbnails ul,
+.infinite-thumbnail {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+.thumbnails ul li,
+.infinite-thumbnail li {
+  width: 32vw;
+  margin: 0 0 0.4rem 0;
+  position: relative;
+}
+
+.thumbnails ul li img,
+.infinite-thumbnail li img {
+  width: 100%;
+}
+.thumbnails ul li .info,
+.infinite-thumbnail li .info {
+  visibility: hidden;
+  position: absolute;
+  background-color: rgba(9, 12, 8, 0.75);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 1em;
+}
+.thumbnails ul li .info > *,
+.infinite-thumbnail li .info > * {
+  color: var(--bg);
+}
+.thumbnails ul li:hover .info,
+.infinite-thumbnail li:hover .info {
+  visibility: unset;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
 
 #modal {
   position: relative;
@@ -592,13 +674,31 @@ h2.account-delete {
   padding: 0.5em 1.2em;
   background-color: #db2b39;
 }
+/* ==========================================================================
+   VIEW-OPTION
+   ========================================================================== */
+.view-option {
+  z-index: 10;
+  position: fixed;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  cursor: pointer;
+  background-color: rgb(9, 12, 8, 0.5);
+  border-radius: 0.4em;
+  color: var(--bg-smooth);
+  font-size: 2.5em;
+  padding: 0.4em 0.4em;
+  display: flex;
+  justify-content: space-between;
+  width: 4.5em;
+}
 
 @media (min-width: 800px) {
   li a:hover,
   li span:hover {
     background: transparent;
     font-weight: bolder;
-    color: #5695dc;
+    color: #2c070a;
     cursor: pointer;
   }
 
@@ -679,12 +779,12 @@ h2.account-delete {
     font-weight: bold;
   }
   .sub:hover .submenu {
+    min-width: 10.51em;
     display: flex;
     position: absolute;
     top: 6em;
     right: 0;
     background: white;
-    /* padding: 0.5em; */
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.07);
   }
   .submenu ul {
@@ -710,10 +810,6 @@ h2.account-delete {
 
   .form {
     max-width: 25em;
-  }
-
-  .ant-card {
-    max-width: 50em;
   }
 
   .posting {
@@ -771,5 +867,9 @@ h2.account-delete {
   }
   .intro span {
     margin-left: 0.3em;
+  }
+  .thumbnails,
+  .infinite-thumbnail {
+    max-width: 1220px;
   }
 }

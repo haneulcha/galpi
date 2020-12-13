@@ -6,7 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 // GET posts
 const PostInfiniteScroll = (props) => {
-  const { username = null } = props;
+  const { username = null, view } = props;
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -80,7 +80,7 @@ const PostInfiniteScroll = (props) => {
     <div className="infinite-scroll-wrapper">
       {posts ? (
         <>
-          <ul className="posts-list">
+          <ul className={`posts-list infinite-${view}`}>
             {posts.map((posts, index) => props.render(posts, index))}
           </ul>
         </>

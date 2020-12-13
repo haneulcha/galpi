@@ -33,7 +33,7 @@ const Profile = () => {
   return (
     <div className="profile">
       {loading && "유저 정보를 가져오고 있습니다"}
-      {user ? (
+      {!loading && user ? (
         <>
           <PaperCard title={user.username}>
             <br />
@@ -41,6 +41,7 @@ const Profile = () => {
             <p>계정 생성일: {user.createdAt.slice(0, 10)}</p>
           </PaperCard>
           <PostInfiniteScroll
+            view="thumbnail"
             render={(posts, index) => (
               <PostThumbnail
                 key={`postthumbnail-${index}`}
