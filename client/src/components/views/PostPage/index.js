@@ -36,7 +36,7 @@ const Post = () => {
         <section className="a-post">
           <div className="a-post-header">
             <div className="user">
-              <Link to={`/username/${post.user.username}`}>
+              <Link to={`/user/${post.user.username}`}>
                 {post.user.username}
               </Link>
             </div>

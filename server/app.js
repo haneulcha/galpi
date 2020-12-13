@@ -3,6 +3,7 @@ import session from "express-session";
 import path from "path";
 import cors from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
 import { SESSION_OPTION } from "./config/index.js";
 import {
   notFound,
@@ -17,11 +18,13 @@ export const createApp = (store) => {
   const app = express();
   if (process.env.NODE_ENV === "production") {
     app.use(morgan("combined"));
+    app.use(helmet());
+    app.use(hpp());
   } else {
     app.use(morgan("dev"));
   }
   app.use(cors());
-  app.use(express.static(path.join(__dirname, "public")));
+  // app.use(express.static(path.join(__dirname, "public")));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -48,9 +51,9 @@ export const createApp = (store) => {
 
   app.use(comment);
 
-  app.get("/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
+  // app.get("/*", function (req, res) {
+  //   res.sendFile(path.join(__dirname, "public", "index.html"));
+  // });
 
   app.use(notFound);
 

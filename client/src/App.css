@@ -160,7 +160,7 @@ nav {
   right: 0;
   width: 45%;
   height: 100vh;
-  z-index: 1;
+  z-index: 20;
   visibility: hidden;
 }
 .open-nav {
@@ -509,12 +509,16 @@ h1 strong {
 }
 
 /* ==========================================================================
-   A POST
+   A POST, POSTCARD
    ========================================================================== */
-.a-post {
-  border: 1px solid black;
-  padding: 0.5em;
-  margin: 0.1em;
+.a-post,
+.postcard {
+  border: 1px solid #a3a3a3;
+  border-radius: 0.5em;
+  padding: 0.5em 0;
+  background-color: #f0f0f0;
+  max-width: 400px;
+  margin-bottom: 1em;
 }
 .a-post-header {
   display: flex;
@@ -524,8 +528,10 @@ h1 strong {
 .a-post .delete {
   font-size: 1.2em;
 }
-.a-post > * {
-  margin-bottom: 0.5em;
+.a-post > *,
+.postcard > * {
+  margin: 0;
+  padding: 0.5em 0.8em;
 }
 .a-post > :last-child {
   margin-bottom: 0;
@@ -539,16 +545,28 @@ h1 strong {
   color: var(--text-color);
   font-weight: bold;
 }
-.a-post .user:hover a {
-  color: var(--point-color);
+.postcard .user a {
+  font-weight: bold;
+  color: #090c08;
+  letter-spacing: 0.05em;
 }
-.a-post .image {
+.a-post .user:hover a,
+.postcard .user:hover a {
+  color: var(--main-color);
+}
+.a-post .image,
+.postcard .post {
   display: flex;
   justify-content: center;
+  padding: 0;
+}
+.a-post .image img,
+.postcard .post img {
+  width: 100%;
 }
 
 .a-post .likes {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 /* ==========================================================================
@@ -852,9 +870,6 @@ h2.account-delete {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .a-post {
-    padding: 1em;
   }
 }
 
