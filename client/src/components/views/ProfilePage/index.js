@@ -33,7 +33,7 @@ const Profile = () => {
   return (
     <div className="profile">
       {loading && "유저 정보를 가져오고 있습니다"}
-      {!loading && user ? (
+      {user && (
         <>
           <PaperCard title={user.username}>
             <br />
@@ -52,8 +52,6 @@ const Profile = () => {
             username={user.username}
           />
         </>
-      ) : (
-        <p> 해당하는 유저가 없습니다. </p>
       )}
     </div>
   );

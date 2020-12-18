@@ -39,8 +39,9 @@ const Posting = (props) => {
       content,
       url,
     };
+
     try {
-      await dispatch(dispatch(contentPost(data)));
+      await dispatch(contentPost(data));
       alert("업로드 성공 !");
       setLoading(false);
       history.replace("/home");
@@ -56,6 +57,7 @@ const Posting = (props) => {
 
     try {
       let response = await dispatch(imgPost(formData));
+
       postContent(response.payload.url);
     } catch (e) {
       dispatch(errorHandle(e.response));
@@ -110,10 +112,10 @@ const Posting = (props) => {
         fontalign={fontalign}
       />
       <ul className="canvas-desc">
-        <li>👁‍🗨 텍스트 상자의 크기와 위치를 직접 조정할 수 있습니다</li>
-        <li>
-          👁‍🗨이미지의 위치를 조정할 수 있고, 더블클릭 시 처음 위치로 설정됩니다
-        </li>{" "}
+        <li>👁‍🗨 글상자의 크기와 위치를 마우스로 조정할 수 있습니다</li>
+        <li>👁‍🗨 이미지의 위치를 조정할 수 있고, 더블클릭 시 초기화 됩니다</li>
+        <li>👁‍🗨 글상자 크기를 조절하여 스크롤바를 없애주세요</li>
+        <li>👁‍🗨 캔버스 바깥을 클릭하면 글상자 테두리가 사라집니다</li>
       </ul>
       <div className="content">
         <span className="instruction">3. 코멘트 추가</span>

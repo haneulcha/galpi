@@ -9,7 +9,7 @@ import { TagsOutlined, TagsFilled, ZoomInOutlined } from "@ant-design/icons";
 import DeleteAPost from "./post-delete";
 
 const PostCard = ({ index, posts }) => {
-  const { uuid, likes, content, url, user } = posts;
+  const { uuid, likes, content, url, user, createdAt } = posts;
   const { username } = user;
   const userId = useSelector((state) => state.user.userId);
 
@@ -46,6 +46,9 @@ const PostCard = ({ index, posts }) => {
       <p className="content" style={contentStyle}>
         {content}
       </p>
+      <div className="date">
+        <p>{createdAt.slice(0, 10)}</p>
+      </div>
       <ul className="features">
         <li>
           <Likes likes={likes} uuid={uuid} />

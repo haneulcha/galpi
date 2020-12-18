@@ -11,7 +11,7 @@ export default function (state = {}, action) {
     case IMG_POST:
       return {
         ...state,
-        imgurl: action.payload.url,
+        url: action.payload.url,
       };
 
     case CONTENT_POST:

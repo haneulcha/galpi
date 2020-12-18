@@ -8,6 +8,7 @@ import {
   GET_DASHBOARD,
   DELETE_USER,
 } from "./types";
+axios.defaults.withCredentials = true;
 
 export async function registerUser(body) {
   let response = await axios.post(`/api/user`, body);

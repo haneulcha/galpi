@@ -59,9 +59,12 @@
     padding: unset;
     margin: 2em;
   }
-  .postcard > * {
-    margin: 0;
-    padding: 0.5em;
+
+  .postcard .date {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  .postcard .date p {
+    text-align: unset;
   }
   .postcard .user {
     grid-area: 1 / 2 / 2 / 3;

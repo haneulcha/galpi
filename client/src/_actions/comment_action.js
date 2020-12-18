@@ -1,6 +1,7 @@
 import axios from "axios";
-
 import { GET_COMMENT, POST_COMMENT, DELETE_COMMENT } from "./types";
+
+axios.defaults.withCredentials = true;
 
 export async function getComment(uuid) {
   let response = await axios.get(`/api/comment/${uuid}`);

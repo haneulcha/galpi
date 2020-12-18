@@ -2,6 +2,8 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import AWS from "aws-sdk";
+import multerS3 from "multer-s3";
 import sanitizeHtml from "sanitize-html";
 import { Post, Sequence, User } from "../models/index.js";
 import { auth, catchAsync } from "../middleware/index.js";
@@ -18,21 +20,25 @@ fs.readdir("uploads", (error) => {
   }
 });
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: "ap-northeast-2",
+});
+
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, "uploads/");
-    },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: "galpi",
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}${path.basename(file.originalname)}`);
     },
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post("/api/post/img", upload.single("img"), (req, res) => {
-  res.json({ url: `/api/img/${req.file.filename}` });
+router.post("/api/post/img", auth, upload.single("img"), (req, res) => {
+  return res.json({ url: req.file.location });
 });
 
 const upload2 = multer();

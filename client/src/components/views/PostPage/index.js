@@ -17,7 +17,7 @@ const Post = () => {
   }));
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
-
+  console.log(post);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -53,6 +53,9 @@ const Post = () => {
 
           <div className="content">
             <p>{post.content}</p>
+          </div>
+          <div className="date">
+            <p>{post.createdAt.slice(0, 10)}</p>
           </div>
           {loggedIn && <Likes likes={post.likes} uuid={post.uuid} />}
           {comments && (

@@ -8,6 +8,8 @@ import {
   DELETE_POST,
 } from "./types";
 
+axios.defaults.withCredentials = true;
+
 export async function imgPost(formData) {
   const config = {
     header: {
