@@ -17,7 +17,7 @@ const Post = () => {
   }));
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
-  console.log(post);
+
   useEffect(() => {
     async function fetchData() {
       try {

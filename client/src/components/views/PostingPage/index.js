@@ -29,12 +29,15 @@ const Posting = (props) => {
   const [fontlineheight, setFontlineheight] = useState(20);
   const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
-  const [content, setContent] = useState();
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
   const canvasRef = useRef();
 
   const postContent = async (url) => {
+    if (!content) {
+      return alert("코멘트를 적어주세요");
+    }
     let data = {
       content,
       url,
@@ -53,11 +56,10 @@ const Posting = (props) => {
   const postImage = async (blob) => {
     const img = blob;
     const formData = new FormData();
-    formData.append("img", img, "combined.png");
+    formData.append("img", img, "combi.png");
 
     try {
       let response = await dispatch(imgPost(formData));
-
       postContent(response.payload.url);
     } catch (e) {
       dispatch(errorHandle(e.response));
@@ -67,9 +69,12 @@ const Posting = (props) => {
   const domToImage = () => {
     setLoading(true);
     const canvasDiv = canvasRef.current;
-    domtoimage.toBlob(canvasDiv).then((blob) => {
-      postImage(blob);
-    });
+    domtoimage
+      .toBlob(canvasDiv)
+      .then((dataUrl) => {
+        postImage(dataUrl);
+      })
+      .catch((err) => console.error("업로드 실패", err));
   };
 
   useEffect(() => setOpt(true), [url]);

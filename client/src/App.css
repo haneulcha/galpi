@@ -5,32 +5,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 /* 'Noto Serif KR' */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500&display=swap");
-@font-face {
-  font-family: "GyeonggiBatang";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff")
-    format("woff");
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: "TmoneyRoundWindRegular";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindRegular.woff")
-    format("woff");
-  font-weight: normal;
 
-  font-style: normal;
-}
 @font-face {
-  font-family: "SunBatang-Bold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/SunBatang-Bold.woff")
+  font-family: "Binggrae-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Binggrae-Bold.woff")
     format("woff");
   font-weight: normal;
   font-style: normal;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
