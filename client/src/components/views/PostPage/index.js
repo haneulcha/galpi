@@ -3,10 +3,10 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
-import Likes from "../../containers/likes";
-import CommentForm from "../../containers/comment-form";
-import FetchComments from "../../containers/comments";
-import DeleteAPost from "../../containers/post-delete";
+import Likes from "../../features/likes";
+import CommentForm from "../../features/comment-form";
+import FetchComments from "../../features/comments";
+import DeleteAPost from "../../features/post-delete";
 
 const Post = () => {
   const { uuid } = useParams();

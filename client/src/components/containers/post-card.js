@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import CommentForm from "./comment-form";
-import FetchComments from "./comments";
-import Likes from "./likes";
+import CommentForm from "../features/comment-form";
+import FetchComments from "../features/comments";
+import Likes from "../features/likes";
 import "./post-card.css";
 import { TagsOutlined, TagsFilled, ZoomInOutlined } from "@ant-design/icons";
-import DeleteAPost from "./post-delete";
+import DeleteAPost from "../features/post-delete";
 
 const PostCard = ({ index, posts }) => {
   const { uuid, likes, content, url, user, createdAt } = posts;
