@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import domtoimage from "dom-to-image";
 import Canvas from "./canvas";
@@ -16,6 +17,7 @@ import { errorHandle } from "../../../_actions/error_actions";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const Posting = (props) => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { history } = props;
   const [url, setUrl] = useState(); // preview
@@ -32,8 +34,20 @@ const Posting = (props) => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const loggedIn = useRef();
   const canvasRef = useRef();
 
+  const imgDownload = () => {
+    setLoading(true);
+    const canvasDiv = canvasRef.current;
+    domtoimage.toPng(canvasDiv).then((dataUrl) => {
+      const link = document.createElement("a");
+      link.download = "galpi-image.png";
+      link.href = dataUrl;
+      link.click();
+      setLoading(false);
+    });
+  };
   const postContent = async (url) => {
     if (!content) {
       return alert("코멘트를 적어주세요");
@@ -79,6 +93,13 @@ const Posting = (props) => {
 
   useEffect(() => setOpt(true), [url]);
   useEffect(() => setOpt(false), [color]);
+  useEffect(() => {
+    if (location.pathname === "/postd") {
+      loggedIn.current = true;
+    } else {
+      loggedIn.current = false;
+    }
+  }, []);
 
   return (
     <div className="posting">
@@ -132,13 +153,14 @@ const Posting = (props) => {
           name="content"
           value={content}
           rows="5"
+          disabled={loggedIn.current ? true : false}
           onChange={(e) => setContent(e.target.value)}
           placeholder="작가, 책 제목, 간단한 소감 등을 남겨주세요"
         />
       </div>
       <div className="upload-btn">
-        <button onClick={domToImage}>
-          {!loading ? "업로드" : <LoadingOutlined />}
+        <button onClick={loggedIn ? imgDownload : domToImage}>
+          {!loading ? loggedIn ? "다운로드" : "업로드" : <LoadingOutlined />}
         </button>
       </div>
     </div>

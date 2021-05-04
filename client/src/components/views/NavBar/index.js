@@ -70,6 +70,9 @@ const NavBar = (props) => {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/postd">갈피 맛보기</NavLink>
+              </li>
+              <li>
                 <NavLink to="/thumbnails">갈피들</NavLink>
               </li>
               <li>

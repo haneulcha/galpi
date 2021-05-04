@@ -45,6 +45,7 @@ const App = () => {
 
               <GuestRoute path="/login" component={Login} />
               <GuestRoute path="/register" component={Register} />
+              <GuestRoute path="/postd" component={Posting} />
 
               <AuthRoute path="/dashboard" component={Dashboard} />
               <AuthRoute path="/home" component={Home} />
