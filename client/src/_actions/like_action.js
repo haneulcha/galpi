@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { POST_LIKE, POST_UNLIKE } from "./types";
 
+axios.defaults.withCredentials = true;
+
 export async function postLike(uuid) {
   let response = await axios.post(`/api/like/${uuid}/like`);
   return {

@@ -205,7 +205,7 @@ li span:hover {
   top: 0;
   left: 0;
   z-index: -1;
-  background: url(/bg-img-2.jpg) no-repeat center center fixed;
+  background: url(./assets/bg-img-2.jpg) no-repeat center center fixed;
   background-size: cover;
   height: 100%;
   overflow: hidden;
