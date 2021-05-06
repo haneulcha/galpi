@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { QuestionOutlined } from "@ant-design/icons";
 
-export const FontType = ({ setFonttype }) => {
+export const useFontType = (defaultFont) => {
+  const [fonttype, setFonttype] = useState(defaultFont);
   const [counter, setCounter] = useState(0);
   const fonts = [
     '"Noto Sans KR", "Verdana", "Malgun Gothic", "sans-serif"',
@@ -16,7 +17,8 @@ export const FontType = ({ setFonttype }) => {
 
     if (counter === fonts.length - 1) return setCounter(0);
   };
-  return (
+
+  const FontType = () => (
     <div className="font">
       <label htmlFor="font-type" style={{ display: "none" }}>
         글씨 종류
@@ -24,4 +26,6 @@ export const FontType = ({ setFonttype }) => {
       <QuestionOutlined className="icon" onClick={fontTypeHandler} />
     </div>
   );
+
+  return [fonttype, FontType];
 };

@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { LineHeightOutlined } from "@ant-design/icons";
 
-export const FontLineHeight = ({ setFontlineheight }) => {
+export const useFontLineHeight = (defaultValue) => {
+  const [fontlineheight, setFontlineheight] = useState(defaultValue);
   const fontLineHandler = (e) => {
     e.preventDefault();
     setFontlineheight(e.target.value);
   };
 
-  return (
+  const FontLineHeight = () => (
     <div className="font">
       <label htmlFor="font-lineheight" style={{ display: "none" }}>
         줄 간격
@@ -19,10 +20,12 @@ export const FontLineHeight = ({ setFontlineheight }) => {
         min={18}
         max={50}
         step={1}
-        defaultValue={20}
-        onChange={fontLineHandler}
+        defaultValue={fontlineheight}
+        onMouseUp={fontLineHandler}
         className="slider"
       />
     </div>
   );
+
+  return [fontlineheight, FontLineHeight];
 };

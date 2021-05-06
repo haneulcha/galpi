@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 import { FontColorsOutlined } from "@ant-design/icons";
 
-export const FontColorPicker = (props) => {
+export const useFontColorPicker = (defaultColor) => {
+  const [fontcolor, setFontcolor] = useState(defaultColor);
   const [display, setDisplay] = useState(false);
-  const { setColor, color } = props;
 
-  const handleColor = (color) => {
-    setColor(color.hex);
+  const handleFontColor = (color) => {
+    setFontcolor(color.hex);
   };
 
   const style = {
-    color: color,
+    color: fontcolor,
   };
 
-  return (
+  const FontColorPicker = () => (
     <div className="font">
       <label htmlFor="font-color" style={{ display: "none" }}>
         글씨 색상
@@ -26,9 +26,15 @@ export const FontColorPicker = (props) => {
       />
       {display && (
         <div className="pop-up sketch-picker">
-          <SketchPicker color={color} onChange={handleColor} triangle="hide" />
+          <SketchPicker
+            color={fontcolor}
+            onChangeComplete={handleFontColor}
+            triangle="hide"
+          />
         </div>
       )}
     </div>
   );
+
+  return [fontcolor, FontColorPicker];
 };

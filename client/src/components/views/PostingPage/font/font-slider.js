@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontSizeOutlined } from "@ant-design/icons";
 
-export const FontSlider = ({ setFontsize }) => {
+export const useFontSlider = (defaultSize) => {
+  const [fontsize, setFontsize] = useState(defaultSize);
   const fontsizeHandler = (e) => {
     e.preventDefault();
     let val = e.target.value;
     setFontsize(val);
   };
-  return (
+  const FontSlider = () => (
     <div className="font">
       <label htmlFor="font-size" style={{ display: "none" }}>
         글씨 크기
@@ -19,10 +20,11 @@ export const FontSlider = ({ setFontsize }) => {
         min={5}
         max={50}
         step={1}
-        defaultValue={16}
-        onChange={fontsizeHandler}
+        defaultValue={fontsize}
+        onMouseUp={fontsizeHandler}
         className="slider"
       />
     </div>
   );
+  return [fontsize, FontSlider];
 };

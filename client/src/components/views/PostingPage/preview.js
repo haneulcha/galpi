@@ -9,22 +9,20 @@ const getBase64 = (img, cb) => {
   reader.readAsDataURL(img);
 };
 
-export const Preview = ({ setUrl, setOpt }) => {
+const usePreview = () => {
   const [loading, setLoading] = useState(false);
+  const [imgDataUrl, setImgDataUrl] = useState();
 
   const handleChange = (info) => {
     setLoading(true);
     let img = info.target.files[0];
-
-    getBase64(img, (imgUrl) => {
-      setUrl(imgUrl); // prop: setImgurl
-
-      setOpt(true);
+    getBase64(img, (url) => {
+      setImgDataUrl(url); // prop: setImgurl
       setLoading(false);
     });
   };
 
-  return (
+  const Preview = () => (
     <div className="canvas-image">
       <label htmlFor="canvas-image">
         {loading ? <LoadingOutlined /> : <PlusOutlined />}배경 이미지
@@ -41,4 +39,8 @@ export const Preview = ({ setUrl, setOpt }) => {
       </form>
     </div>
   );
+
+  return [imgDataUrl, Preview];
 };
+
+export default usePreview;

@@ -6,7 +6,8 @@ import {
   ColumnWidthOutlined,
 } from "@ant-design/icons";
 
-export const FontAlign = ({ setFontalign, fontalign }) => {
+export const useFontAlign = (defaultValue) => {
+  const [fontalign, setFontalign] = useState(defaultValue);
   const [display, setDisplay] = useState(false);
 
   const iconHandler = () => {
@@ -24,7 +25,7 @@ export const FontAlign = ({ setFontalign, fontalign }) => {
     }
   };
 
-  return (
+  const FontAlign = () => (
     <div className="font" onClick={() => setDisplay(!display)}>
       <label htmlFor="font-align" style={{ display: "none" }}>
         정렬
@@ -60,4 +61,6 @@ export const FontAlign = ({ setFontalign, fontalign }) => {
       )}
     </div>
   );
+
+  return [fontalign, FontAlign];
 };

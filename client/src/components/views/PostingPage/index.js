@@ -1,43 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import domtoimage from "dom-to-image";
 import Canvas from "./canvas";
-import { Preview } from "./preview";
+import usePreview from "./preview";
 import { BgrColorPicker } from "./bgr-colorpicker";
-import {
-  FontSlider,
-  FontType,
-  FontLineHeight,
-  FontAlign,
-  FontColorPicker,
-} from "./font";
+import useQuoteStyle from "./font";
 import { contentPost, imgPost } from "../../../_actions/post_action";
 import { errorHandle } from "../../../_actions/error_actions";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const Posting = (props) => {
   const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { history } = props;
-  const [url, setUrl] = useState(); // preview
+
+  const [url, Preview] = usePreview(); // preview
   const [color, setColor] = useState("#f1f2f6");
-  const [fontsize, setFontsize] = useState(16);
-  const [fontcolor, setFontcolor] = useState("black");
-  const [fonttype, setFonttype] = useState(
-    '"Noto Serif KR", "Times New Roman","Georgia", "serif"'
-  );
-  const [fontalign, setFontalign] = useState("left");
-  const [fontlineheight, setFontlineheight] = useState(20);
-  const [opt, setOpt] = useState(false);
   const [quote, setQuote] = useState();
+  const [
+    fontsize,
+    fontcolor,
+    fonttype,
+    fontalign,
+    fontlineheight,
+    QuoteStyle,
+  ] = useQuoteStyle();
   const [content, setContent] = useState("");
+
+  const [opt, setOpt] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const loggedIn = useRef();
   const canvasRef = useRef();
 
-  const imgDownload = () => {
+  const downloadImage = () => {
     setLoading(true);
     const canvasDiv = canvasRef.current;
     domtoimage.toPng(canvasDiv).then((dataUrl) => {
@@ -48,6 +45,7 @@ const Posting = (props) => {
       setLoading(false);
     });
   };
+
   const postContent = async (url) => {
     if (!content) {
       return alert("코멘트를 적어주세요");
@@ -95,9 +93,9 @@ const Posting = (props) => {
   useEffect(() => setOpt(false), [color]);
   useEffect(() => {
     if (location.pathname === "/postd") {
-      loggedIn.current = true;
-    } else {
       loggedIn.current = false;
+    } else {
+      loggedIn.current = true;
     }
   }, []);
 
@@ -108,18 +106,12 @@ const Posting = (props) => {
       <div className="canvas-background">
         <span className="instruction">1. 배경 선택</span>
         <div className="canvas-back">
-          <Preview setUrl={setUrl} setOpt={setOpt} id="canvas-image" />
+          <Preview />
           <span>OR</span>
           <BgrColorPicker setColor={setColor} color={color} id="canvas-color" />
         </div>
         <span className="instruction">2. 폰트 선택</span>
-        <div className="canvas-font">
-          <FontType setFonttype={setFonttype} />
-          <FontColorPicker setColor={setFontcolor} color={fontcolor} />
-          <FontAlign setFontalign={setFontalign} fontalign={fontalign} />
-          <FontSlider setFontsize={setFontsize} />
-          <FontLineHeight setFontlineheight={setFontlineheight} />
-        </div>
+        <QuoteStyle />
       </div>
 
       <Canvas
@@ -131,18 +123,18 @@ const Posting = (props) => {
         fonttype={fonttype}
         quote={quote}
         setQuote={setQuote}
-        content={content}
-        setContent={setContent}
         canvasRef={canvasRef}
         fontlineheight={fontlineheight}
         fontalign={fontalign}
       />
+
       <ul className="canvas-desc">
         <li>👁‍🗨 글상자의 크기와 위치를 마우스로 조정할 수 있습니다</li>
         <li>👁‍🗨 이미지의 위치를 조정할 수 있고, 더블클릭 시 초기화 됩니다</li>
         <li>👁‍🗨 글상자 크기를 조절하여 스크롤바를 없애주세요</li>
         <li>👁‍🗨 캔버스 바깥을 클릭하면 글상자 테두리가 사라집니다</li>
       </ul>
+
       <div className="content">
         <span className="instruction">3. 코멘트 추가</span>
         <label htmlFor="content" style={{ display: "none" }}>
@@ -153,14 +145,27 @@ const Posting = (props) => {
           name="content"
           value={content}
           rows="5"
-          disabled={loggedIn.current ? true : false}
+          disabled={!loggedIn.current ? true : false}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="작가, 책 제목, 간단한 소감 등을 남겨주세요"
+          placeholder={
+            !loggedIn.current
+              ? "로그인한 유저만 남길 수 있습니다"
+              : "작가, 책 제목, 간단한 소감 등을 남겨주세요"
+          }
         />
       </div>
+
       <div className="upload-btn">
-        <button onClick={loggedIn ? imgDownload : domToImage}>
-          {!loading ? loggedIn ? "다운로드" : "업로드" : <LoadingOutlined />}
+        <button onClick={loggedIn.current ? downloadImage : domToImage}>
+          {!loading ? (
+            !loggedIn.current ? (
+              "다운로드"
+            ) : (
+              "업로드"
+            )
+          ) : (
+            <LoadingOutlined />
+          )}
         </button>
       </div>
     </div>
